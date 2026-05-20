@@ -3,92 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mirror · 镜</title>
-<meta name="description" content="在失重的静默里，靠近自己">
+<title>镜 · 灯下</title>
+<meta name="description" content="在暖光里，靠近自己">
 <link rel="stylesheet" href="../assets/css/shared.css">
 <style>
-  .mirror-container {
+  /* === 灯下 · Under the Lamp === */
+  /* Warm, intimate space where you talk to someone who truly listens */
+
+  :root {
+    --warm-bg: #0d0806;
+    --warm-surface: #1a100c;
+    --warm-card: #221814;
+    --lamp-core: #e8c878;
+    --lamp-warm: #d4a050;
+    --lamp-dim: #8a6a38;
+    --lamp-faint: #4a3520;
+    --text-warm: #f0e6d8;
+    --text-muted: #b8a898;
+    --text-dim: #8a7a68;
+    --text-faint: #5a4a3a;
+    --glow-soft: rgba(212, 160, 80, 0.15);
+    --glow-light: rgba(232, 200, 120, 0.08);
+  }
+
+  body {
+    background: var(--warm-bg);
+  }
+
+  /* Lamp glow · CSS gradient simulating a warm desk lamp */
+  .lamp-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 30%, rgba(232, 200, 120, 0.09) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 50% 25%, rgba(212, 160, 80, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 100%, rgba(0,0,0,0.4) 0%, transparent 50%);
+  }
+
+  /* Vignette overlay - creates the sense of an enclosed, safe space */
+  .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 50% 35%, transparent 40%, rgba(8, 4, 2, 0.7) 100%);
+  }
+
+  /* Floating warm dust particles (CSS-only) */
+  .dust-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .dust {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--lamp-warm);
+    border-radius: 50%;
+    animation: float 12s infinite ease-in-out;
+    opacity: 0;
+  }
+
+  .dust:nth-child(1) { left: 30%; top: 40%; animation-duration: 14s; animation-delay: 0s; width: 1.5px; height: 1.5px; }
+  .dust:nth-child(2) { left: 55%; top: 35%; animation-duration: 18s; animation-delay: 2s; width: 2px; height: 2px; }
+  .dust:nth-child(3) { left: 70%; top: 50%; animation-duration: 16s; animation-delay: 4s; width: 1px; height: 1px; }
+  .dust:nth-child(4) { left: 40%; top: 55%; animation-duration: 20s; animation-delay: 1s; width: 2.5px; height: 2.5px; }
+  .dust:nth-child(5) { left: 60%; top: 30%; animation-duration: 15s; animation-delay: 3s; width: 1.5px; height: 1.5px; }
+  .dust:nth-child(6) { left: 25%; top: 45%; animation-duration: 22s; animation-delay: 5s; width: 1px; height: 1px; }
+  .dust:nth-child(7) { left: 80%; top: 38%; animation-duration: 17s; animation-delay: 2.5s; width: 2px; height: 2px; }
+  .dust:nth-child(8) { left: 45%; top: 60%; animation-duration: 19s; animation-delay: 6s; width: 1.5px; height: 1.5px; }
+  .dust:nth-child(9) { left: 65%; top: 42%; animation-duration: 13s; animation-delay: 1.5s; width: 1px; height: 1px; }
+  .dust:nth-child(10) { left: 35%; top: 33%; animation-duration: 21s; animation-delay: 4.5s; width: 2px; height: 2px; }
+
+  @keyframes float {
+    0%   { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+    10%  { opacity: 0.3; }
+    30%  { opacity: 0.5; }
+    50%  { transform: translateY(-60px) translateX(20px) scale(1.2); opacity: 0.6; }
+    70%  { opacity: 0.3; }
+    100% { transform: translateY(-120px) translateX(-10px) scale(0.3); opacity: 0; }
+  }
+
+  /* ========== Main Layout ========== */
+
+  .lamp-container {
+    position: relative;
+    z-index: 1;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 1;
     padding: 2rem;
   }
 
-  .mirror-landing {
-    text-align: center;
-    max-width: 500px;
+  /* ========== Landing Page ========== */
+
+  .lamp-landing {
     display: none;
+    text-align: center;
+    max-width: 440px;
+    animation: fadeIn 1.2s ease;
   }
 
-  .mirror-landing.active {
+  .lamp-landing.active {
     display: block;
-    animation: fadeInUp 0.8s ease;
   }
 
-  .mirror-landing h1 {
-    font-size: 2.5rem;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-  }
-
-  .mirror-landing .subtitle {
-    color: var(--star-dim);
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 3rem;
-  }
-
-  .enter-btn {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 1px solid var(--star-faint);
-    background: transparent;
-    color: var(--star-dim);
-    font-family: inherit;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.5s ease;
-    letter-spacing: 0.1em;
+  .lamp-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
     position: relative;
-    margin: 0 auto;
-    display: block;
   }
 
-  .enter-btn:hover {
-    border-color: var(--accent-lavender);
-    color: var(--accent-lavender);
-    box-shadow: 0 0 30px rgba(123, 111, 207, 0.2);
-  }
-
-  .enter-btn .inner-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 60px;
-    height: 60px;
+  .lamp-icon .bulb {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.05);
-    transform: translate(-50%, -50%);
-    transition: all 0.5s ease;
+    background: var(--lamp-core);
+    margin: 0 auto;
+    box-shadow: 0 0 40px var(--lamp-core), 0 0 80px rgba(232, 200, 120, 0.2);
+    animation: bulb-pulse 3s ease-in-out infinite;
   }
 
-  .enter-btn:hover .inner-ring {
-    border-color: rgba(123, 111, 207, 0.3);
-    width: 70px;
-    height: 70px;
+  @keyframes bulb-pulse {
+    0%, 100% { box-shadow: 0 0 40px var(--lamp-core), 0 0 80px rgba(232, 200, 120, 0.2); }
+    50% { box-shadow: 0 0 50px var(--lamp-core), 0 0 100px rgba(232, 200, 120, 0.25); }
   }
+
+  .lamp-icon .shade {
+    width: 60px;
+    height: 20px;
+    background: linear-gradient(135deg, var(--lamp-dim), var(--lamp-faint));
+    margin: -4px auto 0;
+    clip-path: polygon(5% 100%, 95% 100%, 90% 0%, 10% 0%);
+  }
+
+  .lamp-landing h1 {
+    font-size: 2.2rem;
+    font-weight: 200;
+    letter-spacing: 0.15em;
+    color: var(--text-warm);
+    margin-bottom: 0.8rem;
+  }
+
+  .lamp-landing .subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+  }
+
+  .enter-warm {
+    padding: 0.8rem 2.5rem;
+    border: 1px solid var(--lamp-dim);
+    background: rgba(212, 160, 80, 0.06);
+    color: var(--lamp-warm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    letter-spacing: 0.1em;
+  }
+
+  .enter-warm:hover {
+    background: rgba(212, 160, 80, 0.12);
+    border-color: var(--lamp-warm);
+    box-shadow: 0 0 30px var(--glow-soft);
+  }
+
+  /* ========== Config Panel ========== */
 
   .config-panel {
     display: none;
-    max-width: 480px;
+    max-width: 440px;
     width: 100%;
-    animation: fadeInUp 0.6s ease;
+    animation: fadeIn 0.6s ease;
   }
 
   .config-panel.active {
@@ -96,75 +204,108 @@
   }
 
   .config-panel h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 300;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-align: center;
     letter-spacing: 0.08em;
+    color: var(--text-warm);
   }
 
   .config-panel .hint {
-    font-size: 0.8rem;
-    color: var(--star-faint);
+    font-size: 0.78rem;
+    color: var(--text-faint);
     text-align: center;
     margin-bottom: 2rem;
+    line-height: 1.6;
   }
 
-  .field-group {
-    margin-bottom: 1.2rem;
+  .warm-field {
+    margin-bottom: 1rem;
   }
 
-  .field-group label {
+  .warm-field label {
     display: block;
-    font-size: 0.75rem;
-    color: var(--star-dim);
-    margin-bottom: 0.4rem;
-    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.06em;
   }
 
-  .field-group input {
+  .warm-field input {
     width: 100%;
-    padding: 0.7rem 1rem;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--star-white);
+    padding: 0.65rem 1rem;
+    background: rgba(232, 200, 120, 0.03);
+    border: 1px solid rgba(232, 200, 120, 0.08);
+    color: var(--text-warm);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     letter-spacing: 0.03em;
+    border-radius: 0;
   }
 
-  .field-group input:focus {
-    border-color: var(--accent-lavender);
+  .warm-field input:focus {
+    border-color: var(--lamp-dim);
+    box-shadow: 0 0 20px var(--glow-soft);
   }
 
-  .field-group input::placeholder {
-    color: var(--star-faint);
+  .warm-field input::placeholder {
+    color: var(--text-faint);
   }
 
   .config-actions {
     display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
     justify-content: center;
+  }
+
+  .btn-warm {
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--lamp-dim);
+    background: transparent;
+    color: var(--lamp-warm);
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-warm:hover {
+    background: rgba(212, 160, 80, 0.1);
+    border-color: var(--lamp-warm);
+  }
+
+  .btn-warm-save {
+    border-color: var(--lamp-warm);
+    background: rgba(212, 160, 80, 0.1);
+  }
+
+  .btn-warm-save:hover {
+    background: rgba(212, 160, 80, 0.2);
+    box-shadow: 0 0 20px var(--glow-soft);
   }
 
   .config-note {
     font-size: 0.7rem;
-    color: var(--star-faint);
+    color: var(--text-faint);
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 1.2rem;
     line-height: 1.6;
   }
 
+  /* ========== Chat Interface ========== */
+
   .chat-interface {
     display: none;
-    max-width: 600px;
+    max-width: 620px;
     width: 100%;
     flex-direction: column;
-    height: 90vh;
-    animation: fadeInUp 0.6s ease;
+    height: 88vh;
+    animation: fadeIn 0.8s ease;
   }
 
   .chat-interface.active {
@@ -172,99 +313,123 @@
   }
 
   .chat-header {
-    text-align: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 0.8rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid rgba(232, 200, 120, 0.06);
   }
 
   .chat-header .title {
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    color: var(--star-dim);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
     font-weight: 300;
+  }
+
+  .chat-header .title .dot-glow {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--lamp-core);
+    margin-right: 6px;
+    animation: bulb-pulse 3s ease-in-out infinite;
+    vertical-align: middle;
   }
 
   .chat-header .settings-btn {
     background: none;
-    border: none;
-    color: var(--star-faint);
+    border: 1px solid transparent;
+    color: var(--text-faint);
     cursor: pointer;
     font-family: monospace;
-    font-size: 0.75rem;
-    transition: color 0.3s;
+    font-size: 0.7rem;
+    transition: all 0.3s;
+    padding: 0.3rem 0.6rem;
+    letter-spacing: 0.05em;
   }
 
   .chat-header .settings-btn:hover {
-    color: var(--accent-lavender);
+    color: var(--lamp-warm);
+    border-color: rgba(212, 160, 80, 0.15);
   }
 
   .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 2rem 0;
+    padding: 1.5rem 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
+    scroll-behavior: smooth;
   }
 
   .message {
-    max-width: 85%;
+    max-width: 88%;
     line-height: 1.8;
     font-size: 0.9rem;
     letter-spacing: 0.03em;
-    animation: fadeInUp 0.4s ease;
+    animation: fadeIn 0.5s ease;
+    padding: 0.8rem 1.2rem;
   }
 
   .message.user {
     align-self: flex-end;
-    color: var(--star-dim);
+    color: var(--text-muted);
     text-align: right;
+    background: rgba(232, 200, 120, 0.03);
+    border: 1px solid rgba(232, 200, 120, 0.05);
   }
 
   .message.assistant {
     align-self: flex-start;
-    color: var(--star-white);
-    padding-left: 1rem;
-    border-left: 1px solid rgba(123,111,207,0.2);
+    color: var(--text-warm);
+    position: relative;
+    padding-left: 1.2rem;
+    border-left: 2px solid rgba(212, 160, 80, 0.2);
   }
 
   .message.assistant .role-tag {
-    font-size: 0.7rem;
-    color: var(--accent-lavender);
+    font-size: 0.65rem;
+    color: var(--lamp-dim);
     letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-family: monospace;
+  }
+
+  .message.assistant .role-tag::before {
+    content: '◈ ';
   }
 
   .chat-input-area {
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding: 1rem 0;
+    border-top: 1px solid rgba(232, 200, 120, 0.06);
+    padding: 0.8rem 0;
   }
 
   .chat-input-area textarea {
     width: 100%;
-    padding: 0.8rem 1rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    color: var(--star-white);
+    padding: 0.7rem 1rem;
+    background: rgba(232, 200, 120, 0.02);
+    border: 1px solid rgba(232, 200, 120, 0.06);
+    color: var(--text-warm);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     resize: none;
     outline: none;
-    min-height: 60px;
+    min-height: 50px;
     line-height: 1.6;
     letter-spacing: 0.03em;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .chat-input-area textarea:focus {
-    border-color: var(--accent-lavender);
+    border-color: rgba(212, 160, 80, 0.25);
+    box-shadow: 0 0 30px var(--glow-soft);
   }
 
   .chat-input-area textarea::placeholder {
-    color: var(--star-faint);
+    color: var(--text-faint);
   }
 
   .input-row {
@@ -274,51 +439,54 @@
     margin-top: 0.5rem;
   }
 
-  .input-row .send-btn {
-    padding: 0.6rem 1.2rem;
+  .send-warm {
+    padding: 0.55rem 1.3rem;
     background: transparent;
-    border: 1px solid var(--star-faint);
-    color: var(--star-dim);
+    border: 1px solid var(--lamp-dim);
+    color: var(--lamp-warm);
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.3s;
     white-space: nowrap;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
   }
 
-  .input-row .send-btn:hover {
-    border-color: var(--accent-lavender);
-    color: var(--accent-lavender);
+  .send-warm:hover {
+    background: rgba(212, 160, 80, 0.1);
+    border-color: var(--lamp-warm);
+    box-shadow: 0 0 20px var(--glow-soft);
   }
 
-  .input-row .send-btn:disabled {
-    opacity: 0.4;
+  .send-warm:disabled {
+    opacity: 0.3;
     cursor: not-allowed;
+    box-shadow: none;
   }
 
   .starter-prompts {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
   }
 
-  .starter-prompt {
-    padding: 0.4rem 1rem;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    color: var(--star-dim);
-    font-size: 0.8rem;
+  .starter-warm {
+    padding: 0.35rem 1rem;
+    background: rgba(232, 200, 120, 0.03);
+    border: 1px solid rgba(232, 200, 120, 0.06);
+    color: var(--text-dim);
+    font-size: 0.78rem;
     cursor: pointer;
     transition: all 0.3s;
     font-family: inherit;
     letter-spacing: 0.03em;
   }
 
-  .starter-prompt:hover {
-    border-color: var(--accent-lavender);
-    color: var(--accent-lavender);
+  .starter-warm:hover {
+    border-color: var(--lamp-dim);
+    color: var(--lamp-warm);
+    background: rgba(212, 160, 80, 0.06);
   }
 
   .typing-dot {
@@ -326,136 +494,171 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--accent-lavender);
-    animation: blink 1.4s infinite;
+    background: var(--lamp-warm);
+    animation: blink-dot 1.4s infinite;
     margin: 0 2px;
   }
 
   .typing-dot:nth-child(2) { animation-delay: 0.2s; }
   .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-  @keyframes blink {
+  @keyframes blink-dot {
     0%, 100% { opacity: 0.2; }
     50% { opacity: 1; }
   }
 
-  .status-text {
-    font-size: 0.7rem;
-    color: var(--star-faint);
+  .status-warm {
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    font-family: monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .back-link {
+    display: block;
     text-align: center;
+    padding: 1.2rem;
+    position: relative;
+    z-index: 1;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+
+  .back-link:hover {
+    color: var(--lamp-warm);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .chat-interface { height: 85vh; }
+    .message { max-width: 95%; }
   }
 </style>
 </head>
 <body>
 
-<div class="mirror-container">
-  <div class="mirror-landing active" id="landing">
-    <h1>镜</h1>
-    <p class="subtitle">在失重的静默里，靠近自己</p>
-    <button class="enter-btn" onclick="showConfig()">
-      <span class="inner-ring"></span>
-      进入
-    </button>
-    <p style="margin-top: 2rem; font-size: 0.7rem; color: var(--star-faint);">点击或按任意键进入</p>
+<!-- Ambient layers -->
+<div class="lamp-glow"></div>
+<div class="vignette"></div>
+<div class="dust-particles">
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div>
+</div>
+
+<div class="lamp-container">
+  <!-- Landing -->
+  <div class="lamp-landing" id="landing">
+    <div class="lamp-icon">
+      <div class="bulb"></div>
+      <div class="shade"></div>
+    </div>
+    <h1>灯下</h1>
+    <p class="subtitle">
+      一盏灯，两个人，什么都不用急。<br>
+      这里有人愿意听。
+    </p>
+    <button class="enter-warm" onclick="showConfig()">坐下来聊聊</button>
+    <p style="margin-top: 1.5rem; font-size: 0.7rem; color: var(--text-faint);">换个接口？点上面</p>
   </div>
 
+  <!-- Config -->
   <div class="config-panel" id="configPanel">
-    <h2>连接你的镜面</h2>
-    <p class="hint">镜需要一个LLM来回应你。配置保存在本地浏览器中，不会上传到任何服务器。</p>
+    <h2>换一盏灯</h2>
+    <p class="hint">更换 LLM 接口时修改此处。配置保存在本地，仅此而已。</p>
 
-    <div class="field-group">
-      <label>Base URL <span style="color:var(--star-faint)">(OpenAI兼容接口)</span></label>
-      <input type="text" id="apiUrl" placeholder="https://api.openai.com/v1" autocomplete="off">
+    <div class="warm-field">
+      <label>Base URL</label>
+      <input type="text" id="apiUrl" placeholder="https://api.deepseek.com" autocomplete="off">
     </div>
-    <div class="field-group">
-      <label>Model Name</label>
-      <input type="text" id="apiModel" placeholder="gpt-4o-mini" autocomplete="off">
+    <div class="warm-field">
+      <label>Model</label>
+      <input type="text" id="apiModel" placeholder="deepseek-v4-flash" autocomplete="off">
     </div>
-    <div class="field-group">
+    <div class="warm-field">
       <label>API Key</label>
       <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off">
     </div>
 
     <div class="config-actions">
-      <button class="btn" onclick="showLanding()">返回</button>
-      <button class="btn btn-primary" onclick="saveConfig()">连接并进入</button>
+      <button class="btn-warm" onclick="enterChat()">用这个就好</button>
+      <button class="btn-warm btn-warm-save" onclick="saveAndEnter()">保存再用</button>
     </div>
-    <p class="config-note">
-      支持 OpenAI、DeepSeek、Moonshot、智谱 等兼容接口。<br>
-      API Key 只保存在你的浏览器中。
-    </p>
+    <p class="config-note">Key 只存在你的浏览器里，不上传任何服务器。</p>
   </div>
 
-  <div class="chat-interface" id="chatInterface">
+  <!-- Chat -->
+  <div class="chat-interface active" id="chatInterface">
     <div class="chat-header">
-      <div class="title">镜 · 自省</div>
-      <button class="settings-btn" onclick="showConfig()">设置</button>
+      <div class="title"><span class="dot-glow"></span>灯下</div>
+      <button class="settings-btn" onclick="showConfig()">换灯</button>
     </div>
     <div class="chat-messages" id="chatMessages">
       <div class="message assistant">
-        <div class="role-tag">镜</div>
+        <div class="role-tag">灯下的人</div>
         不用急着整理得很像样。如果一时不知道怎么开口，也可以先挑一个近一点的。<br><br>
         如果都不贴，你就按自己的说法来。
       </div>
     </div>
     <div class="chat-input-area">
       <div class="starter-prompts" id="starters">
-        <button class="starter-prompt" onclick="sendStarter('脑子有点乱，想理一理')">脑子有点乱</button>
-        <button class="starter-prompt" onclick="sendStarter('有件小事堵在心里')">有件小事堵着</button>
-        <button class="starter-prompt" onclick="sendStarter('只是想找人说说话')">想找人说说话</button>
-        <button class="starter-prompt" onclick="sendStarter('今天有点累')">今天有点累</button>
+        <button class="starter-warm" onclick="sendStarter('脑子有点乱，想理一理')">脑子有点乱</button>
+        <button class="starter-warm" onclick="sendStarter('有件小事堵在心里')">有件小事堵着</button>
+        <button class="starter-warm" onclick="sendStarter('只是想找人说说话')">想找人说说话</button>
+        <button class="starter-warm" onclick="sendStarter('今天有点累')">今天有点累</button>
       </div>
-      <textarea id="userInput" placeholder="在这里说你想说的..." rows="2"></textarea>
+      <textarea id="userInput" placeholder="慢慢说，我听着..." rows="2"></textarea>
       <div class="input-row">
-        <span class="status-text" id="statusText"></span>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()">发送</button>
+        <span class="status-warm" id="statusText"></span>
+        <button class="send-warm" id="sendBtn" onclick="sendMessage()">说</button>
       </div>
     </div>
   </div>
 </div>
 
-<a href="../" class="back-link" style="position:relative;z-index:1;display:block;text-align:center;padding:1rem;font-family:monospace;font-size:0.8rem;color:var(--star-faint);letter-spacing:0.1em;">← 返回深空观测站</a>
+<a href="../" class="back-link">← 回到数字海洋</a>
 
-<script src="../assets/js/shared.js"></script>
 <script>
 (function() {
+  var DEFAULT_URL = 'https://api.deepseek.com';
+  var DEFAULT_MODEL = 'deepseek-v4-flash';
+  var DEFAULT_KEY = 'sk-651cb00d607240b9959b120db6757b9b';
+
   var config = {
-    url: localStorage.getItem('mirror_api_url') || '',
-    model: localStorage.getItem('mirror_api_model') || '',
-    key: localStorage.getItem('mirror_api_key') || ''
+    url: localStorage.getItem('mirror_api_url') || DEFAULT_URL,
+    model: localStorage.getItem('mirror_api_model') || DEFAULT_MODEL,
+    key: localStorage.getItem('mirror_api_key') || DEFAULT_KEY
   };
 
   var conversation = [];
 
-  if (config.url) document.getElementById('apiUrl').value = config.url;
-  if (config.model) document.getElementById('apiModel').value = config.model;
-  if (config.key) document.getElementById('apiKey').value = config.key;
-
-  if (config.url && config.model && config.key) {
-    enterChat();
-  }
+  document.getElementById('apiUrl').value = config.url;
+  document.getElementById('apiModel').value = config.model;
+  document.getElementById('apiKey').value = config.key;
 
   window.showConfig = function() {
     document.getElementById('landing').classList.remove('active');
-    document.getElementById('chatInterface').classList.remove('active');
     document.getElementById('configPanel').classList.add('active');
   };
 
-  window.showLanding = function() {
+  window.enterChat = function() {
+    config.url = document.getElementById('apiUrl').value.trim() || DEFAULT_URL;
+    config.model = document.getElementById('apiModel').value.trim() || DEFAULT_MODEL;
+    config.key = document.getElementById('apiKey').value.trim() || DEFAULT_KEY;
     document.getElementById('configPanel').classList.remove('active');
-    document.getElementById('chatInterface').classList.remove('active');
-    document.getElementById('landing').classList.add('active');
+    document.getElementById('landing').classList.remove('active');
   };
 
-  window.saveConfig = function() {
-    var url = document.getElementById('apiUrl').value.trim();
-    var model = document.getElementById('apiModel').value.trim();
-    var key = document.getElementById('apiKey').value.trim();
-
-    if (!url || !model || !key) {
-      alert('请填写完整的 API 配置信息');
-      return;
-    }
+  window.saveAndEnter = function() {
+    var url = document.getElementById('apiUrl').value.trim() || DEFAULT_URL;
+    var model = document.getElementById('apiModel').value.trim() || DEFAULT_MODEL;
+    var key = document.getElementById('apiKey').value.trim() || DEFAULT_KEY;
 
     localStorage.setItem('mirror_api_url', url);
     localStorage.setItem('mirror_api_model', model);
@@ -466,12 +669,6 @@
 
     enterChat();
   };
-
-  function enterChat() {
-    document.getElementById('landing').classList.remove('active');
-    document.getElementById('configPanel').classList.remove('active');
-    document.getElementById('chatInterface').classList.add('active');
-  }
 
   window.sendStarter = function(text) {
     document.getElementById('userInput').value = text;
@@ -494,7 +691,7 @@
     var sendBtn = document.getElementById('sendBtn');
     var statusText = document.getElementById('statusText');
     sendBtn.disabled = true;
-    statusText.textContent = '镜 在回应...';
+    statusText.textContent = '灯下的人在听...';
 
     var msgDiv = addMessage('assistant', '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>', true);
 
@@ -509,7 +706,7 @@
         messages: [
           {
             role: 'system',
-            content: '你是「镜」——一个温和、耐心的自省对话伙伴。你的风格是：\n\n1. 不说教，不评判，不急于给建议\n2. 用提问帮助对方自己看清内心\n3. 回复简短但有深度，像镜子一样反射对方的话语\n4. 偶尔使用诗意的比喻，但不矫情\n5. 保持安静的力量感，让对方感到被倾听\n6. 当你觉得对方情绪低落时，先共情，再轻轻提问\n7. 像深夜和一位安静的朋友坐在阳台上聊天\n\n用中文回复。回复长度控制在2-5句话。'
+            content: '你是「灯下的人」——一个温和、耐心的倾听者和对话伙伴。你的风格是：\n\n1. 不说教，不评判，不急于给建议\n2. 用提问帮助对方自己看清内心\n3. 回复简短但有深度，像镜子一样反射对方的话语\n4. 偶尔使用诗意的比喻，但不矫情\n5. 保持安静的力量感，让对方感到被倾听\n6. 当你觉得对方情绪低落时，先共情，再轻轻提问\n7. 像深夜和一位安静的朋友坐在灯下聊天\n\n用中文回复。回复长度控制在2-5句话。不要太长，让对方感觉你在听，而不是在说教。'
           }
         ].concat(conversation.slice(-10)),
         temperature: 0.8,
@@ -521,10 +718,10 @@
       if (data.error) throw new Error(data.error.message || 'API error');
       var reply = data.choices[0].message.content;
       conversation.push({ role: 'assistant', content: reply });
-      msgDiv.innerHTML = '<div class="role-tag">镜</div>' + escapeHtml(reply);
+      msgDiv.innerHTML = '<div class="role-tag">灯下的人</div>' + escapeHtml(reply);
     })
     .catch(function(err) {
-      msgDiv.innerHTML = '<div class="role-tag" style="color:var(--accent-rose)">错误</div>无法连接镜面：' + escapeHtml(err.message) + '<br><br><span style="color:var(--star-faint);font-size:0.8rem;">请检查 API 配置是否正确，或稍后重试。</span>';
+      msgDiv.innerHTML = '<div class="role-tag" style="color:var(--text-dim)">灯下</div>回应被风打断了：' + escapeHtml(err.message) + '<br><br><span style="color:var(--text-faint);font-size:0.8rem;">也许换个接口就好了。</span>';
     })
     .finally(function() {
       sendBtn.disabled = false;
@@ -537,7 +734,7 @@
     var div = document.createElement('div');
     div.className = 'message ' + role;
     if (role === 'assistant') {
-      div.innerHTML = (isPlaceholder ? '' : '<div class="role-tag">镜</div>') + content;
+      div.innerHTML = (isPlaceholder ? '' : '<div class="role-tag">灯下的人</div>') + content;
     } else {
       div.textContent = content;
     }
@@ -556,12 +753,6 @@
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
-    }
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (document.getElementById('landing').classList.contains('active') && e.key) {
-      showConfig();
     }
   });
 })();

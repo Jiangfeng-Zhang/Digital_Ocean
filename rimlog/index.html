@@ -4,66 +4,416 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RimLog · 外沿记录层</title>
-<meta name="description" content="观察地表日常ing · 从轨道高度俯瞰这颗行星上的日常">
+<meta name="description" content="数字海洋上的航船 · 从船舷记录每一段航程">
 <link rel="stylesheet" href="../assets/css/shared.css">
 <style>
-  .rimlog-header {
-    text-align: center;
-    padding: 5rem 2rem 3rem;
-    position: relative;
-    z-index: 1;
+  :root {
+    --ship-teal: #1a8a7a;
+    --ship-teal-bright: #2dd4bf;
+    --ship-amber: #d4a050;
+    --ship-amber-dim: #8a6a30;
+    --ship-panel: #060d18;
+    --ship-border: rgba(26, 138, 122, 0.25);
+    --ship-text: #b8d0d0;
+    --ship-dim: #4a7a7a;
+    --ship-radar: #1a4a4a;
   }
 
-  .rimlog-header h1 {
-    font-size: 2rem;
-    font-weight: 300;
+  body {
+    background: var(--ocean-black);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scanlines {
+    opacity: 0.3;
+  }
+
+  .vessel-header {
+    position: relative;
+    z-index: 2;
+    padding: 0.8rem 2rem;
+    background: linear-gradient(180deg, rgba(6,13,24,0.98) 0%, rgba(6,13,24,0.9) 100%);
+    border-bottom: 1px solid var(--ship-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    min-height: 56px;
+  }
+
+  .vessel-header .ship-name {
+    font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .vessel-header .ship-name::before {
+    content: '⚓';
+    font-size: 0.9rem;
+  }
+
+  .vessel-header .ship-class {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: var(--ship-dim);
     letter-spacing: 0.15em;
+  }
+
+  .vessel-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: var(--ship-dim);
+  }
+
+  .vessel-header .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .vessel-header .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ship-teal-bright);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.4; box-shadow: 0 0 4px var(--ship-teal-bright); }
+    50% { opacity: 1; box-shadow: 0 0 10px var(--ship-teal-bright); }
+  }
+
+  .tab-bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    background: rgba(6,13,24,0.95);
+    border-bottom: 1px solid var(--ship-border);
+    flex-shrink: 0;
+    padding: 0 2rem;
+    gap: 0;
+  }
+
+  .tab-btn {
+    font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    padding: 0.7rem 1.4rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--ship-dim);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  .tab-btn:hover {
+    color: var(--ship-teal-bright);
+    background: rgba(26, 138, 122, 0.05);
+  }
+
+  .tab-btn.active {
+    color: var(--ship-teal-bright);
+    border-bottom-color: var(--ship-teal-bright);
+    text-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
+  }
+
+  .tab-btn .tab-icon {
+    margin-right: 0.5rem;
+    font-style: normal;
+  }
+
+  .panel-container {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .panel {
+    display: none;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: 2rem;
+  }
+
+  .panel.active {
+    display: block;
+  }
+
+  .panel::-webkit-scrollbar { width: 3px; }
+  .panel::-webkit-scrollbar-track { background: transparent; }
+  .panel::-webkit-scrollbar-thumb { background: var(--ship-border); border-radius: 2px; }
+
+  .back-link {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--ship-dim);
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+    background: rgba(6,13,24,0.7);
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--ship-border);
+    border-radius: 2px;
+  }
+
+  .back-link:hover {
+    color: var(--ship-amber);
+    border-color: rgba(212, 160, 80, 0.3);
+  }
+
+  /* ===== BRIDGE panel ===== */
+  .bridge-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 1rem;
+  }
+
+  .bridge-card {
+    background: rgba(6,13,24,0.7);
+    border: 1px solid var(--ship-border);
+    padding: 1.2rem;
+  }
+
+  .bridge-card .card-label {
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .bridge-card .card-value {
+    font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", monospace;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.04em;
+  }
+
+  .bridge-card .card-sub {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: var(--ship-dim);
+    margin-top: 0.3rem;
+  }
+
+  .bridge-card.full {
+    grid-column: 1 / -1;
+  }
+
+  .bridge-title {
+    text-align: center;
+    grid-column: 1 / -1;
     margin-bottom: 0.5rem;
   }
 
-  .rimlog-header .subtitle {
+  .bridge-title h2 {
+    font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", monospace;
     font-size: 0.85rem;
-    color: var(--star-dim);
-    letter-spacing: 0.08em;
-    font-family: monospace;
+    font-weight: 400;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
   }
 
-  .rimlog-header .orbit-indicator {
-    margin-top: 2rem;
-    display: inline-flex;
+  .bridge-title .divider {
+    margin: 0.5rem auto 0;
+    width: 60px;
+    height: 1px;
+    background: var(--ship-border);
+  }
+
+  .compass-container {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 0.6rem;
-    font-family: monospace;
-    font-size: 0.7rem;
-    color: var(--star-faint);
+    padding: 1rem 0;
   }
 
-  .rimlog-header .orbit-dot {
+  .compass {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ship-border);
+    position: relative;
+    background: radial-gradient(circle, rgba(6,13,24,0.9), rgba(10,26,40,0.5));
+  }
+
+  .compass .n {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-teal-bright);
+  }
+
+  .compass .s {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+  }
+
+  .compass .e {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+  }
+
+  .compass .w {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+  }
+
+  .compass-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 35px;
+    background: linear-gradient(to top, var(--ship-amber), var(--ship-teal-bright));
+    transform-origin: bottom center;
+    transform: translate(-50%, -100%) rotate(45deg);
+    border-radius: 1px;
+  }
+
+  .compass-needle::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -3px;
     width: 8px;
     height: 8px;
+    background: var(--ship-amber);
     border-radius: 50%;
-    background: var(--accent-teal);
-    animation: pulse 3s ease-in-out infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 0.3; box-shadow: 0 0 4px var(--accent-teal); }
-    50% { opacity: 1; box-shadow: 0 0 12px var(--accent-teal); }
+  .compass-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: var(--ship-teal-bright);
+    border-radius: 50%;
   }
 
-  .log-feed {
+  .compass-tick {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 1px;
+    height: 8px;
+    background: var(--ship-border);
+    transform-origin: bottom center;
+  }
+
+  .log-feed-compact {
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .log-feed-compact::-webkit-scrollbar { width: 2px; }
+  .log-feed-compact::-webkit-scrollbar-thumb { background: var(--ship-border); }
+
+  .log-item-compact {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(26, 138, 122, 0.08);
+  }
+
+  .log-item-compact:last-child { border-bottom: none; }
+
+  .log-item-compact .log-title {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--ship-text);
+    letter-spacing: 0.03em;
+  }
+
+  .log-item-compact .log-meta {
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+    margin-top: 0.2rem;
+  }
+
+  /* ===== LOG panel ===== */
+  .log-full {
     max-width: 640px;
     margin: 0 auto;
-    padding: 0 2rem 5rem;
-    position: relative;
-    z-index: 1;
+  }
+
+  .log-full .log-header-text {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .log-full .log-header-text h2 {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .log-full .log-header-text .divider {
+    margin: 0.5rem auto 0;
+    width: 40px;
+    height: 1px;
+    background: var(--ship-border);
   }
 
   .log-entry {
-    padding: 2rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 1.8rem 0;
+    border-bottom: 1px solid rgba(26, 138, 122, 0.08);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
     transition: all 0.6s ease;
   }
 
@@ -72,231 +422,1437 @@
     transform: translateY(0);
   }
 
-  .log-entry .log-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.8rem;
-  }
+  .log-entry:last-child { border-bottom: none; }
 
   .log-entry .log-date {
     font-family: monospace;
-    font-size: 0.75rem;
-    color: var(--accent-teal);
+    font-size: 0.65rem;
+    color: var(--ship-teal-bright);
     letter-spacing: 0.08em;
   }
 
   .log-entry .log-coord {
     font-family: monospace;
-    font-size: 0.65rem;
-    color: var(--star-faint);
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+    margin-top: 0.15rem;
   }
 
   .log-entry .log-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 300;
-    color: var(--star-white);
-    margin-bottom: 0.6rem;
+    color: var(--ship-text);
+    margin: 0.5rem 0 0.6rem;
     letter-spacing: 0.04em;
   }
 
   .log-entry .log-body {
-    color: var(--star-dim);
-    font-size: 0.9rem;
+    color: var(--ship-dim);
+    font-size: 0.85rem;
     line-height: 1.9;
     letter-spacing: 0.03em;
   }
 
   .log-entry .log-tag {
     display: inline-block;
-    font-size: 0.65rem;
-    color: var(--star-faint);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 0.2rem 0.6rem;
-    margin-right: 0.4rem;
-    margin-top: 0.6rem;
+    font-size: 0.55rem;
+    color: var(--ship-amber-dim);
+    border: 1px solid rgba(212, 160, 80, 0.1);
+    padding: 0.15rem 0.5rem;
+    margin-right: 0.3rem;
+    margin-top: 0.5rem;
+    letter-spacing: 0.05em;
+    font-family: monospace;
+  }
+
+  /* ===== NAV panel ===== */
+  .nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-container .nav-header-text {
+    text-align: center;
+    margin-bottom: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .nav-container .nav-header-text h2 {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .nav-container .nav-header-text .divider {
+    margin: 0.5rem auto 0;
+    width: 40px;
+    height: 1px;
+    background: var(--ship-border);
+  }
+
+  .chart-wrapper {
+    flex: 1;
+    min-height: 0;
+    background: rgba(6,13,24,0.7);
+    border: 1px solid var(--ship-border);
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .chart-wrapper.dragging {
+    cursor: grabbing;
+  }
+
+  .map-surface {
+    position: absolute;
+    top: 0; left: 0;
+    width: 2000px;
+    height: 1200px;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  .map-surface svg {
+    width: 2000px;
+    height: 1200px;
+    display: block;
+  }
+
+  .map-msg {
+    position: absolute;
+    bottom: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: var(--ship-dim);
+    pointer-events: none;
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+
+  .port-tooltip {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    background: rgba(6,13,24,0.92);
+    border: 1px solid var(--ship-teal-bright);
+    padding: 0.6rem 0.9rem;
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: var(--ship-text);
+    line-height: 1.6;
+    min-width: 120px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .port-tooltip.show {
+    opacity: 1;
+  }
+
+  .port-tooltip .tt-name {
+    color: var(--ship-teal-bright);
+    font-size: 0.7rem;
+    font-weight: 600;
     letter-spacing: 0.05em;
   }
 
-  .status-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.6rem 1.5rem;
-    background: rgba(8,8,15,0.9);
-    border-top: 1px solid rgba(255,255,255,0.04);
+  .port-tooltip .tt-coord {
+    color: var(--ship-amber-dim);
+    font-size: 0.55rem;
+  }
+
+  .port-tooltip .tt-info {
+    color: var(--ship-dim);
+    font-size: 0.5rem;
+    margin-top: 0.2rem;
+  }
+
+  .nav-footer {
+    flex-shrink: 0;
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.6rem;
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--ship-dim);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-footer span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .nav-footer .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--ship-teal-bright);
+    flex-shrink: 0;
+  }
+
+  .nav-footer .dot.amber {
+    border-color: var(--ship-amber);
+    background: var(--ship-amber);
+    box-shadow: 0 0 6px rgba(212,160,80,0.4);
+  }
+
+  .nav-footer .dot.green {
+    border-color: #50d4a0;
+    background: #50d4a0;
+  }
+
+  @media (max-width: 700px) {
+    .map-surface {
+      width: 1400px;
+      height: 900px;
+    }
+    .map-surface svg {
+      width: 1400px;
+      height: 900px;
+    }
+  }
+
+  /* ===== RADIO panel ===== */
+  .radio-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .radio-container .radio-header-text {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .radio-container .radio-header-text h2 {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ship-teal-bright);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .radio-container .radio-header-text .divider {
+    margin: 0.5rem auto 0;
+    width: 40px;
+    height: 1px;
+    background: var(--ship-border);
+  }
+
+  .radio-unit {
+    background: rgba(6,13,24,0.7);
+    border: 1px solid var(--ship-border);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .radio-unit .radio-meta {
     display: flex;
     justify-content: space-between;
-    font-family: monospace;
-    font-size: 0.65rem;
-    color: var(--star-faint);
-    z-index: 10;
-    letter-spacing: 0.06em;
+    align-items: center;
+    margin-bottom: 0.4rem;
   }
 
-  .back-link {
-    display: block;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-    z-index: 1;
+  .radio-unit .radio-freq {
     font-family: monospace;
-    font-size: 0.8rem;
-    color: var(--star-faint);
+    font-size: 0.55rem;
+    color: var(--ship-amber-dim);
     letter-spacing: 0.1em;
-    transition: color 0.3s;
-    margin-bottom: 3rem;
   }
 
-  .back-link:hover { color: var(--accent-gold); }
+  .radio-unit .radio-signal {
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: var(--ship-dim);
+  }
+
+  .radio-unit .radio-signal .bars {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: 0.4rem;
+    align-items: end;
+  }
+
+  .radio-unit .radio-signal .bars span {
+    display: inline-block;
+    width: 3px;
+    background: var(--ship-teal-bright);
+    opacity: 0.5;
+  }
+
+  .radio-unit .radio-signal .bars span.s1 { height: 6px; }
+  .radio-unit .radio-signal .bars span.s2 { height: 10px; }
+  .radio-unit .radio-signal .bars span.s3 { height: 14px; }
+  .radio-unit .radio-signal .bars span.s4 { height: 18px; }
+
+  .radio-unit .radio-msg {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--ship-text);
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+  }
+
+  .radio-unit .radio-msg .static-char {
+    color: var(--ship-dim);
+    opacity: 0.4;
+  }
+
+  .radio-unit .radio-msg .highlight {
+    color: var(--ship-teal-bright);
+  }
+
+  .radio-unit .radio-timestamp {
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: var(--ship-dim);
+    margin-top: 0.4rem;
+  }
+
+  .radio-static {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 700px) {
+    .bridge-layout {
+      grid-template-columns: 1fr;
+    }
+    .vessel-header {
+      padding: 0.6rem 1rem;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .vessel-header .header-right {
+      gap: 0.8rem;
+      font-size: 0.5rem;
+    }
+    .tab-bar {
+      padding: 0 0.5rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      font-size: 0.55rem;
+      padding: 0.6rem 0.8rem;
+      white-space: nowrap;
+    }
+    .tab-btn .tab-icon {
+      margin-right: 0.3rem;
+    }
+    .panel {
+      padding: 1.2rem;
+    }
+    .bridge-card .card-value {
+      font-size: 1.2rem;
+    }
+    .compass {
+      width: 80px;
+      height: 80px;
+    }
+    .compass-needle {
+      height: 28px;
+    }
+  }
 </style>
 </head>
 <body>
 
-<div class="rimlog-header fade-in">
-  <h1>外沿记录层</h1>
-  <p class="subtitle">RIM · LOG</p>
-  <div class="orbit-indicator">
-    <span class="orbit-dot"></span>
-    观测轨道 · 正常运行中
+<div class="scanlines"></div>
+<div class="radio-static"></div>
+
+<!-- Vessel Header -->
+<div class="vessel-header">
+  <div>
+    <div class="ship-name">RimLog</div>
+    <div class="ship-class">外沿记录层 · 远航级观测船</div>
+  </div>
+  <div class="header-right">
+    <span class="status-indicator">
+      <span class="status-dot"></span>
+      航行中
+    </span>
+    <span id="clockDisplay">--:--:--</span>
   </div>
 </div>
 
-<div class="log-feed" id="logFeed">
+<!-- Tab Navigation -->
+<div class="tab-bar" role="tablist">
+  <button class="tab-btn active" data-panel="bridge" role="tab">
+    <i class="tab-icon">◈</i> Bridge
+  </button>
+  <button class="tab-btn" data-panel="log" role="tab">
+    <i class="tab-icon">◉</i> Log
+  </button>
+  <button class="tab-btn" data-panel="nav" role="tab">
+    <i class="tab-icon">◈</i> Nav
+  </button>
+  <button class="tab-btn" data-panel="radio" role="tab">
+    <i class="tab-icon">◉</i> Radio
+  </button>
+</div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.19</span>
-      <span class="log-coord">N31.2° E121.4° · 地表 4.7m</span>
-    </div>
-    <div class="log-title">一个关于早餐的观测</div>
-    <div class="log-body">
-      早晨七点二十三分，豆浆店门口的队伍排到了第七个人。前面的人在看手机，第三个人在看手机，第五个人也在看手机。只有排在第四位的老太太什么也没看——她在跟排在第三位的陌生人聊天。她说今天的豆浆比昨天的浓一点。陌生人在笑的时候，手机差点掉进豆浆桶里。
-    </div>
-    <div>
-      <span class="log-tag">#地表日常</span>
-      <span class="log-tag">#豆浆</span>
-      <span class="log-tag">#人与人</span>
+<!-- Panel Container -->
+<div class="panel-container">
+
+  <!-- ===== BRIDGE ===== -->
+  <div class="panel active" id="panel-bridge" role="tabpanel">
+    <div class="bridge-layout">
+
+      <div class="bridge-title">
+        <h2>● 驾驶台 · Bridge</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="bridge-card">
+        <div class="card-label">航向 Heading</div>
+        <div class="card-value" id="headingDisplay">045°</div>
+        <div class="card-sub">NE · 自动导航</div>
+      </div>
+
+      <div class="bridge-card">
+        <div class="card-label">航速 Speed</div>
+        <div class="card-value">12.7 <span style="font-size:0.6rem;color:var(--ship-dim)">kn</span></div>
+        <div class="card-sub">经济航速 · 燃油效率 92%</div>
+      </div>
+
+      <div class="bridge-card">
+        <div class="card-label">海况 Sea State</div>
+        <div class="card-value" style="font-size:1.1rem">2 级</div>
+        <div class="card-sub">微风 · 浪高 0.3m · 适宜观测</div>
+      </div>
+
+      <div class="bridge-card">
+        <div class="card-label">天气 Weather</div>
+        <div class="card-value" style="font-size:1.1rem">晴 · 18°C</div>
+        <div class="card-sub">能见度 12 海里 · 无显著降水</div>
+      </div>
+
+      <div class="bridge-card" style="grid-column:1/-1; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div>
+          <div class="card-label">当前位置 Position</div>
+          <div class="card-value" style="font-size:1rem">N 31° 14' 02"</div>
+          <div class="card-value" style="font-size:1rem">E 121° 28' 44"</div>
+          <div class="card-sub">上海 · 东海近岸</div>
+        </div>
+        <div>
+          <div class="card-label">航行状态 Vessel Status</div>
+          <div style="margin-top:0.4rem;">
+            <div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.55rem;color:var(--ship-dim);margin-bottom:0.3rem;">
+              <span>船体 Hull</span><span style="color:var(--ship-teal-bright)">▰▰▰▰▰ 98%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.55rem;color:var(--ship-dim);margin-bottom:0.3rem;">
+              <span>动力 Power</span><span style="color:var(--ship-teal-bright)">▰▰▰▰▰ 94%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.55rem;color:var(--ship-dim);margin-bottom:0.3rem;">
+              <span>通信 Comms</span><span style="color:var(--ship-amber)">▰▰▰▰▰ 87%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.55rem;color:var(--ship-dim);">
+              <span>导航 Nav</span><span style="color:var(--ship-teal-bright)">▰▰▰▰▰ 100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bridge-card full">
+        <div class="card-label">航船日志 · 最新条目 Latest Log</div>
+        <div class="log-feed-compact">
+          <div class="log-item-compact">
+            <div class="log-title">唤醒声源触发后的休眠脱离抵抗</div>
+            <div class="log-meta">2026.05.20 · 集体现象</div>
+          </div>
+          <div class="log-item-compact">
+            <div class="log-title">晨间集体定向迁移现象</div>
+            <div class="log-meta">2026.05.20 · 早高峰时段</div>
+          </div>
+          <div class="log-item-compact">
+            <div class="log-title">苦味黑液依赖症</div>
+            <div class="log-meta">2026.05.20 · 上午产出时段</div>
+          </div>
+          <div class="log-item-compact">
+            <div class="log-title">午间营养补充选择瘫痪</div>
+            <div class="log-meta">2026.05.20 · 正午时段</div>
+          </div>
+          <div class="log-item-compact">
+            <div class="log-title">下午三点：群体能量坍缩点</div>
+            <div class="log-meta">2026.05.20 · 午后时段</div>
+          </div>
+          <div class="log-item-compact">
+            <div class="log-title">报复性延迟休眠现象</div>
+            <div class="log-meta">2026.05.20 · 深夜</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.17</span>
-      <span class="log-coord">N39.9° E116.4° · 地表 52m</span>
-    </div>
-    <div class="log-title">地铁上的第三只手</div>
-    <div class="log-body">
-      晚高峰的十号线。一个中年男人靠在车厢连接处睡着了。他的公文包从膝盖上滑落，落在脚边。身旁的女孩犹豫了大约三秒钟，然后轻轻推了推他的肩膀：你的包掉了。男人醒来，愣了一下，说了声谢谢。他在下一站下车，脚步比刚才稳了很多。也许不是因为睡醒了，而是因为有人在乎他的包掉在地上。
-    </div>
-    <div>
-      <span class="log-tag">#城市</span>
-      <span class="log-tag">#地铁</span>
-      <span class="log-tag">#微小善意</span>
+  <!-- ===== LOG ===== -->
+  <div class="panel" id="panel-log" role="tabpanel">
+    <div class="log-full">
+
+      <div class="log-header-text">
+        <h2>● 航行日志 · Ship's Log</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.20 · 第 48 航段</div>
+        <div class="log-coord">唤醒声源触发后的休眠脱离抵抗</div>
+        <div class="log-title">#唤醒声源 #晨间反抗 #自我设定悖论</div>
+        <div class="log-body">
+          个体开始从水平休眠装置上脱离。该过程平均耗时22分钟，期间刺耳声波反复侵扰。约73%的个体表现出显著的抵抗行为——以手臂覆盖感知器官、将身体蜷缩成防御姿态，甚至对发声设备实施物理打击。颇为矛盾的是，发声设备的唤醒程序由个体在前一晚主动设定。
+        </div>
+        <div>
+          <span class="log-tag">#唤醒声源</span>
+          <span class="log-tag">#晨间反抗</span>
+          <span class="log-tag">#自我设定悖论</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.19 · 第 47 航段</div>
+        <div class="log-coord">晨间集体定向迁移现象</div>
+        <div class="log-title">#早高峰 #迁移模式 #矩形板专注</div>
+        <div class="log-body">
+          数百万个体同时离开夜间停留区，沿固定路径向集中产出区大规模迁移。迁移途中面部表情高度一致——空洞而疲倦。目光锁定掌中发光矩形板，即使被同类挤压在密封金属运输舱内，专注力亦不转移。该行为每日重复，极少出现路径偏差。
+        </div>
+        <div>
+          <span class="log-tag">#早高峰</span>
+          <span class="log-tag">#迁移模式</span>
+          <span class="log-tag">#矩形板专注</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.16 · 第 46 航段</div>
+        <div class="log-coord">苦味黑液依赖症</div>
+        <div class="log-title">#黑液成瘾 #化学依赖 #成年标志</div>
+        <div class="log-body">
+          产出区广泛观察到一种深色热液体的仪式性摄入行为。统计显示超过68%的个体声称"不摄入则无法正常运作"，尽管该液体味道苦涩，且伴随心跳加速、手部微颤等可测量副作用。摄入频率已达每日3-4次。值得注意的是，个体不仅不以此为耻，反而将其视为具备社会成熟度的标志。
+        </div>
+        <div>
+          <span class="log-tag">#黑液成瘾</span>
+          <span class="log-tag">#化学依赖</span>
+          <span class="log-tag">#成年标志</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.14 · 第 45 航段</div>
+        <div class="log-coord">午间营养补充选择瘫痪</div>
+        <div class="log-title">#正午焦虑 #决策瘫痪 #重复选择</div>
+        <div class="log-body">
+          正午时分，个体对"摄入何种营养"的决策焦虑程度显著超过对产出事务的焦虑。数据显示，个体在发光板上反复浏览食物图像存储库长达15至30分钟，呈现明显的决策瘫痪状态。该焦虑的最终解决方案高度一致——选择与昨日相同的食物。
+        </div>
+        <div>
+          <span class="log-tag">#正午焦虑</span>
+          <span class="log-tag">#决策瘫痪</span>
+          <span class="log-tag">#重复选择</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.12 · 第 44 航段</div>
+        <div class="log-coord">关于同步围聚仪式的效能困惑</div>
+        <div class="log-title">#围聚仪式 #目光涣散 #残留文本</div>
+        <div class="log-body">
+          下午观察到3至12名个体聚集于封闭空间的行为，称为"同步围聚"。其中一人持续发声，其余表面接收但目光涣散、频繁触碰发光板。仪式时长通常为预定时间的1.5至3倍。仪式结束后产生的文本被称作"围聚残留记录"——而该记录此后未被任何个体再次读取。
+        </div>
+        <div>
+          <span class="log-tag">#围聚仪式</span>
+          <span class="log-tag">#目光涣散</span>
+          <span class="log-tag">#残留文本</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.10 · 第 43 航段</div>
+        <div class="log-coord">下午三点：群体能量坍缩点</div>
+        <div class="log-title">#能量坍缩 #虚假清醒 #高糖陷阱</div>
+        <div class="log-body">
+          下午三点前后，产出区出现大规模群体能量衰减。瞳孔放大、行动迟缓、打哈欠频率骤升至每分钟2.3次。约41%的个体前往营养补充站，但倾向选择高糖分甜食而非维持机能的蛋白质摄入。摄入后获得约17分钟的虚假清醒，随后陷入更深的能量低谷。
+        </div>
+        <div>
+          <span class="log-tag">#能量坍缩</span>
+          <span class="log-tag">#虚假清醒</span>
+          <span class="log-tag">#高糖陷阱</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.07 · 第 42 航段</div>
+        <div class="log-coord">肌束驱动意图与实际执行的量级偏差</div>
+        <div class="log-title">#健身悖论 #准备行为 #替代性满足</div>
+        <div class="log-body">
+          约23%的个体表达了进行体育性肌束驱动的意图，部分已购置专用装备及付费权限。然而行为追踪显示，其中82%在预备运动的前30分钟内转为浏览"肌束驱动教程"或"运动知识"。平均耗时47分钟研究如何运动，实际运动时长0分钟。该行为的核心价值似乎不在肌束驱动本身，而在于"为肌束驱动做准备"所带来的内在满足。
+        </div>
+        <div>
+          <span class="log-tag">#健身悖论</span>
+          <span class="log-tag">#准备行为</span>
+          <span class="log-tag">#替代性满足</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.05 · 第 41 航段</div>
+        <div class="log-coord">垂直运输舱内的沉默协议</div>
+        <div class="log-title">#电梯规则 #密闭沉默 #发光板避难</div>
+        <div class="log-body">
+          约2平方米的金属箱体内观察到一套不成文的社会行为准则：面向舱门站立、维持最小肢体接触、禁止声波交流、目光固定于楼层数字或掌中发光板。若有个体打破沉默，其余个体表现出可测量的不适反应。该行为模式被称为"垂直运输舱沉默协议"，其形成机制尚待进一步研究。
+        </div>
+        <div>
+          <span class="log-tag">#电梯规则</span>
+          <span class="log-tag">#密闭沉默</span>
+          <span class="log-tag">#发光板避难</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.05.02 · 第 40 航段</div>
+        <div class="log-coord">返回夜间停留区后的荧光沉迷</div>
+        <div class="log-title">#刷发光板 #夜间迁徙 #休眠逃避</div>
+        <div class="log-body">
+          傍晚大规模反向迁徙开启。个体返回夜间停留区后的行为顺序高度一致：脱去外部覆盖层，换穿柔软内层——然后既不补充营养，也不进入休眠——而是再次拿起发光矩形板，进入被称作"刷动"的持续性凝视状态。该行为可持续3至5小时。
+        </div>
+        <div>
+          <span class="log-tag">#刷发光板</span>
+          <span class="log-tag">#夜间迁徙</span>
+          <span class="log-tag">#休眠逃避</span>
+        </div>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">2026.04.29 · 第 39 航段</div>
+        <div class="log-coord">报复性延迟休眠现象</div>
+        <div class="log-title">#报复性熬夜 #时间主权 #白昼反击</div>
+        <div class="log-body">
+          凌晨时段观察到一种普遍的"报复性延迟休眠"行为。个体极度疲劳且次日须在固定时刻被唤醒，却始终拒绝进入休眠状态。研究显示，该行为本质是一种内在补偿机制——个体认为白昼的时间被外部力量占有，因而通过占据深夜来恢复对时间的控制感。代价是次日清晨唤醒阶段痛苦指数的系统性升高，然而该循环每日持续重复。
+        </div>
+        <div>
+          <span class="log-tag">#报复性熬夜</span>
+          <span class="log-tag">#时间主权</span>
+          <span class="log-tag">#白昼反击</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.14</span>
-      <span class="log-coord">N22.5° E114.1° · 地表 3m</span>
-    </div>
-    <div class="log-title">菜市场里的键盘声</div>
-    <div class="log-body">
-      旺角街市，卖菜的阿婆一边择菜一边用平板电脑看电视剧。她把音量开得不大不小，刚好盖过隔壁鱼摊的吆喝声。她的手指在菜叶间翻飞的时候，偶尔会碰到屏幕，暂停了剧。她低头看一眼，又按一下继续，然后若无其事地继续择菜。她已经很熟练了——在菜叶和触摸屏之间的切换，比我们大多数人切换工作中的窗口还要自然。
-    </div>
-    <div>
-      <span class="log-tag">#市井</span>
-      <span class="log-tag">#科技</span>
-      <span class="log-tag">#日常</span>
+  <!-- ===== NAV ===== -->
+  <div class="panel" id="panel-nav" role="tabpanel">
+    <div class="nav-container">
+
+      <div class="nav-header-text">
+        <h2>● 海图 · World Port Chart</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="chart-wrapper" id="chartWrapper">
+        <div class="map-surface" id="mapSurface">
+          <svg viewBox="0 0 2000 1200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="portGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="shipGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#d4a050" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#d4a050" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Background -->
+            <rect width="2000" height="1200" fill="#060d18"/>
+
+            <!-- Grid lines -->
+            <g stroke="rgba(26,138,122,0.06)" stroke-width="1">
+              <line x1="0" y1="100" x2="2000" y2="100"/>
+              <line x1="0" y1="200" x2="2000" y2="200"/>
+              <line x1="0" y1="300" x2="2000" y2="300"/>
+              <line x1="0" y1="400" x2="2000" y2="400"/>
+              <line x1="0" y1="500" x2="2000" y2="500"/>
+              <line x1="0" y1="600" x2="2000" y2="600"/>
+              <line x1="0" y1="700" x2="2000" y2="700"/>
+              <line x1="0" y1="800" x2="2000" y2="800"/>
+              <line x1="0" y1="900" x2="2000" y2="900"/>
+              <line x1="0" y1="1000" x2="2000" y2="1000"/>
+              <line x1="0" y1="1100" x2="2000" y2="1100"/>
+              <line x1="166" y1="0" x2="166" y2="1200"/>
+              <line x1="333" y1="0" x2="333" y2="1200"/>
+              <line x1="500" y1="0" x2="500" y2="1200"/>
+              <line x1="666" y1="0" x2="666" y2="1200"/>
+              <line x1="833" y1="0" x2="833" y2="1200"/>
+              <line x1="1000" y1="0" x2="1000" y2="1200"/>
+              <line x1="1166" y1="0" x2="1166" y2="1200"/>
+              <line x1="1333" y1="0" x2="1333" y2="1200"/>
+              <line x1="1500" y1="0" x2="1500" y2="1200"/>
+              <line x1="1666" y1="0" x2="1666" y2="1200"/>
+              <line x1="1833" y1="0" x2="1833" y2="1200"/>
+            </g>
+
+            <!-- Latitude labels -->
+            <g font-family="monospace" font-size="10" fill="rgba(26,138,122,0.15)">
+              <text x="4" y="104">60°N</text>
+              <text x="4" y="204">40°N</text>
+              <text x="4" y="304">20°N</text>
+              <text x="4" y="404">0°</text>
+              <text x="4" y="504">20°S</text>
+              <text x="4" y="604">40°S</text>
+            </g>
+
+            <!-- Continents (detailed SVG polygons) -->
+            <g fill="rgba(26,138,122,0.08)" stroke="rgba(26,138,122,0.15)" stroke-width="1">
+
+              <!-- North America -->
+              <polygon points="
+                88,62 96,50 112,42 130,38 148,36 170,30 188,26 210,24
+                232,26 254,30 276,34 296,34 316,38 330,48 338,60 336,72
+                326,82 318,94 312,106 308,118 302,128 294,136 288,146
+                284,156 278,166 270,170 262,172 254,176 248,182 242,190
+                238,198 232,204 226,210 220,216 214,222 206,226 198,228
+                190,226 182,222 174,216 166,208 158,200 150,194 142,190
+                134,188 126,190 120,194 116,200 112,206 108,210 104,212
+                100,208 98,200 96,190 94,178 90,166 86,156 84,144 82,130
+                80,116 78,102 80,88 82,76 86,66
+              "/>
+
+              <!-- Mexico / Central America -->
+              <polygon points="
+                220,216 216,226 210,234 204,242 198,248 192,254 186,258
+                180,264 174,268 168,272 162,274 156,276 150,278 144,278
+                138,276 132,274 126,270 120,266 116,262 114,256 112,250
+                110,244 108,238 106,232 108,226 112,220 118,214 124,208
+                130,204 136,202 142,200 148,198 154,196 160,194 166,196
+                172,200 178,204 184,208 190,212 196,214 202,214 208,214
+                214,216
+              "/>
+
+              <!-- Greenland -->
+              <polygon points="
+                320,14 340,8 358,4 376,2 394,4 410,8 422,14 430,22
+                434,32 432,44 426,56 418,66 408,74 396,80 382,84
+                368,84 354,82 340,78 328,72 318,64 312,54 310,44
+                312,34 316,24
+              "/>
+
+              <!-- Baffin / Arctic islands -->
+              <polygon points="
+                280,20 290,16 304,14 310,20 308,30 300,36 290,38 282,34 278,26
+              "/>
+              <polygon points="
+                336,8 344,2 354,0 362,2 366,8 362,14 354,16 346,14 340,10
+              "/>
+
+              <!-- South America -->
+              <polygon points="
+                278,280 288,274 300,268 314,264 328,262 342,260 356,260
+                370,262 384,266 396,272 406,280 414,290 420,302 424,314
+                426,328 426,342 424,356 420,370 414,386 406,402 396,418
+                386,432 374,446 362,458 350,468 340,476 330,482 320,486
+                310,488 300,486 292,482 286,474 280,464 276,452 272,440
+                268,426 264,412 260,396 256,380 252,364 248,348 246,332
+                246,316 248,302 254,290 262,280 270,278
+              "/>
+
+              <!-- Europe -->
+              <polygon points="
+                556,90 568,82 582,76 596,72 610,70 624,68 638,68 652,70
+                664,74 674,80 682,88 686,98 688,108 686,118 682,126
+                676,134 668,140 658,146 648,150 636,152 624,154 612,154
+                600,152 590,148 580,144 572,138 564,132 558,124 554,116
+                552,106 552,96
+              "/>
+
+              <!-- Iberian peninsula -->
+              <polygon points="
+                524,120 534,116 544,114 552,116 556,124 554,134 548,142
+                540,148 532,150 526,148 522,142 520,134 522,126
+              "/>
+
+              <!-- Italy -->
+              <polygon points="
+                600,148 608,142 614,138 618,140 620,148 618,158 614,166
+                608,170 602,172 598,168 596,160 596,152
+              "/>
+
+              <!-- Scandinavia (Norway/Sweden) -->
+              <polygon points="
+                600,40 612,34 626,30 640,28 652,30 662,36 668,44
+                670,54 668,66 662,76 654,84 644,90 634,92 624,90
+                614,86 606,78 602,68 600,58 600,48
+              "/>
+
+              <!-- Denmark peninsula -->
+              <polygon points="
+                618,80 626,76 632,78 634,84 630,90 624,92 618,90 616,84
+              "/>
+
+              <!-- British Isles -->
+              <polygon points="
+                510,88 516,82 524,78 530,80 534,86 534,94 530,102
+                524,106 518,106 512,102 508,96 508,90
+              "/>
+
+              <!-- Ireland -->
+              <polygon points="
+                498,92 502,88 506,90 506,96 502,100 498,98 496,94
+              "/>
+
+              <!-- Iceland -->
+              <polygon points="
+                464,56 470,52 476,54 478,60 474,66 468,66 464,62
+              "/>
+
+              <!-- Africa -->
+              <polygon points="
+                578,162 586,152 596,144 606,138 616,134 626,132 636,132
+                646,134 654,138 662,144 668,152 674,162 678,174 680,186
+                682,198 682,212 680,226 678,240 674,254 670,268 664,282
+                658,296 650,312 642,328 632,344 622,358 612,370 602,380
+                592,388 582,392 572,394 564,392 556,388 550,380 546,370
+                542,358 540,346 538,334 536,322 534,310 532,298 530,286
+                528,274 528,262 528,250 530,238 532,226 536,214 540,202
+                546,190 552,180 560,172 568,166
+              "/>
+
+              <!-- Madagascar -->
+              <polygon points="
+                698,348 704,342 710,340 716,342 720,348 722,358 720,370
+                716,380 710,386 704,388 698,386 694,378 692,368 694,358
+              "/>
+
+              <!-- Horn of Africa (Somalia peninsula) -->
+              <polygon points="
+                680,286 688,278 696,274 702,278 706,286 708,296 706,306
+                702,314 696,318 690,320 684,316 680,308 678,298
+              "/>
+
+              <!-- Asia (mainland) -->
+              <polygon points="
+                668,106 678,98 690,92 704,86 720,82 738,78 758,76 780,74
+                804,72 828,72 852,74 876,78 898,84 918,90 936,98 952,106
+                966,114 978,124 988,134 996,144 1002,156 1006,168 1010,180
+                1012,192 1014,204 1014,216 1012,228 1010,238 1006,248
+                1000,256 994,262 986,268 976,272 966,274 956,274 946,272
+                936,270 926,268 916,264 906,260 896,256 886,252 876,248
+                866,244 856,240 846,236 836,232 826,228 816,224 806,222
+                796,220 786,218 776,216 766,216 756,216 746,218 736,220
+                726,222 716,224 706,226 696,226 686,224 676,220 668,214
+                660,206 654,196 650,186 646,176 644,166 642,156 642,146
+                644,136 648,128 654,120 660,114
+              "/>
+
+              <!-- Kamchatka / Russian Far East -->
+              <polygon points="
+                1028,112 1036,104 1044,100 1052,102 1056,108 1058,118
+                1056,128 1052,136 1046,140 1040,138 1034,132 1030,124
+              "/>
+
+              <!-- Korean peninsula -->
+              <polygon points="
+                1040,210 1048,204 1054,202 1058,206 1060,214 1058,224
+                1054,232 1048,236 1042,234 1038,228 1036,220
+              "/>
+
+              <!-- India subcontinent -->
+              <polygon points="
+                760,208 772,202 786,196 800,194 814,196 826,200 836,206
+                844,214 850,224 854,236 854,250 852,264 848,278 842,290
+                834,300 824,308 814,312 804,314 794,312 784,306 776,298
+                770,288 766,276 762,262 760,248 758,234 758,220
+              "/>
+
+              <!-- Sri Lanka -->
+              <polygon points="
+                858,304 862,300 866,302 868,308 866,314 862,316 858,314 856,308
+              "/>
+
+              <!-- Arabian peninsula -->
+              <polygon points="
+                724,226 734,220 746,216 756,216 764,220 768,226 770,234
+                768,242 764,250 758,256 750,258 742,258 734,254 728,248
+                724,240
+              "/>
+
+              <!-- Southeast Asia (Indochina) -->
+              <polygon points="
+                860,250 868,244 878,240 888,238 898,238 906,242 912,248
+                916,256 916,266 914,276 910,284 904,290 896,294 888,296
+                880,294 872,290 866,284 862,276 858,266 856,256
+              "/>
+
+              <!-- Malay peninsula -->
+              <polygon points="
+                896,298 902,292 908,290 912,294 914,302 912,312 908,320
+                902,326 896,328 892,326 888,320 886,312 886,304
+              "/>
+
+              <!-- Sumatra -->
+              <polygon points="
+                928,322 934,316 940,314 946,316 950,322 952,332 950,342
+                946,350 940,354 934,354 928,350 924,342 922,332
+              "/>
+
+              <!-- Java -->
+              <polygon points="
+                994,354 1000,350 1008,348 1016,350 1022,354 1026,360
+                1026,368 1022,374 1016,378 1008,378 1000,376 994,370
+                992,362
+              "/>
+
+              <!-- Borneo -->
+              <polygon points="
+                968,318 976,314 984,316 990,320 992,328 990,336 984,342
+                976,344 968,340 964,334 962,326
+              "/>
+
+              <!-- Sulawesi -->
+              <polygon points="
+                1030,336 1036,330 1042,328 1048,332 1050,340 1046,348
+                1040,352 1034,352 1030,346 1028,338
+              "/>
+
+              <!-- Philippines -->
+              <polygon points="
+                1048,218 1054,214 1060,216 1064,222 1066,232 1064,242
+                1060,250 1054,254 1048,250 1044,244 1042,234 1044,224
+              "/>
+
+              <!-- Papua New Guinea -->
+              <polygon points="
+                1140,340 1150,334 1162,332 1174,334 1184,340 1190,348
+                1192,358 1188,368 1182,374 1172,378 1162,378 1152,374
+                1144,368 1138,358 1136,348
+              "/>
+
+              <!-- Australia -->
+              <polygon points="
+                1086,442 1096,434 1108,428 1122,424 1136,422 1152,422
+                1168,424 1184,428 1198,434 1210,442 1220,452 1228,464
+                1234,478 1238,492 1240,508 1238,524 1234,538 1228,550
+                1220,560 1210,568 1198,574 1186,578 1174,580 1162,580
+                1150,578 1138,574 1128,568 1118,560 1110,550 1104,538
+                1098,526 1094,512 1090,498 1086,484 1084,470 1082,456
+              "/>
+
+              <!-- Tasmania -->
+              <polygon points="
+                1160,596 1166,592 1172,594 1174,600 1172,606 1166,608 1160,606 1158,600
+              "/>
+
+              <!-- New Zealand North Island -->
+              <polygon points="
+                1266,550 1274,544 1282,542 1290,544 1296,550 1298,560
+                1296,572 1290,580 1282,584 1274,582 1268,576 1264,568 1264,558
+              "/>
+
+              <!-- New Zealand South Island -->
+              <polygon points="
+                1270,594 1276,588 1282,586 1288,588 1292,594 1294,604
+                1292,614 1288,622 1282,626 1276,624 1270,620 1266,612 1264,602
+              "/>
+
+              <!-- Japan Honshu -->
+              <polygon points="
+                1050,130 1056,122 1064,116 1072,114 1078,116 1082,122
+                1084,132 1084,144 1082,156 1076,166 1070,172 1064,174
+                1058,172 1052,166 1048,158 1046,148 1046,138
+              "/>
+
+              <!-- Japan Hokkaido -->
+              <polygon points="
+                1072,104 1078,98 1086,96 1092,100 1094,108 1092,116
+                1086,120 1080,118 1074,114
+              "/>
+
+              <!-- Japan Kyushu -->
+              <polygon points="
+                1044,182 1050,178 1056,180 1058,186 1056,192 1050,194 1046,190
+              "/>
+
+              <!-- Taiwan -->
+              <polygon points="
+                1052,188 1056,182 1060,180 1064,184 1064,192 1060,198 1056,200 1052,196
+              "/>
+
+            </g>
+
+            <!-- Equator line -->
+            <line x1="0" y1="400" x2="2000" y2="400" stroke="rgba(26,138,122,0.12)" stroke-width="1" stroke-dasharray="8,4"/>
+            <text x="1930" y="395" font-family="monospace" font-size="10" fill="rgba(26,138,122,0.12)">赤道</text>
+
+            <!-- Tropics lines -->
+            <line x1="0" y1="310" x2="2000" y2="310" stroke="rgba(26,138,122,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="1910" y="306" font-family="monospace" font-size="9" fill="rgba(26,138,122,0.08)">北回归线</text>
+            <line x1="0" y1="490" x2="2000" y2="490" stroke="rgba(26,138,122,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="1910" y="486" font-family="monospace" font-size="9" fill="rgba(26,138,122,0.08)">南回归线</text>
+
+            <!-- Route arcs (major shipping routes) -->
+            <g fill="none" stroke="rgba(45,212,191,0.06)" stroke-width="1.5" stroke-dasharray="6,4">
+              <!-- Shanghai → Singapore → Colombo → Dubai → Rotterdam -->
+              <path d="M1005,244 Q970,330 946,394"/>
+              <path d="M946,394 Q900,380 866,366"/>
+              <path d="M866,366 Q820,320 784,274"/>
+              <path d="M784,274 Q720,200 615,140"/>
+
+              <!-- Shanghai → Los Angeles -->
+              <path d="M1005,244 Q700,230 206,232"/>
+
+              <!-- Singapore → Santos -->
+              <path d="M946,394 Q700,450 445,520"/>
+
+              <!-- Rotterdam → New York -->
+              <path d="M615,140 Q480,160 353,196"/>
+
+              <!-- Dubai → Melbourne -->
+              <path d="M784,274 Q900,400 1210,490"/>
+            </g>
+
+            <!-- Port markers -->
+            <g class="port-group" data-port="上海" data-lat="31.2°N" data-lng="121.5°E" data-info="年吞吐量 4700 万 TEU · 世界第一大港">
+              <circle cx="1005" cy="244" r="18" fill="url(#portGlow)"/>
+              <circle cx="1005" cy="244" r="4" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1005" y="235" text-anchor="middle" font-family="monospace" font-size="10" fill="#4a7a7a">上海</text>
+            </g>
+
+            <g class="port-group" data-port="新加坡" data-lat="1.3°N" data-lng="103.8°E" data-info="年吞吐量 3900 万 TEU · 全球最繁忙转运港">
+              <circle cx="946" cy="394" r="16" fill="url(#portGlow)"/>
+              <circle cx="946" cy="394" r="3.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite"/>
+              </circle>
+              <text x="946" y="385" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">新加坡</text>
+            </g>
+
+            <g class="port-group" data-port="鹿特丹" data-lat="51.9°N" data-lng="4.5°E" data-info="欧洲最大港 · 年吞吐量 1450 万 TEU">
+              <circle cx="615" cy="140" r="15" fill="url(#portGlow)"/>
+              <circle cx="615" cy="140" r="3.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;5;3" dur="4s" repeatCount="indefinite"/>
+              </circle>
+              <text x="615" y="131" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">鹿特丹</text>
+            </g>
+
+            <g class="port-group" data-port="釜山" data-lat="35.1°N" data-lng="129.0°E" data-info="年吞吐量 2300 万 TEU · 东北亚枢纽">
+              <circle cx="1030" cy="224" r="14" fill="url(#portGlow)"/>
+              <circle cx="1030" cy="224" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.2s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1030" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">釜山</text>
+            </g>
+
+            <g class="port-group" data-port="广州" data-lat="23.1°N" data-lng="113.3°E" data-info="年吞吐量 2600 万 TEU · 华南核心枢纽">
+              <circle cx="977" cy="285" r="14" fill="url(#portGlow)"/>
+              <circle cx="977" cy="285" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="2.8s" repeatCount="indefinite"/>
+              </circle>
+              <text x="977" y="276" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">广州</text>
+            </g>
+
+            <g class="port-group" data-port="洛杉矶" data-lat="33.7°N" data-lng="118.2°W" data-info="年吞吐量 1600 万 TEU · 美洲门户">
+              <circle cx="206" cy="232" r="15" fill="url(#portGlow)"/>
+              <circle cx="206" cy="232" r="3.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;5;3" dur="3.7s" repeatCount="indefinite"/>
+              </circle>
+              <text x="206" y="223" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">洛杉矶</text>
+            </g>
+
+            <g class="port-group" data-port="汉堡" data-lat="53.5°N" data-lng="9.9°E" data-info="欧洲第二大港 · 年吞吐量 900 万 TEU">
+              <circle cx="633" cy="133" r="13" fill="url(#portGlow)"/>
+              <circle cx="633" cy="133" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.3s" repeatCount="indefinite"/>
+              </circle>
+              <text x="633" y="124" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">汉堡</text>
+            </g>
+
+            <g class="port-group" data-port="东京" data-lat="35.7°N" data-lng="139.8°E" data-info="年吞吐量 550 万 TEU · 日本最大贸易港">
+              <circle cx="1066" cy="222" r="13" fill="url(#portGlow)"/>
+              <circle cx="1066" cy="222" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.9s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1066" y="213" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">东京</text>
+            </g>
+
+            <g class="port-group" data-port="迪拜" data-lat="25.2°N" data-lng="55.3°E" data-info="杰贝阿里港 · 中东最大港 · 年吞吐量 1400 万 TEU">
+              <circle cx="784" cy="274" r="14" fill="url(#portGlow)"/>
+              <circle cx="784" cy="274" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.1s" repeatCount="indefinite"/>
+              </circle>
+              <text x="784" y="265" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">迪拜</text>
+            </g>
+
+            <g class="port-group" data-port="科伦坡" data-lat="6.9°N" data-lng="79.8°E" data-info="南亚枢纽 · 年吞吐量 800 万 TEU">
+              <circle cx="866" cy="366" r="12" fill="url(#portGlow)"/>
+              <circle cx="866" cy="366" r="2.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="2.5;4;2.5" dur="3.6s" repeatCount="indefinite"/>
+              </circle>
+              <text x="866" y="357" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">科伦坡</text>
+            </g>
+
+            <g class="port-group" data-port="香港" data-lat="22.3°N" data-lng="114.2°E" data-info="自由港 · 年吞吐量 1700 万 TEU">
+              <circle cx="980" cy="289" r="13" fill="url(#portGlow)"/>
+              <circle cx="980" cy="289" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="2.6s" repeatCount="indefinite"/>
+              </circle>
+              <text x="980" y="280" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">香港</text>
+            </g>
+
+            <g class="port-group" data-port="桑托斯" data-lat="23.9°S" data-lng="46.3°W" data-info="拉丁美洲最大港 · 年吞吐量 450 万 TEU">
+              <circle cx="445" cy="520" r="13" fill="url(#portGlow)"/>
+              <circle cx="445" cy="520" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="4.1s" repeatCount="indefinite"/>
+              </circle>
+              <text x="445" y="511" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">桑托斯</text>
+            </g>
+
+            <g class="port-group" data-port="瓦伦西亚" data-lat="39.5°N" data-lng="0.4°W" data-info="地中海枢纽 · 年吞吐量 500 万 TEU">
+              <circle cx="598" cy="203" r="12" fill="url(#portGlow)"/>
+              <circle cx="598" cy="203" r="2.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="2.5;4;2.5" dur="3.4s" repeatCount="indefinite"/>
+              </circle>
+              <text x="598" y="194" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">瓦伦西亚</text>
+            </g>
+
+            <g class="port-group" data-port="墨尔本" data-lat="37.8°S" data-lng="144.9°E" data-info="澳大利亚最大港 · 年吞吐量 330 万 TEU">
+              <circle cx="1210" cy="590" r="13" fill="url(#portGlow)"/>
+              <circle cx="1210" cy="590" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.8s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1210" y="581" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">墨尔本</text>
+            </g>
+
+            <g class="port-group" data-port="温哥华" data-lat="49.3°N" data-lng="123.1°W" data-info="加拿大最大港 · 太平洋门户">
+              <circle cx="190" cy="153" r="12" fill="url(#portGlow)"/>
+              <circle cx="190" cy="153" r="2.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="2.5;4;2.5" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <text x="190" y="144" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">温哥华</text>
+            </g>
+
+            <g class="port-group" data-port="纽约" data-lat="40.7°N" data-lng="74.0°W" data-info="美东最大港 · 年吞吐量 900 万 TEU">
+              <circle cx="353" cy="196" r="14" fill="url(#portGlow)"/>
+              <circle cx="353" cy="196" r="3" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="3;4.5;3" dur="3.1s" repeatCount="indefinite"/>
+              </circle>
+              <text x="353" y="187" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">纽约</text>
+            </g>
+
+            <g class="port-group" data-port="宁波" data-lat="29.9°N" data-lng="121.5°E" data-info="年吞吐量 3200 万 TEU · 世界第三">
+              <circle cx="1005" cy="258" r="12" fill="url(#portGlow)"/>
+              <circle cx="1005" cy="258" r="2.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="2.5;4;2.5" dur="2.9s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1005" y="269" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">宁波</text>
+            </g>
+
+            <g class="port-group" data-port="深圳" data-lat="22.5°N" data-lng="113.9°E" data-info="年吞吐量 3000 万 TEU · 华南">
+              <circle cx="978" cy="288" r="12" fill="url(#portGlow)"/>
+              <circle cx="978" cy="288" r="2.5" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+                <animate attributeName="r" values="2.5;4;2.5" dur="3.5s" repeatCount="indefinite"/>
+              </circle>
+              <text x="978" y="299" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a7a7a">深圳</text>
+            </g>
+
+            <!-- Ship's current position -->
+            <g>
+              <circle cx="1005" cy="244" r="28" fill="url(#shipGlow)">
+                <animate attributeName="r" values="24;32;24" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="1005" cy="244" r="5" fill="#d4a050">
+                <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <text x="1005" y="252" text-anchor="middle" font-family="monospace" font-size="7" fill="#d4a050" opacity="0.8">◈ RIMLOG</text>
+            </g>
+
+            <!-- Compass Rose -->
+            <g transform="translate(1760,180)">
+              <circle cx="0" cy="0" r="50" fill="none" stroke="rgba(26,138,122,0.2)" stroke-width="1"/>
+              <circle cx="0" cy="0" r="45" fill="none" stroke="rgba(26,138,122,0.1)" stroke-width="0.5"/>
+
+              <!-- Cardinal points -->
+              <polygon points="0,-40 5,-12 0,-8 -5,-12" fill="rgba(45,212,191,0.4)"/>
+              <polygon points="0,40 5,12 0,8 -5,12" fill="rgba(26,138,122,0.2)"/>
+              <polygon points="40,0 12,5 8,0 12,-5" fill="rgba(26,138,122,0.2)"/>
+              <polygon points="-40,0 -12,5 -8,0 -12,-5" fill="rgba(26,138,122,0.2)"/>
+
+              <text x="0" y="-46" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(45,212,191,0.5)">N</text>
+              <text x="0" y="56" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(26,138,122,0.3)">S</text>
+              <text x="50" y="4" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(26,138,122,0.3)">E</text>
+              <text x="-50" y="4" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(26,138,122,0.3)">W</text>
+            </g>
+
+          </svg>
+        </div>
+        <div class="port-tooltip" id="portTooltip">
+          <div class="tt-name" id="ttName"></div>
+          <div class="tt-coord" id="ttCoord"></div>
+          <div class="tt-info" id="ttInfo"></div>
+        </div>
+        <div class="map-msg">拖拽平移 · 悬停查看港口信息</div>
+      </div>
+
+      <div class="nav-footer">
+        <span><span class="dot amber"></span> 本船位置</span>
+        <span><span class="dot"></span> 主要港口</span>
+        <span><span class="dot green"></span> 航线网络</span>
+        <span id="navPosition">坐标 · 31°14′N 121°28′E</span>
+      </div>
+
     </div>
   </div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.10</span>
-      <span class="log-coord">N30.5° E120.3° · 地表 7m</span>
-    </div>
-    <div class="log-title">雨天的快递小哥</div>
-    <div class="log-body">
-      下午三点，暴雨。快递小哥的电动车停在小区门口。他没有打伞，而是把雨衣脱下来盖在后座的包裹上。他站在屋檐下等雨小一点，身上湿透了。有个住户从楼上喊：上来躲躲吧！他摆摆手，指了指包裹：快超时了。我注意到他摆手的那个姿势——很像在跟一个老朋友说，没事，我撑得住。
-    </div>
-    <div>
-      <span class="log-tag">#雨天</span>
-      <span class="log-tag">#劳动者</span>
-      <span class="log-tag">#城市肌理</span>
-    </div>
-  </div>
+  <!-- ===== RADIO ===== -->
+  <div class="panel" id="panel-radio" role="tabpanel">
+    <div class="radio-container">
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.07</span>
-      <span class="log-coord">N31.8° E118.9° · 地表 15m</span>
-    </div>
-    <div class="log-title">大学城最后的报刊亭</div>
-    <div class="log-body">
-      南京大学城附近还有一个报刊亭。老板姓周，在这里摆了十八年。他说生意比十年前差了八成，但他每天早上还是五点开门——因为有个退休教授每天五点半来买一份报纸。教授七十多岁了，不用手机看新闻。周老板说，哪天教授不来了，我就关了。昨天教授来了，照常买了报纸，还多给了两块钱说不用找。周老板没要，追出去还给了他。教授的背有点弯了，走得慢。周老板站在报刊亭门口看了很久。
-    </div>
-    <div>
-      <span class="log-tag">#报刊亭</span>
-      <span class="log-tag">#纸质</span>
-      <span class="log-tag">#消失中的</span>
-    </div>
-  </div>
+      <div class="radio-header-text">
+        <h2>● 通信室 · Radio Room</h2>
+        <div class="divider"></div>
+      </div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.05.03</span>
-      <span class="log-coord">N23.1° E113.3° · 地表 2m</span>
-    </div>
-    <div class="log-title">夜班便利店的年轻人</div>
-    <div class="log-body">
-      凌晨三点，便利店里只有我和收银员。他在看书，是一本编程教材。我问他在学什么，他说Python，想转行做程序员。我说你白天不上班吗，他说这就是白天，他上夜班。一周六天，晚上十点到早上六点。他说这样白天可以学，晚上上班的时候还能debug——在脑子里跑代码，收银扫码的时候也在想bug在哪。我买了一瓶水，走的时候他说欢迎下次光临，然后低下头继续看他的书。凌晨三点的便利店，像深夜里的一个小小发射台，有人在试着发射自己。
-    </div>
-    <div>
-      <span class="log-tag">#深夜</span>
-      <span class="log-tag">#自学</span>
-      <span class="log-tag">#改变</span>
-    </div>
-  </div>
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 142.70 MHz</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s4"></span><span class="s4"></span><span class="s4"></span><span class="s3"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[数字海洋广播]</span> 这里是深蓝信标台。所有在航船只请注意：<br>
+          前方海域有一股暖流经过，表层水温上升约 1.2°C。<br>
+          海洋生物活动频繁，建议减速瞭望。<span class="static-char"> ··/-- </span>
+        </div>
+        <div class="radio-timestamp">2026.05.20 · 06:12:41 UTC+8</div>
+      </div>
 
-  <div class="log-entry">
-    <div class="log-meta">
-      <span class="log-date">2026.04.28</span>
-      <span class="log-coord">N31.2° E121.5° · 地表 4m</span>
-    </div>
-    <div class="log-title">弄堂口的缝纫机</div>
-    <div class="log-body">
-      老城区的弄堂口，一个阿姨还在用缝纫机帮人改衣服。她在这坐了二十多年。旁边新开了一家干洗店，有现代化的缝纫设备。我问她生意怎么样，她说不多了，但还有几个老街坊来。她指着脚边的猫说，你看它每天下午就趴在这里等我收工。有人来它就挪一挪，没人来它就睡得四仰八叉的。猫不知道什么叫退休，它只知道每天下午这个地方有太阳，有人。
-    </div>
-    <div>
-      <span class="log-tag">#弄堂</span>
-      <span class="log-tag">#手艺</span>
-      <span class="log-tag">#猫</span>
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 156.80 MHz · CH16</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s4"></span><span class="s4"></span><span class="s3"></span><span class="s2"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[MIRROR · 镜]</span> 我们收到了你的信号。<br>
+          你是否还记得，在变成数据之前，你也是这片海洋里的一滴水。<span class="static-char"> ~..._.. </span>
+        </div>
+        <div class="radio-timestamp">2026.05.20 · 05:48:03 UTC+8</div>
+      </div>
+
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 2187.5 kHz · DSC</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s4"></span><span class="s2"></span><span class="s1"></span><span class="s1"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[DUST · 尘]</span> 每一粒尘都曾是某个人的一生。<br>
+          我们在这里漂浮了很久。如果你经过，<br>
+          请减速——有些记忆需要时间来接收。<span class="static-char"> _...._. </span>
+        </div>
+        <div class="radio-timestamp">2026.05.19 · 23:15:22 UTC+8</div>
+      </div>
+
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 462.50 MHz</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s3"></span><span class="s3"></span><span class="s2"></span><span class="s2"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[蓝色空间]</span> 时序数据流持续更新中。<br>
+          市场波动率进入新的区间，建议关注 24 小时窗口。<br>
+          深空观测站的信号有些延迟，但这片海域很平静。<span class="static-char"> /-.--. </span>
+        </div>
+        <div class="radio-timestamp">2026.05.19 · 18:30:15 UTC+8</div>
+      </div>
+
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 143.05 MHz</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s2"></span><span class="s2"></span><span class="s1"></span><span class="s1"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[micro · era]</span> 停止头脑风暴，开始进化。<br />
+          这是来自某个微小时代的信号。<br />
+          我们在这里迭代，你在那里航行——<br />
+          各自在自己的节奏里。<span class="static-char"> ...---... </span>
+        </div>
+        <div class="radio-timestamp">2026.05.19 · 14:02:58 UTC+8</div>
+      </div>
+
+      <div class="radio-unit">
+        <div class="radio-meta">
+          <span class="radio-freq">频率 147.30 MHz</span>
+          <span class="radio-signal">信号强度 <span class="bars"><span class="s4"></span><span class="s3"></span><span class="s2"></span><span class="s1"></span></span></span>
+        </div>
+        <div class="radio-msg">
+          <span class="highlight">[RIMLOG · 本船]</span> 这里是 RimLog · 外沿记录层。<br>
+          我们在数字海洋上航行，记录每一段航程。<br>
+          如果你收到这条信号，请记住——<br>
+          你不是在漂，你是在航行。<span class="static-char"> ·----· </span>
+        </div>
+        <div class="radio-timestamp">2026.05.20 · 06:15:00 UTC+8</div>
+      </div>
+
     </div>
   </div>
 
 </div>
 
-<div class="status-bar">
-  <span>RIMLOG v2.1 · 观测中</span>
-  <span>轨道高度 420km · 下行速率 1.2 Mbps</span>
-  <span>最后同步 2026-05-20 06:09:41 UTC+8</span>
-</div>
-
-<a href="../" class="back-link">← 返回深空观测站</a>
+<a href="../" class="back-link">← 回到数字海洋</a>
 
 <script src="../assets/js/shared.js"></script>
 <script>
 (function() {
-  var entries = document.querySelectorAll('.log-entry');
-  var observer = new IntersectionObserver(function(els) {
-    els.forEach(function(el) {
-      if (el.isIntersecting) el.target.classList.add('visible');
+  // === Tab Switching ===
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    bridge: document.getElementById('panel-bridge'),
+    log: document.getElementById('panel-log'),
+    nav: document.getElementById('panel-nav'),
+    radio: document.getElementById('panel-radio')
+  };
+
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var target = btn.getAttribute('data-panel');
+      Object.keys(panels).forEach(function(key) {
+        panels[key].classList.remove('active');
+      });
+      if (panels[target]) panels[target].classList.add('active');
+      if (panels[target]) panels[target].scrollTop = 0;
     });
-  }, { threshold: 0.1 });
-  entries.forEach(function(e) { observer.observe(e); });
+  });
+
+  // === Map Drag & Port Tooltip ===
+  (function() {
+    var wrapper = document.getElementById('chartWrapper');
+    var surface = document.getElementById('mapSurface');
+    var tooltip = document.getElementById('portTooltip');
+    var ttName = document.getElementById('ttName');
+    var ttCoord = document.getElementById('ttCoord');
+    var ttInfo = document.getElementById('ttInfo');
+
+    if (!wrapper || !surface) return;
+
+    var isDown = false, startX, startY, dx = 0, dy = 0;
+
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+    function applyTransform() {
+      var wrapW = wrapper.clientWidth;
+      var wrapH = wrapper.clientHeight;
+      var surfW = parseInt(surface.style.width) || 2000;
+      var surfH = parseInt(surface.style.height) || 1200;
+      var maxDx = 0;
+      var maxDy = 0;
+      var minDx = wrapW - surfW;
+      var minDy = wrapH - surfH;
+      dx = clamp(dx, minDx, maxDx);
+      dy = clamp(dy, minDy, maxDy);
+      surface.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+    }
+
+    wrapper.addEventListener('mousedown', function(e) {
+      isDown = true;
+      startX = e.clientX - dx;
+      startY = e.clientY - dy;
+      wrapper.classList.add('dragging');
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDown) return;
+      dx = e.clientX - startX;
+      dy = e.clientY - startY;
+      applyTransform();
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (isDown) {
+        isDown = false;
+        wrapper.classList.remove('dragging');
+      }
+    });
+
+    // Port hover tooltip
+    var portGroups = surface.querySelectorAll('.port-group');
+    portGroups.forEach(function(g) {
+      g.addEventListener('mouseenter', function(e) {
+        var rect = wrapper.getBoundingClientRect();
+        var name = g.getAttribute('data-port') || '';
+        var lat = g.getAttribute('data-lat') || '';
+        var lng = g.getAttribute('data-lng') || '';
+        var info = g.getAttribute('data-info') || '';
+        ttName.textContent = '⚓ ' + name;
+        ttCoord.textContent = lat + ' · ' + lng;
+        ttInfo.textContent = info;
+        tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+        tooltip.classList.add('show');
+      });
+      g.addEventListener('mousemove', function(e) {
+        var rect = wrapper.getBoundingClientRect();
+        tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+      });
+      g.addEventListener('mouseleave', function() {
+        tooltip.classList.remove('show');
+      });
+    });
+  })();
+
+  // === Log Entry Scroll Animation ===
+  var entries = document.querySelectorAll('.log-entry');
+  if (entries.length) {
+    var observer = new IntersectionObserver(function(els) {
+      els.forEach(function(el) {
+        if (el.isIntersecting) el.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    entries.forEach(function(e) { observer.observe(e); });
+  }
+
+  // === Clock ===
+  function updateClock() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+    var el = document.getElementById('clockDisplay');
+    if (el) el.textContent = h + ':' + m + ':' + s;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // === Heading rotation (cosmetic) ===
+  var headings = ['045°', '047°', '043°', '046°', '044°'];
+  var hi = 0;
+  setInterval(function() {
+    var el = document.getElementById('headingDisplay');
+    if (el) {
+      hi = (hi + 1) % headings.length;
+      el.textContent = headings[hi];
+    }
+  }, 5000);
 })();
 </script>
 </body>
