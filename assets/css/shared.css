@@ -1,23 +1,26 @@
-/* === kookat Deep Space Shared Styles === */
+/* === Digital Ocean · Cyberpunk Theme === */
 /* Self-contained, no external CDN, China-accessible */
 
 :root {
-  --space-black: #08080f;
-  --space-deep: #0d0d1a;
-  --space-blue: #0a1628;
-  --nebula-purple: #1a1035;
-  --star-white: #e8e6f0;
-  --star-dim: #6b6880;
-  --star-faint: #3a3850;
-  --accent-gold: #c9a84c;
-  --accent-blue: #4a8fcc;
-  --accent-teal: #3da5a0;
-  --accent-rose: #b84a6c;
-  --accent-lavender: #7b6fcf;
-  --glow-blue: rgba(74, 143, 204, 0.3);
-  --glow-gold: rgba(201, 168, 76, 0.25);
-  --glow-teal: rgba(61, 165, 160, 0.2);
-  --glow-rose: rgba(184, 74, 108, 0.2);
+  --ocean-black: #020810;
+  --ocean-deep: #060d18;
+  --ocean-mid: #0a1628;
+  --ocean-surface: #0f2840;
+  --cyber-cyan: #00e5c8;
+  --cyber-blue: #0088ff;
+  --cyber-purple: #7c3aed;
+  --cyber-pink: #ff2d78;
+  --cyber-teal: #0ff;
+  --neon-glow: rgba(0, 229, 200, 0.3);
+  --neon-blue: rgba(0, 136, 255, 0.25);
+  --neon-purple: rgba(124, 58, 237, 0.2);
+  --neon-pink: rgba(255, 45, 120, 0.2);
+  --text-primary: #e0f0ff;
+  --text-dim: #6080a0;
+  --text-faint: #2a4058;
+  --text-cyber: #00e5c8;
+  --depth-surface: 0;
+  --depth-current: 0;
 }
 
 *, *::before, *::after {
@@ -32,14 +35,25 @@ html {
 }
 
 body {
-  background: var(--space-black);
-  color: var(--star-white);
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "WenQuanYi Micro Hei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--ocean-black);
+  color: var(--text-primary);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.8;
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antiali;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fixed canvas background layer */
+#ocean-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .mono {
@@ -47,104 +61,38 @@ body {
 }
 
 ::selection {
-  background: var(--accent-gold);
-  color: var(--space-black);
+  background: var(--cyber-cyan);
+  color: var(--ocean-black);
 }
 
 a {
-  color: var(--accent-teal);
+  color: var(--cyber-cyan);
   text-decoration: none;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 a:hover {
-  color: var(--accent-gold);
-  text-shadow: 0 0 8px var(--glow-gold);
-}
-
-/* === Starfield Background === */
-.stars-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.stars {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  background: transparent;
-  box-shadow: var(--stars-small);
-  animation: twinkle 4s ease-in-out infinite alternate;
-}
-
-.stars::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  box-shadow: var(--stars-medium);
-  animation: twinkle 7s ease-in-out infinite alternate-reverse;
-}
-
-.stars::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 3px;
-  background: transparent;
-  box-shadow: var(--stars-big);
-  animation: twinkle 10s ease-in-out infinite alternate;
-}
-
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  100% { opacity: 1; }
-}
-
-/* === Nebula Gradient Backgrounds === */
-.bg-nebula {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(74, 143, 204, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(123, 111, 207, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(61, 165, 160, 0.05) 0%, transparent 50%);
+  color: #fff;
+  text-shadow: 0 0 12px var(--neon-glow);
 }
 
 /* === Typography === */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.04em;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.8rem; }
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2rem; }
 h3 { font-size: 1.4rem; }
 
-.text-dim { color: var(--star-dim); }
-.text-faint { color: var(--star-faint); }
-.text-gold { color: var(--accent-gold); }
-.text-blue { color: var(--accent-blue); }
-.text-teal { color: var(--accent-teal); }
-.text-rose { color: var(--accent-rose); }
-.text-lavender { color: var(--accent-lavender); }
+.text-dim { color: var(--text-dim); }
+.text-faint { color: var(--text-faint); }
+.text-cyber { color: var(--cyber-cyan); }
+.text-blue { color: var(--cyber-blue); }
+.text-purple { color: var(--cyber-purple); }
+.text-pink { color: var(--cyber-pink); }
 
 /* === Buttons === */
 .btn {
@@ -152,118 +100,85 @@ h3 { font-size: 1.4rem; }
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border: 1px solid var(--star-faint);
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--star-white);
+  border: 1px solid rgba(0, 229, 200, 0.2);
+  background: rgba(0, 229, 200, 0.04);
+  color: var(--cyber-cyan);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .btn:hover {
-  border-color: var(--accent-gold);
-  background: rgba(201, 168, 76, 0.08);
-  color: var(--accent-gold);
-}
-
-.btn-primary {
-  border-color: var(--accent-teal);
-  background: rgba(61, 165, 160, 0.1);
-  color: var(--accent-teal);
-}
-
-.btn-primary:hover {
-  background: rgba(61, 165, 160, 0.2);
+  border-color: var(--cyber-cyan);
+  background: rgba(0, 229, 200, 0.1);
+  box-shadow: 0 0 20px var(--neon-glow), inset 0 0 20px rgba(0, 229, 200, 0.05);
   color: #fff;
 }
 
-/* === Content Wrapper === */
-.content-wrapper {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+.btn-primary {
+  border-color: var(--cyber-blue);
+  color: var(--cyber-blue);
+  background: rgba(0, 136, 255, 0.06);
 }
 
-/* === Fade-in Animation === */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
-.delay-4 { animation-delay: 0.8s; }
-.delay-5 { animation-delay: 1.0s; }
-
-/* === Divider === */
-.divider {
-  width: 60px;
-  height: 1px;
-  background: var(--star-faint);
-  margin: 2rem 0;
-}
-
-.divider-centered {
-  margin: 2rem auto;
+.btn-primary:hover {
+  border-color: var(--cyber-blue);
+  background: rgba(0, 136, 255, 0.12);
+  box-shadow: 0 0 20px var(--neon-blue), inset 0 0 20px rgba(0, 136, 255, 0.05);
+  color: #fff;
 }
 
 /* === Section === */
 .section {
-  padding: 4rem 0;
   position: relative;
   z-index: 1;
 }
 
 /* === Glass Card === */
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 136, 255, 0.03);
+  border: 1px solid rgba(0, 229, 200, 0.06);
   padding: 2rem;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(0, 229, 200, 0.15);
+  background: rgba(0, 136, 255, 0.05);
 }
 
 /* === Scrollbar === */
-::-webkit-scrollbar {
-  width: 6px;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ocean-black); }
+::-webkit-scrollbar-thumb { background: var(--text-faint); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 
-::-webkit-scrollbar-track {
-  background: var(--space-black);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--star-faint);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--star-dim);
+/* === Scanlines overlay === */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 229, 200, 0.015) 2px,
+    rgba(0, 229, 200, 0.015) 4px
+  );
 }
 
 /* === Responsive === */
 @media (max-width: 768px) {
   html { font-size: 14px; }
-  .content-wrapper { padding: 1.5rem; }
   h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
+  h2 { font-size: 1.6rem; }
   .section { padding: 2.5rem 0; }
 }
