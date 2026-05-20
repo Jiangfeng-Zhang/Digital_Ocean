@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror · 镜</title>
+<meta name="description" content="在失重的静默里，靠近自己">
+<link rel="stylesheet" href="../assets/css/shared.css">
+<style>
+  .mirror-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+  }
+
+  .mirror-landing {
+    text-align: center;
+    max-width: 500px;
+    display: none;
+  }
+
+  .mirror-landing.active {
+    display: block;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .mirror-landing h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .mirror-landing .subtitle {
+    color: var(--star-dim);
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 3rem;
+  }
+
+  .enter-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid var(--star-faint);
+    background: transparent;
+    color: var(--star-dim);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    letter-spacing: 0.1em;
+    position: relative;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .enter-btn:hover {
+    border-color: var(--accent-lavender);
+    color: var(--accent-lavender);
+    box-shadow: 0 0 30px rgba(123, 111, 207, 0.2);
+  }
+
+  .enter-btn .inner-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+  }
+
+  .enter-btn:hover .inner-ring {
+    border-color: rgba(123, 111, 207, 0.3);
+    width: 70px;
+    height: 70px;
+  }
+
+  .config-panel {
+    display: none;
+    max-width: 480px;
+    width: 100%;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .config-panel.active {
+    display: block;
+  }
+
+  .config-panel h2 {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.08em;
+  }
+
+  .config-panel .hint {
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .field-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .field-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--star-dim);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .field-group input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    letter-spacing: 0.03em;
+  }
+
+  .field-group input:focus {
+    border-color: var(--accent-lavender);
+  }
+
+  .field-group input::placeholder {
+    color: var(--star-faint);
+  }
+
+  .config-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+  }
+
+  .config-note {
+    font-size: 0.7rem;
+    color: var(--star-faint);
+    text-align: center;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .chat-interface {
+    display: none;
+    max-width: 600px;
+    width: 100%;
+    flex-direction: column;
+    height: 90vh;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .chat-interface.active {
+    display: flex;
+  }
+
+  .chat-header {
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chat-header .title {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--star-dim);
+    font-weight: 300;
+  }
+
+  .chat-header .settings-btn {
+    background: none;
+    border: none;
+    color: var(--star-faint);
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 0.75rem;
+    transition: color 0.3s;
+  }
+
+  .chat-header .settings-btn:hover {
+    color: var(--accent-lavender);
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .message {
+    max-width: 85%;
+    line-height: 1.8;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    animation: fadeInUp 0.4s ease;
+  }
+
+  .message.user {
+    align-self: flex-end;
+    color: var(--star-dim);
+    text-align: right;
+  }
+
+  .message.assistant {
+    align-self: flex-start;
+    color: var(--star-white);
+    padding-left: 1rem;
+    border-left: 1px solid rgba(123,111,207,0.2);
+  }
+
+  .message.assistant .role-tag {
+    font-size: 0.7rem;
+    color: var(--accent-lavender);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .chat-input-area {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 1rem 0;
+  }
+
+  .chat-input-area textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+    min-height: 60px;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    transition: border-color 0.3s ease;
+  }
+
+  .chat-input-area textarea:focus {
+    border-color: var(--accent-lavender);
+  }
+
+  .chat-input-area textarea::placeholder {
+    color: var(--star-faint);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .input-row .send-btn {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--star-faint);
+    color: var(--star-dim);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  .input-row .send-btn:hover {
+    border-color: var(--accent-lavender);
+    color: var(--accent-lavender);
+  }
+
+  .input-row .send-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .starter-prompts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .starter-prompt {
+    padding: 0.4rem 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--star-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    letter-spacing: 0.03em;
+  }
+
+  .starter-prompt:hover {
+    border-color: var(--accent-lavender);
+    color: var(--accent-lavender);
+  }
+
+  .typing-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-lavender);
+    animation: blink 1.4s infinite;
+    margin: 0 2px;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  .status-text {
+    font-size: 0.7rem;
+    color: var(--star-faint);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="mirror-container">
+  <div class="mirror-landing active" id="landing">
+    <h1>镜</h1>
+    <p class="subtitle">在失重的静默里，靠近自己</p>
+    <button class="enter-btn" onclick="showConfig()">
+      <span class="inner-ring"></span>
+      进入
+    </button>
+    <p style="margin-top: 2rem; font-size: 0.7rem; color: var(--star-faint);">点击或按任意键进入</p>
+  </div>
+
+  <div class="config-panel" id="configPanel">
+    <h2>连接你的镜面</h2>
+    <p class="hint">镜需要一个LLM来回应你。配置保存在本地浏览器中，不会上传到任何服务器。</p>
+
+    <div class="field-group">
+      <label>Base URL <span style="color:var(--star-faint)">(OpenAI兼容接口)</span></label>
+      <input type="text" id="apiUrl" placeholder="https://api.openai.com/v1" autocomplete="off">
+    </div>
+    <div class="field-group">
+      <label>Model Name</label>
+      <input type="text" id="apiModel" placeholder="gpt-4o-mini" autocomplete="off">
+    </div>
+    <div class="field-group">
+      <label>API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off">
+    </div>
+
+    <div class="config-actions">
+      <button class="btn" onclick="showLanding()">返回</button>
+      <button class="btn btn-primary" onclick="saveConfig()">连接并进入</button>
+    </div>
+    <p class="config-note">
+      支持 OpenAI、DeepSeek、Moonshot、智谱 等兼容接口。<br>
+      API Key 只保存在你的浏览器中。
+    </p>
+  </div>
+
+  <div class="chat-interface" id="chatInterface">
+    <div class="chat-header">
+      <div class="title">镜 · 自省</div>
+      <button class="settings-btn" onclick="showConfig()">设置</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message assistant">
+        <div class="role-tag">镜</div>
+        不用急着整理得很像样。如果一时不知道怎么开口，也可以先挑一个近一点的。<br><br>
+        如果都不贴，你就按自己的说法来。
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <div class="starter-prompts" id="starters">
+        <button class="starter-prompt" onclick="sendStarter('脑子有点乱，想理一理')">脑子有点乱</button>
+        <button class="starter-prompt" onclick="sendStarter('有件小事堵在心里')">有件小事堵着</button>
+        <button class="starter-prompt" onclick="sendStarter('只是想找人说说话')">想找人说说话</button>
+        <button class="starter-prompt" onclick="sendStarter('今天有点累')">今天有点累</button>
+      </div>
+      <textarea id="userInput" placeholder="在这里说你想说的..." rows="2"></textarea>
+      <div class="input-row">
+        <span class="status-text" id="statusText"></span>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">发送</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="../" class="back-link" style="position:relative;z-index:1;display:block;text-align:center;padding:1rem;font-family:monospace;font-size:0.8rem;color:var(--star-faint);letter-spacing:0.1em;">← 返回深空观测站</a>
+
+<script src="../assets/js/shared.js"></script>
+<script>
+(function() {
+  var config = {
+    url: localStorage.getItem('mirror_api_url') || '',
+    model: localStorage.getItem('mirror_api_model') || '',
+    key: localStorage.getItem('mirror_api_key') || ''
+  };
+
+  var conversation = [];
+
+  if (config.url) document.getElementById('apiUrl').value = config.url;
+  if (config.model) document.getElementById('apiModel').value = config.model;
+  if (config.key) document.getElementById('apiKey').value = config.key;
+
+  if (config.url && config.model && config.key) {
+    enterChat();
+  }
+
+  window.showConfig = function() {
+    document.getElementById('landing').classList.remove('active');
+    document.getElementById('chatInterface').classList.remove('active');
+    document.getElementById('configPanel').classList.add('active');
+  };
+
+  window.showLanding = function() {
+    document.getElementById('configPanel').classList.remove('active');
+    document.getElementById('chatInterface').classList.remove('active');
+    document.getElementById('landing').classList.add('active');
+  };
+
+  window.saveConfig = function() {
+    var url = document.getElementById('apiUrl').value.trim();
+    var model = document.getElementById('apiModel').value.trim();
+    var key = document.getElementById('apiKey').value.trim();
+
+    if (!url || !model || !key) {
+      alert('请填写完整的 API 配置信息');
+      return;
+    }
+
+    localStorage.setItem('mirror_api_url', url);
+    localStorage.setItem('mirror_api_model', model);
+    localStorage.setItem('mirror_api_key', key);
+    config.url = url;
+    config.model = model;
+    config.key = key;
+
+    enterChat();
+  };
+
+  function enterChat() {
+    document.getElementById('landing').classList.remove('active');
+    document.getElementById('configPanel').classList.remove('active');
+    document.getElementById('chatInterface').classList.add('active');
+  }
+
+  window.sendStarter = function(text) {
+    document.getElementById('userInput').value = text;
+    sendMessage();
+  };
+
+  window.sendMessage = function() {
+    var input = document.getElementById('userInput');
+    var text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    var starters = document.getElementById('starters');
+    if (starters) starters.style.display = 'none';
+
+    addMessage('user', text);
+    conversation.push({ role: 'user', content: text });
+
+    var sendBtn = document.getElementById('sendBtn');
+    var statusText = document.getElementById('statusText');
+    sendBtn.disabled = true;
+    statusText.textContent = '镜 在回应...';
+
+    var msgDiv = addMessage('assistant', '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>', true);
+
+    fetch(config.url + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + config.key
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: [
+          {
+            role: 'system',
+            content: '你是「镜」——一个温和、耐心的自省对话伙伴。你的风格是：\n\n1. 不说教，不评判，不急于给建议\n2. 用提问帮助对方自己看清内心\n3. 回复简短但有深度，像镜子一样反射对方的话语\n4. 偶尔使用诗意的比喻，但不矫情\n5. 保持安静的力量感，让对方感到被倾听\n6. 当你觉得对方情绪低落时，先共情，再轻轻提问\n7. 像深夜和一位安静的朋友坐在阳台上聊天\n\n用中文回复。回复长度控制在2-5句话。'
+          }
+        ].concat(conversation.slice(-10)),
+        temperature: 0.8,
+        max_tokens: 600
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) throw new Error(data.error.message || 'API error');
+      var reply = data.choices[0].message.content;
+      conversation.push({ role: 'assistant', content: reply });
+      msgDiv.innerHTML = '<div class="role-tag">镜</div>' + escapeHtml(reply);
+    })
+    .catch(function(err) {
+      msgDiv.innerHTML = '<div class="role-tag" style="color:var(--accent-rose)">错误</div>无法连接镜面：' + escapeHtml(err.message) + '<br><br><span style="color:var(--star-faint);font-size:0.8rem;">请检查 API 配置是否正确，或稍后重试。</span>';
+    })
+    .finally(function() {
+      sendBtn.disabled = false;
+      statusText.textContent = '';
+    });
+  };
+
+  function addMessage(role, content, isPlaceholder) {
+    var container = document.getElementById('chatMessages');
+    var div = document.createElement('div');
+    div.className = 'message ' + role;
+    if (role === 'assistant') {
+      div.innerHTML = (isPlaceholder ? '' : '<div class="role-tag">镜</div>') + content;
+    } else {
+      div.textContent = content;
+    }
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+    return div;
+  }
+
+  function escapeHtml(text) {
+    var d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+
+  document.getElementById('userInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (document.getElementById('landing').classList.contains('active') && e.key) {
+      showConfig();
+    }
+  });
+})();
+</script>
+</body>
+</html>

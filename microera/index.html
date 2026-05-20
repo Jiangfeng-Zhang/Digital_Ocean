@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>micro · era</title>
+<meta name="description" content="Stop brainstorming. Start evolving. 把一个模糊选题变成可筛选、可融合、可锁定的内容方向。">
+<link rel="stylesheet" href="../assets/css/shared.css">
+<style>
+  .micro-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .micro-header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+  }
+
+  .micro-header h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .micro-header h1 span {
+    color: var(--accent-rose);
+  }
+
+  .micro-header .tagline {
+    font-size: 0.85rem;
+    color: var(--star-dim);
+    letter-spacing: 0.06em;
+  }
+
+  .config-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .config-section h3 {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--star-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .config-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .config-row input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.6rem 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .config-row input:focus {
+    border-color: var(--accent-rose);
+  }
+
+  .config-row input::placeholder {
+    color: var(--star-faint);
+    font-size: 0.8rem;
+  }
+
+  .seed-section {
+    margin-bottom: 2rem;
+  }
+
+  .seed-section h3 {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--star-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.8rem;
+  }
+
+  .seed-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+    line-height: 1.8;
+    transition: border-color 0.3s;
+  }
+
+  .seed-input:focus {
+    border-color: var(--accent-rose);
+  }
+
+  .seed-input::placeholder {
+    color: var(--star-faint);
+  }
+
+  .seed-hint {
+    font-size: 0.75rem;
+    color: var(--star-faint);
+    margin-top: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .type-selector {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .type-chip {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    color: var(--star-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+  }
+
+  .type-chip:hover {
+    border-color: var(--accent-rose);
+    color: var(--star-white);
+  }
+
+  .type-chip.selected {
+    border-color: var(--accent-rose);
+    background: rgba(184,74,108,0.1);
+    color: var(--accent-rose);
+  }
+
+  .evolve-btn {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(184,74,108,0.08);
+    border: 1px solid rgba(184,74,108,0.3);
+    color: var(--accent-rose);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+  }
+
+  .evolve-btn:hover {
+    background: rgba(184,74,108,0.15);
+    box-shadow: 0 0 30px rgba(184,74,108,0.1);
+  }
+
+  .evolve-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .branches-container {
+    display: none;
+  }
+
+  .branches-container.active {
+    display: block;
+  }
+
+  .branch-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem;
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .branch-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .branch-card .branch-id {
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--star-faint);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .branch-card .branch-title {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--star-white);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .branch-card .branch-angle {
+    font-size: 0.85rem;
+    color: var(--star-dim);
+    line-height: 1.7;
+  }
+
+  .branch-card .branch-tags {
+    margin-top: 0.8rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .branch-card .branch-tag {
+    font-size: 0.65rem;
+    color: var(--star-faint);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 0.15rem 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .branch-card .branch-actions {
+    margin-top: 0.8rem;
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .branch-card .mini-btn {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--star-dim);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+  }
+
+  .branch-card .mini-btn:hover {
+    border-color: var(--accent-rose);
+    color: var(--accent-rose);
+  }
+
+  .branch-card .mini-btn.locked {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    background: rgba(61,165,160,0.08);
+  }
+
+  .loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    color: var(--star-dim);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+  }
+
+  .loading-dots span {
+    display: inline-block;
+    animation: dotBounce 1.4s infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dotBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.3; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+
+  .back-link:hover { color: var(--accent-gold); }
+</style>
+</head>
+<body>
+
+<div class="micro-container">
+  <div class="micro-header fade-in">
+    <h1>micro<span>·</span>era</h1>
+    <p class="tagline">Stop brainstorming. Start evolving.</p>
+  </div>
+
+  <div class="config-section fade-in delay-1">
+    <h3>API Control · 把模型接上，再点火。</h3>
+    <div class="config-row">
+      <input type="text" id="apiUrl" placeholder="Base URL (OpenAI兼容)">
+      <input type="text" id="apiModel" placeholder="Model Name">
+      <input type="password" id="apiKey" placeholder="API Key">
+      <button class="btn btn-primary" onclick="saveConfig()">连接</button>
+    </div>
+    <p style="font-size:0.7rem;color:var(--star-faint);margin-top:0.5rem;">Key只存在你的浏览器里，不会经过任何服务器。支持OpenAI、DeepSeek、Moonshot等兼容接口。</p>
+  </div>
+
+  <div class="seed-section fade-in delay-2">
+    <h3>你的想法种子</h3>
+    <textarea class="seed-input" id="seedInput" placeholder="我想做一个关于「主题」的内容，但不想只讲「常规角度」，我更想抓住「情绪 / 矛盾 / 新观察」。
+    
+写一个你最近反复想到、但还没想清楚的主题..."></textarea>
+    <p class="seed-hint">
+      推荐句式：<strong>我想做一个关于「具体主题」的内容，但不想只讲「XX」，我更想抓住「YY」</strong><br>
+      主题越具体，情绪和冲突越明确，后面的分支质量越高。
+    </p>
+  </div>
+
+  <div class="fade-in delay-3">
+    <h3 style="font-size:0.85rem;color:var(--star-dim);margin-bottom:0.7rem;letter-spacing:0.06em;">内容形态</h3>
+    <div class="type-selector" id="typeSelector">
+      <div class="type-chip selected" data-type="视频">▶ 视频</div>
+      <div class="type-chip" data-type="文章">¶ 文章</div>
+      <div class="type-chip" data-type="播客">◉ 播客</div>
+      <div class="type-chip" data-type="Newsletter">✉ Newsletter</div>
+    </div>
+  </div>
+
+  <button class="evolve-btn fade-in delay-4" id="evolveBtn" onclick="evolve()">
+    开始演化 · EVOLVE
+  </button>
+
+  <div class="branches-container" id="branchesContainer">
+    <h3 style="font-size:0.85rem;color:var(--star-dim);margin-bottom:1rem;letter-spacing:0.06em;">
+      演化分支 · 保留1-2个最有感觉的方向
+    </h3>
+    <div id="branchesList"></div>
+  </div>
+</div>
+
+<a href="../" class="back-link">← 返回深空观测站</a>
+
+<script src="../assets/js/shared.js"></script>
+<script>
+(function() {
+  var selectedType = '视频';
+
+  if (localStorage.getItem('microera_url')) {
+    document.getElementById('apiUrl').value = localStorage.getItem('microera_url');
+    document.getElementById('apiModel').value = localStorage.getItem('microera_model');
+    document.getElementById('apiKey').value = localStorage.getItem('microera_key');
+  }
+
+  document.getElementById('typeSelector').addEventListener('click', function(e) {
+    if (e.target.classList.contains('type-chip')) {
+      document.querySelectorAll('.type-chip').forEach(function(c) { c.classList.remove('selected'); });
+      e.target.classList.add('selected');
+      selectedType = e.target.dataset.type;
+    }
+  });
+
+  window.saveConfig = function() {
+    var url = document.getElementById('apiUrl').value.trim();
+    var model = document.getElementById('apiModel').value.trim();
+    var key = document.getElementById('apiKey').value.trim();
+    if (!url || !model || !key) { alert('请填写完整配置'); return; }
+    localStorage.setItem('microera_url', url);
+    localStorage.setItem('microera_model', model);
+    localStorage.setItem('microera_key', key);
+    alert('配置已保存 ✓');
+  };
+
+  window.evolve = function() {
+    var seed = document.getElementById('seedInput').value.trim();
+    if (!seed) {
+      alert('请先写下你的想法种子');
+      return;
+    }
+
+    var url = localStorage.getItem('microera_url');
+    var model = localStorage.getItem('microera_model');
+    var key = localStorage.getItem('microera_key');
+
+    var container = document.getElementById('branchesContainer');
+    var list = document.getElementById('branchesList');
+    var btn = document.getElementById('evolveBtn');
+
+    if (!url || !model || !key) {
+      list.innerHTML = demoBranches(seed, selectedType);
+      container.classList.add('active');
+      return;
+    }
+
+    container.classList.add('active');
+    list.innerHTML = '<div class="loading-indicator"><div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>演化中...</div>';
+    btn.disabled = true;
+
+    fetch(url + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: [{
+          role: 'system',
+          content: '你是一个内容策划助手。用户的"种子"是一个模糊的选题想法。请生成4个具体的、有差异的内容分支方向。\n\n要求：\n1. 每个分支有一个吸引人的标题（8-15字）\n2. 每个分支有一个独特的切入角度（30-50字）\n3. 每个分支有2-3个关键词标签\n4. 4个分支之间的角度要有明显差异（不同情绪、不同视角、不同受众）\n5. 针对"'+selectedType+'"这种内容形态来思考\n\n返回JSON格式：\n[{"title":"...","angle":"...","tags":["...","..."]}]'
+        }, {
+          role: 'user',
+          content: '我的选题种子：' + seed + '\n我希望做成的内容形态：' + selectedType
+        }],
+        temperature: 0.9,
+        max_tokens: 1500
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) throw new Error(data.error.message);
+      var content = data.choices[0].message.content;
+      var match = content.match(/\[[\s\S]*\]/);
+      var branches = match ? JSON.parse(match[0]) : null;
+      if (!branches) throw new Error('解析失败');
+      renderBranches(branches);
+    })
+    .catch(function(err) {
+      list.innerHTML = '<p style="color:var(--accent-rose);text-align:center;">LLM调用失败，显示预置演示：</p>';
+      list.innerHTML += demoBranches(seed, selectedType);
+    })
+    .finally(function() {
+      btn.disabled = false;
+    });
+  };
+
+  function demoBranches(seed, type) {
+    var branches = [
+      { title: '从个人叙事出发的情感切面', angle: '不讨论宏观趋势，而是用一个亲历者的微观故事，把' + type + '变成一种情感传递的容器。', tags: ['个人叙事', '情感共鸣', '第一人称'] },
+      { title: '反向视角的批判性解构', angle: '不从主流叙事入手，而是找出被忽视的反面——那些被遗漏的声音和隐藏的代价。', tags: ['批判性', '反直觉', '深度'] },
+      { title: '跨领域连接的创新视角', angle: '把一个看似不相关的领域逻辑嫁接到这个主题上，创造意外的洞察和新鲜感。', tags: ['跨界', '隐喻', '创新'] },
+      { title: '数据驱动的系统性梳理', angle: '用数据和事实构建骨架，把模糊的感觉变成可被定量理解的趋势脉络。', tags: ['数据', '结构', '理性'] }
+    ];
+    return renderBranchesHtml(branches);
+  }
+
+  function renderBranches(branches) {
+    document.getElementById('branchesList').innerHTML = renderBranchesHtml(branches);
+  }
+
+  function renderBranchesHtml(branches) {
+    return branches.map(function(b, i) {
+      return '<div class="branch-card" id="branch' + i + '">' +
+        '<div class="branch-id">分支 ' + (i + 1) + ' / 4</div>' +
+        '<div class="branch-title">' + escapeHtml(b.title) + '</div>' +
+        '<div class="branch-angle">' + escapeHtml(b.angle) + '</div>' +
+        '<div class="branch-tags">' + (b.tags || []).map(function(t) { return '<span class="branch-tag">#' + escapeHtml(t) + '</span>'; }).join('') + '</div>' +
+        '<div class="branch-actions">' +
+          '<button class="mini-btn" onclick="document.getElementById(\'branch' + i + '\').style.opacity=\'0.3\'">舍弃</button>' +
+          '<button class="mini-btn locked" onclick="this.classList.toggle(\'locked\'); this.textContent = this.classList.contains(\'locked\') ? \'已锁定\' : \'锁定\'">锁定</button>' +
+          '<button class="mini-btn" onclick="expandBranch(' + i + ')">展开</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.expandBranch = function(idx) {
+    var card = document.getElementById('branch' + idx);
+    if (!card) return;
+    var title = card.querySelector('.branch-title').textContent;
+    var angle = card.querySelector('.branch-angle').textContent;
+    document.getElementById('seedInput').value = title + '\n\n切入点：' + angle + '\n\n在此方向上继续深化：';
+    document.getElementById('seedInput').focus();
+    window.scrollTo({ top: document.getElementById('seedInput').offsetTop - 50, behavior: 'smooth' });
+  };
+
+  function escapeHtml(text) {
+    var d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUST · 尘</title>
+<meta name="description" content="技术会过去，人会留下痕迹 · 每一粒尘都曾是某个人的一生">
+<link rel="stylesheet" href="../assets/css/shared.css">
+<style>
+  .dust-header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 4rem 2rem;
+  }
+
+  .dust-header .era-marker {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+  }
+
+  .dust-header h1 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    letter-spacing: 0.15em;
+  }
+
+  .dust-header .intro-text {
+    max-width: 580px;
+    color: var(--star-dim);
+    font-size: 1rem;
+    line-height: 2;
+    letter-spacing: 0.04em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    color: var(--star-faint);
+    font-family: monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    animation: floatDown 2s ease-in-out infinite;
+  }
+
+  @keyframes floatDown {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(10px); opacity: 0.8; }
+  }
+
+  .timeline {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  .era-entry {
+    margin-bottom: 5rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+
+  .era-entry.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .era-entry .era-year {
+    font-family: monospace;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--accent-gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .era-entry .era-location {
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    font-family: monospace;
+  }
+
+  .era-entry .era-tech {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--accent-teal);
+    border: 1px solid rgba(61, 165, 160, 0.3);
+    padding: 0.2rem 0.8rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.06em;
+  }
+
+  .era-entry .era-role {
+    font-size: 1.1rem;
+    color: var(--star-white);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .era-entry .era-body {
+    color: var(--star-dim);
+    font-size: 0.95rem;
+    line-height: 2.1;
+    letter-spacing: 0.03em;
+  }
+
+  .era-entry .era-body p {
+    margin-bottom: 1.2rem;
+  }
+
+  .era-entry .era-body .highlight {
+    color: var(--star-white);
+  }
+
+  .era-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--star-faint);
+    margin: 0 auto 5rem;
+  }
+
+  .footer-coda {
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--star-dim);
+    font-size: 1rem;
+    line-height: 2;
+  }
+
+  .footer-coda .coda-line {
+    color: var(--star-white);
+    letter-spacing: 0.06em;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: var(--accent-gold);
+  }
+</style>
+</head>
+<body>
+
+<div class="dust-header">
+  <div class="era-marker">纪元索引 · CHRONICLE</div>
+  <h1 class="fade-in delay-1">尘</h1>
+  <p class="intro-text fade-in delay-2">
+    技术革命从来不只发生在技术里。<br>
+    它最后落下来的地方，往往是一个人的手心、饭桌、抽屉，<br>
+    和一句没有说出口的话。
+  </p>
+  <p class="intro-text fade-in delay-3" style="font-size: 0.85rem; color: var(--star-faint); margin-top: 1rem;">
+    有些人的一生，安静得像一粒落进土里的种子。<br>
+    世界变了，却没人通知他们。
+  </p>
+  <div class="scroll-hint">▼ 继续往下</div>
+</div>
+
+<div class="timeline" id="timeline">
+
+  <div class="era-entry" data-year="1830">
+    <div class="era-year">1830</div>
+    <div class="era-location">英格兰 曼彻斯特 · 蒸汽动力织机</div>
+    <div class="era-tech">动力织布机</div>
+    <div class="era-role">手工织布工</div>
+    <div class="era-body">
+      <p>他叫托马斯。在蒸汽机进入纺织厂之前，他一周能织出三匹布，够一家人吃饱穿暖，还能在礼拜天给妻子买一束花。</p>
+      <p>机器来了以后，厂主只需要雇几个孩子看着机器。他的工钱从十五先令跌到四先令。家里的铜锅、妻子的梳妆镜、孩子的铁环玩具，一件件进了当铺。</p>
+      <p>那年冬天，他跟镇上的人在夜里砸了工厂的动力织机。宪兵队来了，三个人被绞死在广场上。他被押上船，送往澳大利亚流放地。</p>
+      <p>临走前一晚，妻子在牢房铁栏外站了一整夜。她说，<span class="highlight">等到了那边，记得写信。我等你。</span></p>
+      <p>他再也没有寄出过一封信。</p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="1885">
+    <div class="era-year">1885</div>
+    <div class="era-location">美国 纽约 · 电气化时代</div>
+    <div class="era-tech">电灯</div>
+    <div class="era-role">煤气灯巡灯人</div>
+    <div class="era-body">
+      <p>老亨利在布鲁克林点了二十年煤气灯。每条街、每盏灯、每个灯罩的脾气他都一清二楚。七号灯要在下雨天多划一根火柴，十四号灯的灯芯总是歪向右边。</p>
+      <p>他认得每一条街的黎明。凌晨四点，他扛着梯子和长杆走遍街区，一盏一盏把灯熄灭。有时候遇到早起的面包师，会朝他点头致意——他是这个街区每天第一个醒来的人。</p>
+      <p>1885年，爱迪生的电灯公司开始铺设线路。白色的光，不用火柴，不用长杆，一个开关就亮了。老亨利站在街角，看工人们架起电线杆，手里还握着那根磨得光滑的巡灯杆。</p>
+      <p>儿子后来进了电灯公司。有天回家，看见父亲坐在后院，把那根巡灯杆一截一截地锯短。他问父亲干嘛。父亲说，<span class="highlight">做个凳子。以后坐在门口晒太阳，不用再扛着它出门了。</span></p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="1915">
+    <div class="era-year">1915</div>
+    <div class="era-location">中国 上海 · 通讯革命</div>
+    <div class="era-tech">电话</div>
+    <div class="era-role">电报员</div>
+    <div class="era-body">
+      <p>沈先生是上海电报局最老的一批电报员。他不用翻电码本——七千多个汉字对应四位数编码，全在脑子里。手指按在电键上，像弹琴一样，滴答滴答，一个字一个字地越过千山万水。</p>
+      <p>1915年，租界里开始装电话。拿起听筒就能说话，不用翻码，不用等译电员转交，一秒钟就到了。电报局里的人开始议论，说这东西会把咱们的饭碗砸了。</p>
+      <p>沈先生不发一言，继续每天坐在电键前。他母亲不识字，但逢人就说：我儿子动动手指头，千里之外就收到了。</p>
+      <p>母亲去世那年，他发了一封电报给乡下的舅舅。只有五个字：<span class="highlight">母故，速归。</span>二十个数字，他一个一个敲了十分钟。手指头一直在抖。</p>
+      <p>这双手发过上万封电报。偏偏这一封，他希望对面永远收不到。</p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="1958">
+    <div class="era-year">1958</div>
+    <div class="era-location">美国 新泽西 · 集装箱革命</div>
+    <div class="era-tech">集装箱</div>
+    <div class="era-role">码头搬运工</div>
+    <div class="era-body">
+      <p>麦克在纽瓦克码头干了二十年。麻袋、木箱、铁桶、板条箱——从船舱里一件件吊出来，再用肩膀扛到卡车上。几百号人在码头上像蚂蚁搬家，一条船要卸三四天。</p>
+      <p>1958年，马尔科姆·麦克莱恩发明了集装箱。一个大铁箱子，从船上一整箱吊到卡车底盘上，几小时就能卸完一条船。不需要几百号人了，只需要十几个人和一台吊车。</p>
+      <p>麦克失业那年四十七岁。他去开了出租车。有次载了一个年轻人，西装革履，在码头附近的一家物流公司上班。年轻人下车时说，你以前也在这边工作？麦克说，是啊，<span class="highlight">以前。很久以前了。</span></p>
+      <p>那副磨得发亮的羊皮手套一直在抽屉里。他说，有这双手就有饭吃。他说错了。</p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="1982">
+    <div class="era-year">1982</div>
+    <div class="era-location">中国 北京 · 排版革命</div>
+    <div class="era-tech">激光照排</div>
+    <div class="era-role">铅字排版工</div>
+    <div class="era-body">
+      <p>老周在报社排了十五年铅字。车间里两千多个字架，常用字伸手就够着，生僻字要踩凳子上最顶排。排一版报纸要四个小时，手指永远洗不干净，指甲缝里的铅墨渗进皮肤，成了纹身。</p>
+      <p>王选教授发明了激光照排系统。键盘敲几下，电脑排好，激光打印，二十分钟一版。铅字被报社论斤卖掉。</p>
+      <p>走的那天，老周从废铅堆里捡了一个"永"字揣进口袋。楷书八个基本笔画全在这个字里——他师傅当年就是拿这个字教他入行的。</p>
+      <p>铅做的，沉甸甸的。回到家，孙子拿起来玩，说爷爷这是什么玩具，好重。老周说，<span class="highlight">以前，每一个字都这么重。现在一个字多重？一个字节。</span></p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="2002">
+    <div class="era-year">2002</div>
+    <div class="era-location">日本 大阪 · 数码摄影</div>
+    <div class="era-tech">数码相机</div>
+    <div class="era-role">胶片冲洗师</div>
+    <div class="era-body">
+      <p>田中先生在道顿堀附近开了一家小小的冲印店，二十二年。暗房里只有红色的安全灯，底片在药水里轻轻摇晃，影像像魂魄一样浮出来。他说这不叫冲洗，这叫接生。</p>
+      <p>数码相机像潮水一样涌来。客人越来越少。最后一年，有时一整个月只有三四个人上门。</p>
+      <p>关门前最后一个客人是个老太太。她拿来一卷三十年前的胶卷，说是丈夫留下的，一直没敢冲。丈夫去年走了。她不知道里面拍了什么，不敢看，也不敢不看。</p>
+      <p>田中冲了出来。是她年轻时候的照片，穿和服，站在樱花树下，旁边是她的丈夫，两个人都笑得很年轻。</p>
+      <p>老太太拿着照片看了很久，说了声谢谢。田中摆摆手，没说话。她走后，他把暗房的药水倒进下水道，<span class="highlight">化学味道很重，像二十二年攒下来的气，一下子全放掉了。</span></p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="2015">
+    <div class="era-year">2015</div>
+    <div class="era-location">中国 东北 · 电商浪潮</div>
+    <div class="era-tech">电子商务</div>
+    <div class="era-role">百货商场售货员</div>
+    <div class="era-body">
+      <p>张姐在百货大楼站了十八年化妆品柜台。腿肿是职业病。但她记得每一位老顾客的肤质——李姨容易过敏，王阿姨只用一款口红，赵姐冬天皮肤干得起皮。</p>
+      <p>电商来了。同样的东西网上便宜一半，还送货上门。商场二楼关了，三楼也关了。最后连一楼也只剩下几个柜台孤零零亮着。</p>
+      <p>下岗那天，她坐公交车回家，一路上没掉一滴眼泪。进门看见妈在厨房，做了一桌子菜。她吃了两碗饭。母亲一直给她夹菜，什么都没问。</p>
+      <p>洗碗的时候，母亲把电视声音开得很大。她知道，<span class="highlight">母亲是怕她听见自己在哭。</span></p>
+      <p>第二天，母亲比她先出门。回来时手里捏着一张报纸，用圆珠笔画了好几个招聘广告的圈。嘴里念叨着，不着急，咱们慢慢看。</p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="2020">
+    <div class="era-year">2020</div>
+    <div class="era-location">中国 安徽 · AI语音</div>
+    <div class="era-tech">智能语音</div>
+    <div class="era-role">方言语音采集员</div>
+    <div class="era-body">
+      <p>老陈是方言保护项目的外聘采集员。拿着录音笔，走遍皖南山区的每一个村子，找会说老派徽语的人录音。老人讲故事，唱民谣，骂街——全录。他说，这些话再过二十年就没人说了，得存下来。</p>
+      <p>后来AI语音技术爆发。不需要他一个一个村子跑了——用已有的录音训练模型，AI可以生成无限量的"方言对话"。项目组说，陈老师，效率提高了，经费也省了。</p>
+      <p>老陈最后一次去村里，找了一个九十三岁的老太太录音。老太太用徽语唱了一首她母亲教她的童谣。唱完以后问他，后生，你录这个做什么。</p>
+      <p>他说，<span class="highlight">留给以后的人听。等你孙女长大了还能听见你唱。</span></p>
+      <p>老太太笑了，说，孙女在合肥上班，一年回来一次，说普通话的。</p>
+      <p>老陈把那支录音笔放在桌上，很久没拿起来。</p>
+    </div>
+  </div>
+
+  <div class="era-entry" data-year="2024">
+    <div class="era-year">2024</div>
+    <div class="era-location">中国 深圳 · AI绘画</div>
+    <div class="era-tech">AI图像生成</div>
+    <div class="era-role">商业插画师</div>
+    <div class="era-body">
+      <p>小陆从美院毕业后画了五年商业插画。从包装到绘本到产品配图，一笔一画，慢慢把自己的风格立起来。她画人物的手特别用心——每根手指的关节、光影、力量都仔细琢磨过。</p>
+      <p>AI绘画工具出来后，甲方发来一张图说你看这个行不行，打几个字就出来了，比你画得快多了。小陆盯着那张图看了很久。光影是对的，构图是对的，风格也八九不离十。唯独手指——六根。</p>
+      <p>她没有跟甲方争辩。那晚她翻出大学时的速写本，翻到一页画的是外婆在包饺子。外婆的手青筋鼓起，指节变形，但每一条皱纹都清清楚楚。</p>
+      <p>外婆去年走了。小陆对着那页速写看了很久，然后拿起笔，<span class="highlight">在空白处补了一排字：外婆的手。包了一辈子饺子。一共包了大概十万个。</span></p>
+      <p>AI算不出十万个饺子里有多少个外婆的手指印。</p>
+    </div>
+  </div>
+
+  <div class="era-divider"></div>
+
+  <div class="era-entry" data-year="2026">
+    <div class="era-year">2026</div>
+    <div class="era-location">这颗星球上 </div>
+    <div class="era-tech">此刻</div>
+    <div class="era-role" style="color: var(--accent-gold);">——</div>
+    <div class="era-body">
+      <p class="highlight" style="font-size: 1.1rem; text-align: center; padding: 2rem 0;">
+        这块碑还没有刻完。<br>
+        也许此刻读到这里的你，<br>
+        就是下一个名字。
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-coda">
+  <p>这里记住的不是某个行业消失了，<br>而是一个人怎样用旧世界的逻辑，<br>去爱一个已经站在了新世界里的人。</p>
+  <p style="margin-top: 2rem; font-size: 0.8rem; color: var(--star-faint);">
+    技术会过去，人会留下痕迹。
+  </p>
+</div>
+
+<a href="../" class="back-link">← 返回深空观测站</a>
+
+<script src="../assets/js/shared.js"></script>
+<script>
+(function() {
+  var entries = document.querySelectorAll('.era-entry');
+  var observer = new IntersectionObserver(function(els) {
+    els.forEach(function(el) {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  entries.forEach(function(entry) {
+    observer.observe(entry);
+  });
+})();
+</script>
+</body>
+</html>

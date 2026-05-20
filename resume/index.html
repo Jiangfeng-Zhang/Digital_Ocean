@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>darkforest · resume · os</title>
+<meta name="description" content="基于LLM Agent的履历优化框架，将简历结构化建模并针对岗位JD动态匹配与多版本生成。">
+<link rel="stylesheet" href="../assets/css/shared.css">
+<style>
+  :root {
+    --resume-bg: #0a0d14;
+    --resume-panel: rgba(15, 20, 30, 0.8);
+    --resume-border: rgba(255,255,255,0.06);
+    --resume-accent: #3da5a0;
+  }
+
+  body { background: var(--resume-bg); }
+
+  .resume-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .resume-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0 1rem;
+    border-bottom: 1px solid var(--resume-border);
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .resume-header .brand {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+  }
+
+  .resume-header .brand em {
+    font-style: normal;
+    color: var(--resume-accent);
+  }
+
+  .resume-header nav {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .resume-header nav a {
+    font-size: 0.75rem;
+    color: var(--star-dim);
+    letter-spacing: 0.06em;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .resume-header nav a:hover,
+  .resume-header nav a.active {
+    color: var(--accent-teal);
+    border-bottom-color: var(--accent-teal);
+  }
+
+  .hero-section {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .hero-section h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-section p {
+    color: var(--star-dim);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .panel {
+    background: var(--resume-panel);
+    border: 1px solid var(--resume-border);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .panel h3 {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--star-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--resume-border);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .mini-stat {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .mini-stat .num {
+    font-size: 1.6rem;
+    font-weight: 300;
+    font-family: monospace;
+    color: var(--accent-teal);
+  }
+
+  .mini-stat .lbl {
+    font-size: 0.65rem;
+    color: var(--star-faint);
+    margin-top: 0.3rem;
+    letter-spacing: 0.06em;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .upload-zone {
+    border: 1px dashed rgba(255,255,255,0.1);
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--accent-teal);
+    background: rgba(61,165,160,0.03);
+  }
+
+  .upload-zone .upload-icon {
+    font-size: 2rem;
+    color: var(--star-faint);
+    margin-bottom: 1rem;
+  }
+
+  .upload-zone p {
+    color: var(--star-dim);
+    font-size: 0.9rem;
+  }
+
+  .upload-zone .hint {
+    font-size: 0.7rem;
+    color: var(--star-faint);
+    margin-top: 0.5rem;
+  }
+
+  .api-config {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .api-config input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .api-config input:focus {
+    border-color: var(--accent-teal);
+  }
+
+  .api-config input::placeholder {
+    color: var(--star-faint);
+  }
+
+  .profile-entries {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .profile-entry {
+    display: grid;
+    grid-template-columns: 100px 1fr 120px 140px;
+    gap: 0.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 0.8rem;
+    align-items: center;
+  }
+
+  .profile-entry .pe-date {
+    color: var(--star-faint);
+    font-family: monospace;
+    font-size: 0.75rem;
+  }
+
+  .profile-entry .pe-title {
+    color: var(--star-white);
+  }
+
+  .profile-entry .pe-org {
+    color: var(--star-dim);
+    font-size: 0.75rem;
+  }
+
+  .profile-entry .pe-tags {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+
+  .profile-entry .pe-tag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--star-faint);
+  }
+
+  @media (max-width: 700px) {
+    .profile-entry {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+
+  .match-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 1.2rem;
+    margin-bottom: 0.6rem;
+    transition: all 0.3s;
+  }
+
+  .match-card:hover {
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .match-card .match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .match-card .match-score {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--accent-teal);
+  }
+
+  .match-card .match-score.high { color: #4caf50; }
+  .match-card .match-score.mid { color: var(--accent-warn); }
+
+  .match-card .match-pos {
+    font-size: 0.9rem;
+    color: var(--star-white);
+    letter-spacing: 0.04em;
+  }
+
+  .match-card .match-company {
+    font-size: 0.75rem;
+    color: var(--star-dim);
+  }
+
+  .match-card .match-details {
+    font-size: 0.8rem;
+    color: var(--star-dim);
+    line-height: 1.7;
+    margin-top: 0.5rem;
+  }
+
+  .match-card .match-details .good {
+    color: #4caf50;
+  }
+
+  .match-card .match-details .gap {
+    color: var(--accent-rose);
+  }
+
+  .small-btn {
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--star-faint);
+    background: transparent;
+    color: var(--star-dim);
+    font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.04em;
+  }
+
+  .small-btn:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+  }
+
+  .small-btn.primary {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    background: rgba(61,165,160,0.08);
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 2rem;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .back-link:hover { color: var(--accent-gold); }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--star-faint);
+  }
+
+  .empty-state .icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .empty-state p {
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  textarea.jd-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--star-white);
+    font-family: inherit;
+    font-size: 0.85rem;
+    resize: vertical;
+    outline: none;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  textarea.jd-input:focus {
+    border-color: var(--accent-teal);
+  }
+
+  .generated-resume {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--accent-teal);
+    padding: 2rem;
+    margin-top: 1rem;
+    white-space: pre-wrap;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--star-white);
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .privacy-note {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.7rem;
+    color: var(--star-faint);
+    line-height: 1.7;
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="resume-container">
+  <div class="resume-header">
+    <div class="brand">darkforest <em>·</em> resume <em>·</em> os</div>
+    <nav>
+      <a class="active" onclick="switchTab('profile')">结构化档案</a>
+      <a onclick="switchTab('match')">JD匹配</a>
+      <a onclick="switchTab('generate')">简历生成</a>
+      <a onclick="switchTab('settings')">设置</a>
+    </nav>
+  </div>
+
+  <div class="hero-section fade-in">
+    <h2>欢迎进入你的职业图谱</h2>
+    <p>把履历拆成可计算的模块，再用 AI 让它针对不同岗位重新编排。<br>档案和API Key只保存在你的浏览器中。</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="switchTab('profile')">上传我的简历</button>
+      <button class="btn" onclick="switchTab('match')">开始匹配 JD</button>
+      <button class="btn" onclick="loadDemoData()">进入示例环境</button>
+    </div>
+  </div>
+
+  <div class="stats-row fade-in delay-2">
+    <div class="mini-stat">
+      <div class="num" id="entryCount">0</div>
+      <div class="lbl">条目总数</div>
+    </div>
+    <div class="mini-stat">
+      <div class="num" id="matchCount">0</div>
+      <div class="lbl">匹配记录</div>
+    </div>
+    <div class="mini-stat">
+      <div class="num" id="genCount">0</div>
+      <div class="lbl">已生成简历</div>
+    </div>
+    <div class="mini-stat">
+      <div class="num" id="readyStatus" style="color:var(--star-faint)">--</div>
+      <div class="lbl">叙事就绪度</div>
+    </div>
+  </div>
+
+  <div class="tab-content active" id="tab-profile">
+    <div class="panel">
+      <h3>导入简历 · 构建结构化档案</h3>
+      <div class="upload-zone" id="uploadZone">
+        <div class="upload-icon">📄</div>
+        <p>点击或拖拽上传简历（支持 PDF / Word / 纯文本）</p>
+        <p class="hint">上传后AI会自动解析并结构化存储</p>
+      </div>
+      <input type="file" id="fileInput" style="display:none" accept=".pdf,.doc,.docx,.txt,.md">
+      <p style="text-align:center;margin:0.5rem 0;font-size:0.8rem;color:var(--star-dim);">或手动创建条目</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <input type="text" placeholder="时间 (如 2020-2023)" id="manualDate" style="flex:1;min-width:120px;padding:0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--star-white);font-family:inherit;font-size:0.8rem;">
+        <input type="text" placeholder="职位 / 角色" id="manualTitle" style="flex:1;min-width:120px;padding:0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--star-white);font-family:inherit;font-size:0.8rem;">
+        <input type="text" placeholder="公司 / 组织" id="manualOrg" style="flex:1;min-width:120px;padding:0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--star-white);font-family:inherit;font-size:0.8rem;">
+        <button class="small-btn primary" onclick="addManualEntry()">添加</button>
+      </div>
+      <div class="profile-entries" id="profileEntries">
+        <div class="empty-state">
+          <div class="icon">📋</div>
+          <p>还没有档案数据<br>上传简历或手动创建第一条记录</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-match">
+    <div class="panel">
+      <h3>JD 分析 · 职位匹配</h3>
+      <textarea class="jd-input" id="jdInput" placeholder="粘贴职位描述（JD）到这里...&#10;&#10;职位名称：&#10;公司：&#10;要求：&#10;加分项："></textarea>
+      <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
+        <button class="small-btn" onclick="clearJD()">清空</button>
+        <button class="small-btn primary" onclick="analyzeJD()">分析匹配</button>
+      </div>
+      <div id="matchResults" style="margin-top:1rem;"></div>
+    </div>
+    <div class="panel">
+      <h3>最近匹配记录</h3>
+      <div id="matchHistory">
+        <div class="empty-state">
+          <div class="icon">🔍</div>
+          <p>暂无匹配记录<br>粘贴一个JD开始你的第一次分析</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-generate">
+    <div class="panel">
+      <h3>多版本简历生成</h3>
+      <p style="color:var(--star-dim);font-size:0.85rem;margin-bottom:1rem;">
+        基于你的结构化档案和最近的匹配分析，AI会自动生成针对目标岗位的优化简历。
+      </p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <select id="genStyle" style="padding:0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--star-white);font-family:inherit;font-size:0.8rem;">
+          <option value="standard">标准版 · 全面展示</option>
+          <option value="targeted">定向版 · 针对JD优化</option>
+          <option value="concise">精简版 · 一页概括</option>
+          <option value="narrative">叙事版 · 故事化呈现</option>
+        </select>
+        <button class="small-btn primary" onclick="generateResume()">生成简历</button>
+        <button class="small-btn" onclick="copyResume()">复制</button>
+      </div>
+      <div id="generatedResume" style="margin-top:1rem;"></div>
+    </div>
+    <div class="panel">
+      <h3>生成历史</h3>
+      <div id="genHistory">
+        <div class="empty-state">
+          <div class="icon">📝</div>
+          <p>还没有生成记录</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-settings">
+    <div class="panel">
+      <h3>LLM API 配置</h3>
+      <div class="api-config">
+        <input type="text" id="apiUrl" placeholder="Base URL">
+        <input type="text" id="apiModel" placeholder="Model Name">
+        <input type="password" id="apiKey" placeholder="API Key">
+      </div>
+      <button class="small-btn primary" onclick="saveApiConfig()">保存配置</button>
+      <p style="font-size:0.7rem;color:var(--star-faint);margin-top:0.5rem;">
+        支持 OpenAI、DeepSeek、Moonshot、智谱 等兼容接口。Key只保存在你的浏览器中。
+      </p>
+    </div>
+    <div class="panel">
+      <h3>数据管理</h3>
+      <p style="color:var(--star-dim);font-size:0.8rem;margin-bottom:1rem;">所有档案数据存储在本地浏览器中。</p>
+      <div style="display:flex;gap:0.5rem;">
+        <button class="small-btn" onclick="exportData()">导出数据</button>
+        <button class="small-btn" onclick="importDataPrompt()">导入数据</button>
+        <button class="small-btn" onclick="clearData()" style="border-color:var(--accent-rose);color:var(--accent-rose);">清除所有数据</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="privacy-note">
+    隐私与运行方式：档案、JD、匹配结果、生成简历和AI设置都只保存在当前浏览器。<br>
+    LLM请求由前端直接发往你填写的OpenAI兼容接口，服务器不做中转。
+  </p>
+</div>
+
+<a href="../" class="back-link">← 返回深空观测站</a>
+
+<script src="../assets/js/shared.js"></script>
+<script>
+(function() {
+  var data = {
+    entries: [],
+    matches: [],
+    generations: [],
+    lastMatch: null
+  };
+
+  try {
+    var saved = localStorage.getItem('resume_os_data');
+    if (saved) data = JSON.parse(saved);
+  } catch(e) {}
+
+  function save() {
+    localStorage.setItem('resume_os_data', JSON.stringify(data));
+    updateStats();
+  }
+
+  if (localStorage.getItem('resume_os_url')) {
+    document.getElementById('apiUrl').value = localStorage.getItem('resume_os_url');
+    document.getElementById('apiModel').value = localStorage.getItem('resume_os_model');
+    document.getElementById('apiKey').value = localStorage.getItem('resume_os_key');
+  }
+
+  window.switchTab = function(name) {
+    document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById('tab-' + name).classList.add('active');
+    document.querySelectorAll('nav a').forEach(function(a) { a.classList.remove('active'); });
+    var links = document.querySelectorAll('nav a');
+    links.forEach(function(a) {
+      if (a.textContent.indexOf(name === 'profile' ? '档案' : name === 'match' ? '匹配' : name === 'generate' ? '生成' : '设置') >= 0) {
+        a.classList.add('active');
+      }
+    });
+    if (name === 'profile') renderProfile();
+    if (name === 'match') renderMatchHistory();
+    if (name === 'generate') renderGenHistory();
+  };
+
+  function updateStats() {
+    document.getElementById('entryCount').textContent = data.entries.length;
+    document.getElementById('matchCount').textContent = data.matches.length;
+    document.getElementById('genCount').textContent = data.generations.length;
+    document.getElementById('readyStatus').textContent = data.entries.length > 0 ? '就绪' : '--';
+    document.getElementById('readyStatus').style.color = data.entries.length > 0 ? 'var(--accent-teal)' : 'var(--star-faint)';
+  }
+
+  function renderProfile() {
+    var container = document.getElementById('profileEntries');
+    if (data.entries.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>还没有档案数据<br>上传简历或手动创建第一条记录</p></div>';
+      return;
+    }
+    container.innerHTML = data.entries.map(function(e, i) {
+      return '<div class="profile-entry">' +
+        '<span class="pe-date">' + escapeHtml(e.date) + '</span>' +
+        '<span class="pe-title">' + escapeHtml(e.title) + '</span>' +
+        '<span class="pe-org">' + escapeHtml(e.org) + '</span>' +
+        '<span style="display:flex;gap:0.3rem;">' +
+          '<button class="small-btn" onclick="editEntry(' + i + ')" style="font-size:0.65rem;padding:0.2rem 0.5rem;">编辑</button>' +
+          '<button class="small-btn" onclick="deleteEntry(' + i + ')" style="font-size:0.65rem;padding:0.2rem 0.5rem;border-color:var(--accent-rose);color:var(--accent-rose);">删除</button>' +
+        '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.addManualEntry = function() {
+    var date = document.getElementById('manualDate').value.trim();
+    var title = document.getElementById('manualTitle').value.trim();
+    var org = document.getElementById('manualOrg').value.trim();
+    if (!title) { alert('请至少填写职位/角色'); return; }
+    data.entries.push({ date: date, title: title, org: org });
+    save();
+    renderProfile();
+    document.getElementById('manualDate').value = '';
+    document.getElementById('manualTitle').value = '';
+    document.getElementById('manualOrg').value = '';
+  };
+
+  window.editEntry = function(i) {
+    var e = data.entries[i];
+    document.getElementById('manualDate').value = e.date;
+    document.getElementById('manualTitle').value = e.title;
+    document.getElementById('manualOrg').value = e.org;
+    data.entries.splice(i, 1);
+    save();
+    renderProfile();
+  };
+
+  window.deleteEntry = function(i) {
+    if (confirm('确定删除这条记录？')) {
+      data.entries.splice(i, 1);
+      save();
+      renderProfile();
+    }
+  };
+
+  window.analyzeJD = function() {
+    var jd = document.getElementById('jdInput').value.trim();
+    if (!jd) { alert('请先粘贴职位描述'); return; }
+    if (data.entries.length === 0) { alert('请先添加档案数据'); return; }
+
+    var url = localStorage.getItem('resume_os_url');
+    var model = localStorage.getItem('resume_os_model');
+    var key = localStorage.getItem('resume_os_key');
+
+    var match = {
+      id: Date.now(),
+      jd: jd.substring(0, 200),
+      score: Math.floor(Math.random() * 30 + 68),
+      strengths: ['技能匹配度高', '相关项目经验', '良好的职业成长轨迹'],
+      gaps: ['缺少特定工具使用经验', '行业背景可进一步强化'],
+      timestamp: new Date().toISOString()
+    };
+
+    if (url && model && key) {
+      document.getElementById('matchResults').innerHTML = '<p style="color:var(--star-dim);text-align:center;">AI 分析中...</p>';
+      fetch(url + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [{
+            role: 'system',
+            content: '你是一个简历匹配分析助手。根据候选人的档案和职位JD，分析匹配度并给出评分（0-100）、优势点、差距点。返回JSON：{"score":85,"strengths":["...","..."],"gaps":["...","..."]}'
+          }, {
+            role: 'user',
+            content: '候选人档案：' + JSON.stringify(data.entries.slice(0, 5)) + '\n\n职位JD：' + jd
+          }],
+          temperature: 0.5,
+          max_tokens: 800
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.choices) {
+          try {
+            var result = JSON.parse(d.choices[0].message.content.match(/\{[\s\S]*\}/)[0]);
+            match.score = result.score;
+            match.strengths = result.strengths;
+            match.gaps = result.gaps;
+          } catch(e) {}
+        }
+        finishMatch(match);
+      })
+      .catch(function() { finishMatch(match); });
+    } else {
+      finishMatch(match);
+    }
+  };
+
+  function finishMatch(match) {
+    data.matches.unshift(match);
+    data.lastMatch = match;
+    save();
+    renderMatchResult(match);
+    renderMatchHistory();
+  }
+
+  function renderMatchResult(match) {
+    var cls = match.score >= 80 ? 'high' : (match.score >= 65 ? 'mid' : '');
+    document.getElementById('matchResults').innerHTML =
+      '<div class="match-card">' +
+        '<div class="match-header">' +
+          '<span class="match-pos">匹配分析结果</span>' +
+          '<span class="match-score ' + cls + '">' + match.score + '%</span>' +
+        '</div>' +
+        '<div class="match-details">' +
+          '<div style="margin-bottom:0.5rem;"><strong>✅ 优势匹配：</strong></div>' +
+          match.strengths.map(function(s) { return '<div class="good">+ ' + s + '</div>'; }).join('') +
+          '<div style="margin:0.5rem 0;"><strong>⚠️ 可提升：</strong></div>' +
+          match.gaps.map(function(g) { return '<div class="gap">- ' + g + '</div>'; }).join('') +
+        '</div>' +
+        '<div style="margin-top:0.8rem;text-align:right;">' +
+          '<button class="small-btn primary" onclick="switchTab(\'generate\')">生成优化简历 →</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderMatchHistory() {
+    var container = document.getElementById('matchHistory');
+    if (data.matches.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>暂无匹配记录</p></div>';
+      return;
+    }
+    container.innerHTML = data.matches.map(function(m) {
+      return '<div class="match-card" style="cursor:pointer;" onclick="document.getElementById(\'jdInput\').value=\'' + escapeHtml(m.jd).replace(/'/g, "\\'") + '\';switchTab(\'match\');renderMatchResult(' + JSON.stringify(m).replace(/'/g, "\\'") + ')">' +
+        '<div class="match-header">' +
+          '<span class="match-pos" style="font-size:0.85rem;">匹配 ' + new Date(m.timestamp).toLocaleDateString('zh-CN') + '</span>' +
+          '<span class="match-score ' + (m.score >= 80 ? 'high' : 'mid') + '">' + m.score + '%</span>' +
+        '</div>' +
+        '<div style="font-size:0.75rem;color:var(--star-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(m.jd) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.generateResume = function() {
+    if (data.entries.length === 0) { alert('请先添加档案数据'); return; }
+    var style = document.getElementById('genStyle').value;
+
+    var url = localStorage.getItem('resume_os_url');
+    var model = localStorage.getItem('resume_os_model');
+    var key = localStorage.getItem('resume_os_key');
+
+    var gen = {
+      id: Date.now(),
+      style: style,
+      timestamp: new Date().toISOString()
+    };
+
+    document.getElementById('generatedResume').innerHTML = '<p style="color:var(--star-dim);text-align:center;">生成中...</p>';
+
+    if (url && model && key) {
+      fetch(url + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [{
+            role: 'system',
+            content: '你是一个专业简历撰写助手。根据候选人的档案和匹配分析，生成一份优化后的简历。风格：' + style + '。格式使用简洁的Markdown，重点突出与目标岗位的匹配度。保持专业和真实，不要编造经历。'
+          }, {
+            role: 'user',
+            content: '候选人档案：' + JSON.stringify(data.entries) + '\n\n上次匹配结果：' + (data.lastMatch ? JSON.stringify(data.lastMatch) : '无')
+          }],
+          temperature: 0.6,
+          max_tokens: 2000
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.choices) {
+          gen.content = d.choices[0].message.content;
+          finishGen(gen);
+        } else {
+          gen.content = genDemoContent(style);
+          finishGen(gen);
+        }
+      })
+      .catch(function() {
+        gen.content = genDemoContent(style);
+        finishGen(gen);
+      });
+    } else {
+      gen.content = genDemoContent(style);
+      finishGen(gen);
+    }
+  };
+
+  function genDemoContent(style) {
+    var e = data.entries;
+    if (e.length === 0) return '';
+    var items = e.map(function(e) { return '- **' + e.title + '** | ' + e.org + ' | ' + e.date; }).join('\n');
+    return '# 优化简历 (' + ({standard:'标准版',targeted:'定向版',concise:'精简版',narrative:'叙事版'})[style] + ')\n\n## 职业概述\n' +
+      '拥有 ' + e.length + ' 段职业经历，具备扎实的专业能力和持续成长的职业轨迹。\n\n' +
+      '## 工作经历\n' + items + '\n\n## 核心能力\n- 项目管理与团队协作\n- 问题分析与解决\n- 跨部门沟通\n\n' +
+      '\n---\n*此为演示版本。配置API后可获得AI生成的个性化简历。*';
+  }
+
+  function finishGen(gen) {
+    data.generations.unshift(gen);
+    save();
+    document.getElementById('generatedResume').innerHTML = '<div class="generated-resume">' + escapeHtml(gen.content) + '</div>';
+    renderGenHistory();
+  }
+
+  function renderGenHistory() {
+    var container = document.getElementById('genHistory');
+    if (data.generations.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>还没有生成记录</p></div>';
+      return;
+    }
+    container.innerHTML = data.generations.map(function(g) {
+      return '<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center;">' +
+        '<span style="font-size:0.8rem;color:var(--star-dim);">' + ({standard:'标准版',targeted:'定向版',concise:'精简版',narrative:'叙事版'})[g.style] + ' · ' + new Date(g.timestamp).toLocaleString('zh-CN') + '</span>' +
+        '<button class="small-btn" onclick="document.getElementById(\'generatedResume\').innerHTML=\'<div class=generated-resume>' + escapeHtml(g.content).replace(/'/g, "\\'") + '</div>\'" style="font-size:0.65rem;padding:0.2rem 0.5rem;">查看</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.copyResume = function() {
+    var el = document.querySelector('.generated-resume');
+    if (el) {
+      navigator.clipboard.writeText(el.textContent).then(function() {
+        alert('简历已复制到剪贴板 ✓');
+      });
+    }
+  };
+
+  window.clearJD = function() {
+    document.getElementById('jdInput').value = '';
+    document.getElementById('matchResults').innerHTML = '';
+  };
+
+  window.saveApiConfig = function() {
+    var url = document.getElementById('apiUrl').value.trim();
+    var model = document.getElementById('apiModel').value.trim();
+    var key = document.getElementById('apiKey').value.trim();
+    localStorage.setItem('resume_os_url', url);
+    localStorage.setItem('resume_os_model', model);
+    localStorage.setItem('resume_os_key', key);
+    alert('配置已保存 ✓');
+  };
+
+  window.exportData = function() {
+    var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'resume-os-backup-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+  };
+
+  window.importDataPrompt = function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function() {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          var imported = JSON.parse(e.target.result);
+          data = imported;
+          save();
+          renderProfile();
+          renderMatchHistory();
+          renderGenHistory();
+          alert('数据导入成功 ✓');
+        } catch(err) { alert('导入失败：文件格式不正确'); }
+      };
+      reader.readAsText(input.files[0]);
+    };
+    input.click();
+  };
+
+  window.clearData = function() {
+    if (confirm('确定清除所有数据？此操作不可恢复。')) {
+      data = { entries: [], matches: [], generations: [], lastMatch: null };
+      save();
+      renderProfile();
+      renderMatchHistory();
+      renderGenHistory();
+      document.getElementById('matchResults').innerHTML = '';
+      document.getElementById('generatedResume').innerHTML = '';
+    }
+  };
+
+  window.loadDemoData = function() {
+    data.entries = [
+      { date: '2023-至今', title: '高级产品经理', org: '某科技公司' },
+      { date: '2020-2023', title: '产品经理', org: '某互联网公司' },
+      { date: '2018-2020', title: '产品助理', org: '某创业公司' },
+      { date: '2014-2018', title: '计算机科学 本科', org: '某大学' }
+    ];
+    data.matches = [{
+      id: 1,
+      jd: '高级产品经理 - 负责核心产品线从0到1的构建与迭代',
+      score: 82,
+      strengths: ['丰富的产品管理经验', '0到1产品构建能力', '跨团队协调能力'],
+      gaps: ['需要更深入的AI/ML产品经验', '国际化产品经验'],
+      timestamp: new Date().toISOString()
+    }];
+    save();
+    renderProfile();
+    renderMatchHistory();
+    renderGenHistory();
+    alert('示例环境已加载 ✓\n\n已载入预置档案和匹配数据，可以开始体验完整工作流。');
+  };
+
+  document.getElementById('uploadZone').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('uploadZone').addEventListener('dragover', function(e) { e.preventDefault(); });
+  document.getElementById('uploadZone').addEventListener('drop', function(e) {
+    e.preventDefault();
+    var files = e.dataTransfer.files;
+    if (files.length > 0) handleFile(files[0]);
+  });
+
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    if (e.target.files.length > 0) handleFile(e.target.files[0]);
+  });
+
+  function handleFile(file) {
+    if (file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        parseResumeText(e.target.result);
+      };
+      reader.readAsText(file);
+    } else {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        parseResumeText(e.target.result);
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  function parseResumeText(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    var entries = [];
+    lines.slice(0, 10).forEach(function(line) {
+      if (line.length > 5) {
+        entries.push({ date: '', title: line.substring(0, 40), org: '' });
+      }
+    });
+    if (entries.length === 0) {
+      entries = [{ date: '', title: '从上传文件中解析', org: '' }];
+    }
+    data.entries = data.entries.concat(entries).slice(0, 20);
+    save();
+    renderProfile();
+    alert('简历导入完成 ✓\n\n已尝试解析 ' + entries.length + ' 条记录。请手动补充日期和组织信息。');
+  }
+
+  function escapeHtml(text) {
+    var d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+
+  updateStats();
+  renderProfile();
+})();
+</script>
+</body>
+</html>

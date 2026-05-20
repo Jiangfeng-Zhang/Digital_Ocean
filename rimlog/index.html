@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RimLog · 外沿记录层</title>
+<meta name="description" content="观察地表日常ing · 从轨道高度俯瞰这颗行星上的日常">
+<link rel="stylesheet" href="../assets/css/shared.css">
+<style>
+  .rimlog-header {
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .rimlog-header h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .rimlog-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--star-dim);
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+
+  .rimlog-header .orbit-indicator {
+    margin-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--star-faint);
+  }
+
+  .rimlog-header .orbit-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; box-shadow: 0 0 4px var(--accent-teal); }
+    50% { opacity: 1; box-shadow: 0 0 12px var(--accent-teal); }
+  }
+
+  .log-feed {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .log-entry {
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .log-entry.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .log-entry .log-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .log-entry .log-date {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--accent-teal);
+    letter-spacing: 0.08em;
+  }
+
+  .log-entry .log-coord {
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--star-faint);
+  }
+
+  .log-entry .log-title {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--star-white);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.04em;
+  }
+
+  .log-entry .log-body {
+    color: var(--star-dim);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+  }
+
+  .log-entry .log-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    color: var(--star-faint);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 0.2rem 0.6rem;
+    margin-right: 0.4rem;
+    margin-top: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  .status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.6rem 1.5rem;
+    background: rgba(8,8,15,0.9);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--star-faint);
+    z-index: 10;
+    letter-spacing: 0.06em;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--star-faint);
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+    margin-bottom: 3rem;
+  }
+
+  .back-link:hover { color: var(--accent-gold); }
+</style>
+</head>
+<body>
+
+<div class="rimlog-header fade-in">
+  <h1>外沿记录层</h1>
+  <p class="subtitle">RIM · LOG</p>
+  <div class="orbit-indicator">
+    <span class="orbit-dot"></span>
+    观测轨道 · 正常运行中
+  </div>
+</div>
+
+<div class="log-feed" id="logFeed">
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.19</span>
+      <span class="log-coord">N31.2° E121.4° · 地表 4.7m</span>
+    </div>
+    <div class="log-title">一个关于早餐的观测</div>
+    <div class="log-body">
+      早晨七点二十三分，豆浆店门口的队伍排到了第七个人。前面的人在看手机，第三个人在看手机，第五个人也在看手机。只有排在第四位的老太太什么也没看——她在跟排在第三位的陌生人聊天。她说今天的豆浆比昨天的浓一点。陌生人在笑的时候，手机差点掉进豆浆桶里。
+    </div>
+    <div>
+      <span class="log-tag">#地表日常</span>
+      <span class="log-tag">#豆浆</span>
+      <span class="log-tag">#人与人</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.17</span>
+      <span class="log-coord">N39.9° E116.4° · 地表 52m</span>
+    </div>
+    <div class="log-title">地铁上的第三只手</div>
+    <div class="log-body">
+      晚高峰的十号线。一个中年男人靠在车厢连接处睡着了。他的公文包从膝盖上滑落，落在脚边。身旁的女孩犹豫了大约三秒钟，然后轻轻推了推他的肩膀：你的包掉了。男人醒来，愣了一下，说了声谢谢。他在下一站下车，脚步比刚才稳了很多。也许不是因为睡醒了，而是因为有人在乎他的包掉在地上。
+    </div>
+    <div>
+      <span class="log-tag">#城市</span>
+      <span class="log-tag">#地铁</span>
+      <span class="log-tag">#微小善意</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.14</span>
+      <span class="log-coord">N22.5° E114.1° · 地表 3m</span>
+    </div>
+    <div class="log-title">菜市场里的键盘声</div>
+    <div class="log-body">
+      旺角街市，卖菜的阿婆一边择菜一边用平板电脑看电视剧。她把音量开得不大不小，刚好盖过隔壁鱼摊的吆喝声。她的手指在菜叶间翻飞的时候，偶尔会碰到屏幕，暂停了剧。她低头看一眼，又按一下继续，然后若无其事地继续择菜。她已经很熟练了——在菜叶和触摸屏之间的切换，比我们大多数人切换工作中的窗口还要自然。
+    </div>
+    <div>
+      <span class="log-tag">#市井</span>
+      <span class="log-tag">#科技</span>
+      <span class="log-tag">#日常</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.10</span>
+      <span class="log-coord">N30.5° E120.3° · 地表 7m</span>
+    </div>
+    <div class="log-title">雨天的快递小哥</div>
+    <div class="log-body">
+      下午三点，暴雨。快递小哥的电动车停在小区门口。他没有打伞，而是把雨衣脱下来盖在后座的包裹上。他站在屋檐下等雨小一点，身上湿透了。有个住户从楼上喊：上来躲躲吧！他摆摆手，指了指包裹：快超时了。我注意到他摆手的那个姿势——很像在跟一个老朋友说，没事，我撑得住。
+    </div>
+    <div>
+      <span class="log-tag">#雨天</span>
+      <span class="log-tag">#劳动者</span>
+      <span class="log-tag">#城市肌理</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.07</span>
+      <span class="log-coord">N31.8° E118.9° · 地表 15m</span>
+    </div>
+    <div class="log-title">大学城最后的报刊亭</div>
+    <div class="log-body">
+      南京大学城附近还有一个报刊亭。老板姓周，在这里摆了十八年。他说生意比十年前差了八成，但他每天早上还是五点开门——因为有个退休教授每天五点半来买一份报纸。教授七十多岁了，不用手机看新闻。周老板说，哪天教授不来了，我就关了。昨天教授来了，照常买了报纸，还多给了两块钱说不用找。周老板没要，追出去还给了他。教授的背有点弯了，走得慢。周老板站在报刊亭门口看了很久。
+    </div>
+    <div>
+      <span class="log-tag">#报刊亭</span>
+      <span class="log-tag">#纸质</span>
+      <span class="log-tag">#消失中的</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.05.03</span>
+      <span class="log-coord">N23.1° E113.3° · 地表 2m</span>
+    </div>
+    <div class="log-title">夜班便利店的年轻人</div>
+    <div class="log-body">
+      凌晨三点，便利店里只有我和收银员。他在看书，是一本编程教材。我问他在学什么，他说Python，想转行做程序员。我说你白天不上班吗，他说这就是白天，他上夜班。一周六天，晚上十点到早上六点。他说这样白天可以学，晚上上班的时候还能debug——在脑子里跑代码，收银扫码的时候也在想bug在哪。我买了一瓶水，走的时候他说欢迎下次光临，然后低下头继续看他的书。凌晨三点的便利店，像深夜里的一个小小发射台，有人在试着发射自己。
+    </div>
+    <div>
+      <span class="log-tag">#深夜</span>
+      <span class="log-tag">#自学</span>
+      <span class="log-tag">#改变</span>
+    </div>
+  </div>
+
+  <div class="log-entry">
+    <div class="log-meta">
+      <span class="log-date">2026.04.28</span>
+      <span class="log-coord">N31.2° E121.5° · 地表 4m</span>
+    </div>
+    <div class="log-title">弄堂口的缝纫机</div>
+    <div class="log-body">
+      老城区的弄堂口，一个阿姨还在用缝纫机帮人改衣服。她在这坐了二十多年。旁边新开了一家干洗店，有现代化的缝纫设备。我问她生意怎么样，她说不多了，但还有几个老街坊来。她指着脚边的猫说，你看它每天下午就趴在这里等我收工。有人来它就挪一挪，没人来它就睡得四仰八叉的。猫不知道什么叫退休，它只知道每天下午这个地方有太阳，有人。
+    </div>
+    <div>
+      <span class="log-tag">#弄堂</span>
+      <span class="log-tag">#手艺</span>
+      <span class="log-tag">#猫</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="status-bar">
+  <span>RIMLOG v2.1 · 观测中</span>
+  <span>轨道高度 420km · 下行速率 1.2 Mbps</span>
+  <span>最后同步 2026-05-20 06:09:41 UTC+8</span>
+</div>
+
+<a href="../" class="back-link">← 返回深空观测站</a>
+
+<script src="../assets/js/shared.js"></script>
+<script>
+(function() {
+  var entries = document.querySelectorAll('.log-entry');
+  var observer = new IntersectionObserver(function(els) {
+    els.forEach(function(el) {
+      if (el.isIntersecting) el.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  entries.forEach(function(e) { observer.observe(e); });
+})();
+</script>
+</body>
+</html>
