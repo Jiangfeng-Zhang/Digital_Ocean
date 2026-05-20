@@ -1,0 +1,269 @@
+/* === kookat Deep Space Shared Styles === */
+/* Self-contained, no external CDN, China-accessible */
+
+:root {
+  --space-black: #08080f;
+  --space-deep: #0d0d1a;
+  --space-blue: #0a1628;
+  --nebula-purple: #1a1035;
+  --star-white: #e8e6f0;
+  --star-dim: #6b6880;
+  --star-faint: #3a3850;
+  --accent-gold: #c9a84c;
+  --accent-blue: #4a8fcc;
+  --accent-teal: #3da5a0;
+  --accent-rose: #b84a6c;
+  --accent-lavender: #7b6fcf;
+  --glow-blue: rgba(74, 143, 204, 0.3);
+  --glow-gold: rgba(201, 168, 76, 0.25);
+  --glow-teal: rgba(61, 165, 160, 0.2);
+  --glow-rose: rgba(184, 74, 108, 0.2);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--space-black);
+  color: var(--star-white);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "WenQuanYi Micro Hei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antiali;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mono {
+  font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", "Courier New", monospace;
+}
+
+::selection {
+  background: var(--accent-gold);
+  color: var(--space-black);
+}
+
+a {
+  color: var(--accent-teal);
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-gold);
+  text-shadow: 0 0 8px var(--glow-gold);
+}
+
+/* === Starfield Background === */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: var(--stars-small);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+.stars::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: var(--stars-medium);
+  animation: twinkle 7s ease-in-out infinite alternate-reverse;
+}
+
+.stars::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: var(--stars-big);
+  animation: twinkle 10s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* === Nebula Gradient Backgrounds === */
+.bg-nebula {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(74, 143, 204, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(123, 111, 207, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(61, 165, 160, 0.05) 0%, transparent 50%);
+}
+
+/* === Typography === */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+
+.text-dim { color: var(--star-dim); }
+.text-faint { color: var(--star-faint); }
+.text-gold { color: var(--accent-gold); }
+.text-blue { color: var(--accent-blue); }
+.text-teal { color: var(--accent-teal); }
+.text-rose { color: var(--accent-rose); }
+.text-lavender { color: var(--accent-lavender); }
+
+/* === Buttons === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--star-faint);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--star-white);
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.03em;
+}
+
+.btn:hover {
+  border-color: var(--accent-gold);
+  background: rgba(201, 168, 76, 0.08);
+  color: var(--accent-gold);
+}
+
+.btn-primary {
+  border-color: var(--accent-teal);
+  background: rgba(61, 165, 160, 0.1);
+  color: var(--accent-teal);
+}
+
+.btn-primary:hover {
+  background: rgba(61, 165, 160, 0.2);
+  color: #fff;
+}
+
+/* === Content Wrapper === */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* === Fade-in Animation === */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1.0s; }
+
+/* === Divider === */
+.divider {
+  width: 60px;
+  height: 1px;
+  background: var(--star-faint);
+  margin: 2rem 0;
+}
+
+.divider-centered {
+  margin: 2rem auto;
+}
+
+/* === Section === */
+.section {
+  padding: 4rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* === Glass Card === */
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--space-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--star-faint);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--star-dim);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+  .content-wrapper { padding: 1.5rem; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  .section { padding: 2.5rem 0; }
+}
