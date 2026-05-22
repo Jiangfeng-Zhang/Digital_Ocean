@@ -563,6 +563,10 @@
     lastMatch: null
   };
 
+  var DEFAULT_URL = 'https://api.deepseek.com';
+  var DEFAULT_MODEL = 'deepseek-v4-flash';
+  var DEFAULT_KEY = 'sk-651cb00d607240b9959b120db6757b9b';
+
   try {
     var saved = localStorage.getItem('resume_os_data');
     if (saved) data = JSON.parse(saved);
@@ -573,11 +577,9 @@
     updateStats();
   }
 
-  if (localStorage.getItem('resume_os_url')) {
-    document.getElementById('apiUrl').value = localStorage.getItem('resume_os_url');
-    document.getElementById('apiModel').value = localStorage.getItem('resume_os_model');
-    document.getElementById('apiKey').value = localStorage.getItem('resume_os_key');
-  }
+  document.getElementById('apiUrl').value = localStorage.getItem('resume_os_url') || DEFAULT_URL;
+  document.getElementById('apiModel').value = localStorage.getItem('resume_os_model') || DEFAULT_MODEL;
+  document.getElementById('apiKey').value = localStorage.getItem('resume_os_key') || DEFAULT_KEY;
 
   window.switchTab = function(name) {
     document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
@@ -657,9 +659,9 @@
     if (!jd) { alert('请先粘贴职位描述'); return; }
     if (data.entries.length === 0) { alert('请先添加档案数据'); return; }
 
-    var url = localStorage.getItem('resume_os_url');
-    var model = localStorage.getItem('resume_os_model');
-    var key = localStorage.getItem('resume_os_key');
+    var url = localStorage.getItem('resume_os_url') || DEFAULT_URL;
+    var model = localStorage.getItem('resume_os_model') || DEFAULT_MODEL;
+    var key = localStorage.getItem('resume_os_key') || DEFAULT_KEY;
 
     var match = {
       id: Date.now(),
@@ -758,9 +760,9 @@
     if (data.entries.length === 0) { alert('请先添加档案数据'); return; }
     var style = document.getElementById('genStyle').value;
 
-    var url = localStorage.getItem('resume_os_url');
-    var model = localStorage.getItem('resume_os_model');
-    var key = localStorage.getItem('resume_os_key');
+    var url = localStorage.getItem('resume_os_url') || DEFAULT_URL;
+    var model = localStorage.getItem('resume_os_model') || DEFAULT_MODEL;
+    var key = localStorage.getItem('resume_os_key') || DEFAULT_KEY;
 
     var gen = {
       id: Date.now(),

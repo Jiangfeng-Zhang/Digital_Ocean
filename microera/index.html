@@ -364,11 +364,13 @@
 (function() {
   var selectedType = '视频';
 
-  if (localStorage.getItem('microera_url')) {
-    document.getElementById('apiUrl').value = localStorage.getItem('microera_url');
-    document.getElementById('apiModel').value = localStorage.getItem('microera_model');
-    document.getElementById('apiKey').value = localStorage.getItem('microera_key');
-  }
+  var DEFAULT_URL = 'https://api.deepseek.com';
+  var DEFAULT_MODEL = 'deepseek-v4-flash';
+  var DEFAULT_KEY = 'sk-651cb00d607240b9959b120db6757b9b';
+
+  document.getElementById('apiUrl').value = localStorage.getItem('microera_url') || DEFAULT_URL;
+  document.getElementById('apiModel').value = localStorage.getItem('microera_model') || DEFAULT_MODEL;
+  document.getElementById('apiKey').value = localStorage.getItem('microera_key') || DEFAULT_KEY;
 
   document.getElementById('typeSelector').addEventListener('click', function(e) {
     if (e.target.classList.contains('type-chip')) {
@@ -396,9 +398,9 @@
       return;
     }
 
-    var url = localStorage.getItem('microera_url');
-    var model = localStorage.getItem('microera_model');
-    var key = localStorage.getItem('microera_key');
+    var url = localStorage.getItem('microera_url') || DEFAULT_URL;
+    var model = localStorage.getItem('microera_model') || DEFAULT_MODEL;
+    var key = localStorage.getItem('microera_key') || DEFAULT_KEY;
 
     var container = document.getElementById('branchesContainer');
     var list = document.getElementById('branchesList');
