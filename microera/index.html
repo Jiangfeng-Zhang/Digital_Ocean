@@ -7,6 +7,85 @@
 <meta name="description" content="Stop brainstorming. Start evolving. 把一个模糊选题变成可筛选、可融合、可锁定的内容方向。">
 <link rel="stylesheet" href="../assets/css/shared.css">
 <style>
+  :root {
+    --algae-deep: #041a14;
+    --algae-dark: #07241c;
+    --algae-mid: #0a3a2e;
+    --algae-green: #00c89a;
+    --algae-bright: #00ffc8;
+    --algae-dim: #2a7a62;
+    --algae-faint: #4a9a7a;
+    --algae-text: #b0e8d0;
+    --algae-orange: #d4a050;
+    --algae-border: rgba(0, 200, 154, 0.12);
+    --algae-glow: rgba(0, 255, 200, 0.08);
+  }
+
+  body {
+    background: var(--algae-deep);
+    overflow-x: hidden;
+  }
+
+  /* Bioluminescent particles via box-shadow */
+  .algae-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .algae-particles::before,
+  .algae-particles::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--algae-green);
+    box-shadow:
+      120px 340px 0 0 var(--algae-green),
+      340px 180px 2px 0 var(--algae-bright),
+      560px 420px 1px 0 rgba(0,255,200,0.3),
+      180px 600px 3px 0 rgba(0,200,154,0.2),
+      450px 80px 1px 0 var(--algae-green),
+      700px 550px 0 0 rgba(0,255,200,0.4),
+      250px 750px 2px 0 var(--algae-bright),
+      620px 280px 0 0 rgba(0,200,154,0.15),
+      50px 500px 3px 0 var(--algae-green),
+      380px 650px 1px 0 rgba(0,255,200,0.25),
+      800px 100px 2px 0 var(--algae-bright),
+      150px 200px 0 0 rgba(0,200,154,0.2),
+      500px 350px 1px 0 var(--algae-green),
+      300px 480px 3px 0 rgba(0,255,200,0.15),
+      680px 620px 0 0 var(--algae-bright),
+      420px 120px 2px 0 rgba(0,200,154,0.3);
+    animation: algaeFloat 8s ease-in-out infinite;
+  }
+
+  .algae-particles::after {
+    width: 2px;
+    height: 2px;
+    box-shadow:
+      90px 290px 1px 0 var(--algae-bright),
+      480px 510px 0 0 rgba(0,255,200,0.2),
+      210px 130px 2px 0 var(--algae-green),
+      580px 380px 1px 0 rgba(0,200,154,0.25),
+      360px 700px 3px 0 var(--algae-bright),
+      650px 200px 0 0 rgba(0,255,200,0.15),
+      100px 420px 1px 0 var(--algae-green),
+      530px 560px 2px 0 rgba(0,200,154,0.3),
+      740px 450px 0 0 var(--algae-bright),
+      280px 80px 3px 0 rgba(0,255,200,0.2);
+    animation-delay: -4s;
+  }
+
+  @keyframes algaeFloat {
+    0%, 100% { opacity: 0.2; transform: translateY(0); }
+    25% { opacity: 0.6; }
+    50% { opacity: 0.3; transform: translateY(-4px); }
+    75% { opacity: 0.5; }
+  }
+
   .micro-container {
     max-width: 720px;
     margin: 0 auto;
@@ -18,40 +97,91 @@
   .micro-header {
     text-align: center;
     padding: 3rem 0 2rem;
+    position: relative;
+  }
+
+  .micro-header::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--algae-border);
+    margin: 1.5rem auto 0;
   }
 
   .micro-header h1 {
     font-size: 2.2rem;
     font-weight: 300;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.15em;
     margin-bottom: 0.5rem;
+    color: var(--algae-text);
   }
 
   .micro-header h1 span {
-    color: var(--accent-rose);
+    color: var(--algae-green);
+    text-shadow: 0 0 20px var(--algae-glow);
   }
 
   .micro-header .tagline {
-    font-size: 0.85rem;
-    color: var(--star-dim);
-    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    color: var(--algae-dim);
+    letter-spacing: 0.08em;
   }
 
-  .config-section {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+  /* Settings button & panel */
+  .settings-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
   }
 
-  .config-section h3 {
-    font-size: 0.85rem;
+  .settings-btn {
+    font-family: monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 1rem;
+    background: transparent;
+    border: 1px solid var(--algae-border);
+    color: var(--algae-faint);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .settings-btn:hover {
+    border-color: var(--algae-green);
+    color: var(--algae-green);
+    box-shadow: 0 0 15px var(--algae-glow);
+  }
+
+  .settings-btn.active {
+    border-color: var(--algae-green);
+    color: var(--algae-green);
+    background: rgba(0, 200, 154, 0.05);
+  }
+
+  .config-panel {
+    display: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .config-panel.open {
+    display: block;
+  }
+
+  .config-panel-inner {
+    background: rgba(0, 26, 20, 0.6);
+    border: 1px solid var(--algae-border);
+    padding: 1.2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .config-panel-inner h3 {
+    font-size: 0.7rem;
     font-weight: 400;
-    color: var(--star-dim);
-    letter-spacing: 0.06em;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--algae-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
   }
 
   .config-row {
@@ -63,47 +193,104 @@
 
   .config-row input {
     flex: 1;
-    min-width: 150px;
-    padding: 0.6rem 0.8rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--star-white);
+    min-width: 130px;
+    padding: 0.5rem 0.7rem;
+    background: rgba(0, 255, 200, 0.03);
+    border: 1px solid rgba(0, 200, 154, 0.1);
+    color: var(--algae-text);
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     outline: none;
     transition: border-color 0.3s;
   }
 
   .config-row input:focus {
-    border-color: var(--accent-rose);
+    border-color: var(--algae-green);
   }
 
   .config-row input::placeholder {
-    color: var(--star-faint);
-    font-size: 0.8rem;
+    color: var(--algae-faint);
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+
+  .config-save-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--algae-green);
+    color: var(--algae-green);
+    font-family: monospace;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .config-save-btn:hover {
+    background: rgba(0, 200, 154, 0.1);
+    box-shadow: 0 0 15px var(--algae-glow);
+  }
+
+  .config-hint {
+    font-size: 0.6rem;
+    color: var(--algae-faint);
+    margin-top: 0.4rem;
+    opacity: 0.5;
+  }
+
+  .config-status {
+    font-size: 0.6rem;
+    color: var(--algae-green);
+    margin-top: 0.3rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .config-status.show {
+    opacity: 1;
   }
 
   .seed-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
-  .seed-section h3 {
-    font-size: 0.85rem;
+  .seed-section .label-group {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .seed-section .label-group h3 {
+    font-size: 0.75rem;
     font-weight: 400;
-    color: var(--star-dim);
-    letter-spacing: 0.06em;
-    margin-bottom: 0.8rem;
+    color: var(--algae-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .seed-section .label-group .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--algae-green);
+    animation: pulseAlgae 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseAlgae {
+    0%, 100% { opacity: 0.2; box-shadow: 0 0 4px var(--algae-green); }
+    50% { opacity: 0.8; box-shadow: 0 0 10px var(--algae-green); }
   }
 
   .seed-input {
     width: 100%;
     min-height: 100px;
     padding: 1rem;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--star-white);
+    background: rgba(0, 26, 20, 0.5);
+    border: 1px solid var(--algae-border);
+    color: var(--algae-text);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     resize: vertical;
     outline: none;
     line-height: 1.8;
@@ -111,71 +298,95 @@
   }
 
   .seed-input:focus {
-    border-color: var(--accent-rose);
+    border-color: var(--algae-green);
+    box-shadow: inset 0 0 20px var(--algae-glow);
   }
 
   .seed-input::placeholder {
-    color: var(--star-faint);
+    color: var(--algae-faint);
+    font-size: 0.8rem;
+    opacity: 0.4;
   }
 
   .seed-hint {
-    font-size: 0.75rem;
-    color: var(--star-faint);
-    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--algae-faint);
+    margin-top: 0.4rem;
     line-height: 1.6;
+    opacity: 0.6;
   }
 
   .type-selector {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.3rem;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
   }
 
   .type-chip {
-    padding: 0.5rem 1.2rem;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.02);
-    color: var(--star-dim);
-    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--algae-border);
+    background: transparent;
+    color: var(--algae-faint);
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.3s;
     font-family: inherit;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   .type-chip:hover {
-    border-color: var(--accent-rose);
-    color: var(--star-white);
+    border-color: var(--algae-green);
+    color: var(--algae-text);
   }
 
   .type-chip.selected {
-    border-color: var(--accent-rose);
-    background: rgba(184,74,108,0.1);
-    color: var(--accent-rose);
+    border-color: var(--algae-green);
+    background: rgba(0, 200, 154, 0.08);
+    color: var(--algae-green);
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.15);
   }
 
   .evolve-btn {
     width: 100%;
     padding: 1rem;
-    background: rgba(184,74,108,0.08);
-    border: 1px solid rgba(184,74,108,0.3);
-    color: var(--accent-rose);
+    background: transparent;
+    border: 1px solid var(--algae-green);
+    color: var(--algae-green);
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     margin-bottom: 2rem;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .evolve-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 200, 0.03), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .evolve-btn:hover::before {
+    opacity: 1;
   }
 
   .evolve-btn:hover {
-    background: rgba(184,74,108,0.15);
-    box-shadow: 0 0 30px rgba(184,74,108,0.1);
+    background: rgba(0, 200, 154, 0.05);
+    box-shadow: 0 0 30px var(--algae-glow);
   }
 
   .evolve-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 
@@ -187,98 +398,375 @@
     display: block;
   }
 
-  .branch-card {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 1.5rem;
+  .branches-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .branches-header h3 {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--algae-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .branches-header .line {
+    flex: 1;
+    height: 1px;
+    background: var(--algae-border);
+  }
+
+  .download-btn {
+    font-family: monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--algae-border);
+    color: var(--algae-faint);
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .download-btn:hover {
+    border-color: var(--algae-green);
+    color: var(--algae-green);
+    box-shadow: 0 0 12px var(--algae-glow);
+  }
+
+  .format-selector {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .format-chip {
+    font-family: monospace;
+    font-size: 0.55rem;
+    padding: 0 0.4rem;
+    border: 1px solid var(--algae-border);
+    background: transparent;
+    color: var(--algae-faint);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .format-chip:first-child {
+    border-right: none;
+  }
+
+  .format-chip.active {
+    border-color: var(--algae-green);
+    color: var(--algae-green);
+    background: rgba(0, 200, 154, 0.08);
+  }
+
+  .gen-final-btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--algae-orange);
+    color: var(--algae-orange);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gen-final-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(212, 160, 80, 0.03), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .gen-final-btn:hover::before {
+    opacity: 1;
+  }
+
+  .gen-final-btn:hover {
+    background: rgba(212, 160, 80, 0.05);
+    box-shadow: 0 0 30px rgba(212, 160, 80, 0.12);
+  }
+
+  .gen-final-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .final-output {
+    display: none;
+    margin-top: 0.6rem;
+    background: rgba(0, 26, 20, 0.4);
+    border: 1px solid var(--algae-border);
+    padding: 1.2rem;
+    white-space: pre-wrap;
+    font-size: 0.82rem;
+    color: var(--algae-text);
+    line-height: 1.9;
+  }
+
+  .final-output.open {
+    display: block;
+  }
+
+  .final-output .final-header {
+    font-size: 0.7rem;
+    color: var(--algae-dim);
+    letter-spacing: 0.08em;
     margin-bottom: 0.8rem;
+    font-weight: 400;
+  }
+
+  .branch-card {
+    background: rgba(0, 26, 20, 0.4);
+    border: 1px solid var(--algae-border);
+    padding: 1.2rem;
+    margin-bottom: 0.6rem;
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
   }
 
   .branch-card:hover {
-    border-color: rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.04);
+    border-color: rgba(0, 200, 154, 0.2);
+    background: rgba(0, 40, 30, 0.5);
+    box-shadow: inset 0 0 30px rgba(0, 200, 154, 0.03);
+  }
+
+  .branch-card.selected {
+    border-color: var(--algae-green);
+    box-shadow: 0 0 20px var(--algae-glow);
   }
 
   .branch-card .branch-id {
     font-family: monospace;
-    font-size: 0.65rem;
-    color: var(--star-faint);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
+    font-size: 0.6rem;
+    color: var(--algae-faint);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    opacity: 0.6;
   }
 
   .branch-card .branch-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 300;
-    color: var(--star-white);
-    margin-bottom: 0.5rem;
+    color: var(--algae-text);
+    margin-bottom: 0.4rem;
     letter-spacing: 0.04em;
   }
 
   .branch-card .branch-angle {
-    font-size: 0.85rem;
-    color: var(--star-dim);
+    font-size: 0.8rem;
+    color: var(--algae-dim);
     line-height: 1.7;
   }
 
   .branch-card .branch-tags {
-    margin-top: 0.8rem;
+    margin-top: 0.6rem;
     display: flex;
-    gap: 0.4rem;
+    gap: 0.3rem;
     flex-wrap: wrap;
   }
 
   .branch-card .branch-tag {
-    font-size: 0.65rem;
-    color: var(--star-faint);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
+    color: var(--algae-faint);
+    border: 1px solid rgba(0, 200, 154, 0.08);
+    padding: 0.1rem 0.4rem;
     letter-spacing: 0.04em;
+    opacity: 0.7;
   }
 
   .branch-card .branch-actions {
-    margin-top: 0.8rem;
+    margin-top: 0.6rem;
     display: flex;
-    gap: 0.4rem;
+    gap: 0.3rem;
   }
 
   .branch-card .mini-btn {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.8rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid var(--algae-border);
     background: transparent;
-    color: var(--star-dim);
+    color: var(--algae-faint);
     cursor: pointer;
     transition: all 0.3s;
     font-family: inherit;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
   }
 
   .branch-card .mini-btn:hover {
-    border-color: var(--accent-rose);
-    color: var(--accent-rose);
+    border-color: var(--algae-orange);
+    color: var(--algae-orange);
   }
 
-  .branch-card .mini-btn.locked {
-    border-color: var(--accent-teal);
-    color: var(--accent-teal);
-    background: rgba(61,165,160,0.08);
+  .branch-card .mini-btn.adopt {
+    border-color: var(--algae-green);
+    color: var(--algae-green);
+    background: rgba(0, 200, 154, 0.06);
+  }
+
+  .branch-card .mini-btn.discarded {
+    border-color: rgba(212, 160, 80, 0.4);
+    color: var(--algae-orange);
+  }
+
+  .branch-card.dimmed {
+    opacity: 0.3;
+  }
+
+  .branch-card .branch-detail {
+    display: none;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--algae-border);
+  }
+
+  .branch-card .branch-detail.open {
+    display: block;
+  }
+
+  .branch-card .branch-detail .detail-narrative {
+    font-size: 0.75rem;
+    color: var(--algae-dim);
+    line-height: 1.8;
+    margin-bottom: 0.6rem;
+  }
+
+  .branch-card .branch-detail .detail-source {
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: var(--algae-faint);
+    margin-bottom: 0.3rem;
+    opacity: 0.6;
+  }
+
+  .branch-card .branch-detail .detail-source a {
+    color: var(--algae-green);
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  .branch-card .branch-detail .detail-source a:hover {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
+  }
+
+  .branch-card .branch-detail .detail-meta {
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: var(--algae-faint);
+    opacity: 0.4;
+    margin-top: 0.4rem;
+  }
+
+  .news-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .news-section .news-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .news-section .news-check {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--algae-dim);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .news-section .news-check input {
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--algae-border);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .news-section .news-check input:checked {
+    border-color: var(--algae-green);
+    background: rgba(0, 200, 154, 0.08);
+  }
+
+  .news-section .news-check input:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 1px;
+    width: 5px;
+    height: 8px;
+    border: solid var(--algae-green);
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .news-input {
+    width: 100%;
+    min-height: 60px;
+    padding: 0.7rem 0.8rem;
+    background: rgba(0, 26, 20, 0.5);
+    border: 1px solid var(--algae-border);
+    color: var(--algae-text);
+    font-family: inherit;
+    font-size: 0.8rem;
+    resize: vertical;
+    outline: none;
+    line-height: 1.6;
+    transition: all 0.3s;
+    display: none;
+  }
+
+  .news-input.open {
+    display: block;
+  }
+
+  .news-input:focus {
+    border-color: var(--algae-green);
+    box-shadow: inset 0 0 20px var(--algae-glow);
+  }
+
+  .news-input::placeholder {
+    color: var(--algae-faint);
+    font-size: 0.75rem;
+    opacity: 0.4;
   }
 
   .loading-indicator {
     text-align: center;
     padding: 2rem;
-    color: var(--star-dim);
-    font-size: 0.85rem;
+    color: var(--algae-dim);
+    font-size: 0.8rem;
     letter-spacing: 0.06em;
   }
 
   .loading-dots span {
     display: inline-block;
     animation: dotBounce 1.4s infinite;
+    color: var(--algae-green);
   }
 
   .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -296,63 +784,125 @@
     position: relative;
     z-index: 1;
     font-family: monospace;
-    font-size: 0.8rem;
-    color: var(--star-faint);
-    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    color: var(--algae-faint);
+    letter-spacing: 0.12em;
     transition: color 0.3s;
+    opacity: 0.5;
   }
 
-  .back-link:hover { color: var(--accent-gold); }
+  .back-link:hover { color: var(--algae-green); opacity: 1; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  @media (max-width: 600px) {
+    .micro-container { padding: 1rem; }
+    .micro-header h1 { font-size: 1.8rem; }
+    .config-row input { min-width: 100px; font-size: 0.7rem; }
+  }
 </style>
 </head>
 <body>
 
+<div class="algae-particles"></div>
+
 <div class="micro-container">
+
   <div class="micro-header fade-in">
     <h1>micro<span>·</span>era</h1>
-    <p class="tagline">Stop brainstorming. Start evolving.</p>
+    <p class="tagline">把一个模糊选题，演化成内容方向</p>
   </div>
 
-  <div class="config-section fade-in delay-1">
-    <h3>API Control · 把模型接上，再点火。</h3>
-    <div class="config-row">
-      <input type="text" id="apiUrl" placeholder="Base URL (OpenAI兼容)">
-      <input type="text" id="apiModel" placeholder="Model Name">
-      <input type="password" id="apiKey" placeholder="API Key">
-      <button class="btn btn-primary" onclick="saveConfig()">连接</button>
+  <div class="settings-bar fade-in delay-1">
+    <button class="settings-btn" id="settingsToggle">⚙ API 设置</button>
+  </div>
+
+  <div class="config-panel fade-in delay-1" id="configPanel">
+    <div class="config-panel-inner">
+      <h3>API 配置</h3>
+      <div class="config-row">
+        <input type="text" id="apiUrl" placeholder="Base URL">
+        <input type="text" id="apiModel" placeholder="Model">
+        <input type="password" id="apiKey" placeholder="API Key">
+        <button class="config-save-btn" onclick="saveConfig()">保存</button>
+      </div>
+      <div class="config-status" id="configStatus">✓ 已保存</div>
+      <div class="config-hint">Key 只存在你的浏览器里，不会经过任何服务器</div>
     </div>
-    <p style="font-size:0.7rem;color:var(--star-faint);margin-top:0.5rem;">Key只存在你的浏览器里，不会经过任何服务器。支持OpenAI、DeepSeek、Moonshot等兼容接口。</p>
   </div>
 
   <div class="seed-section fade-in delay-2">
-    <h3>你的想法种子</h3>
+    <div class="label-group">
+      <h3>想法种子</h3>
+      <span class="status-dot"></span>
+    </div>
     <textarea class="seed-input" id="seedInput" placeholder="我想做一个关于「主题」的内容，但不想只讲「常规角度」，我更想抓住「情绪 / 矛盾 / 新观察」。
     
 写一个你最近反复想到、但还没想清楚的主题..."></textarea>
     <p class="seed-hint">
       推荐句式：<strong>我想做一个关于「具体主题」的内容，但不想只讲「XX」，我更想抓住「YY」</strong><br>
+      参考句式：<strong>我想做一个AI日报，但不想只讲AI圈子的最新内容，更想知道AI对普通人有什么影响</strong><br>
       主题越具体，情绪和冲突越明确，后面的分支质量越高。
     </p>
   </div>
 
   <div class="fade-in delay-3">
-    <h3 style="font-size:0.85rem;color:var(--star-dim);margin-bottom:0.7rem;letter-spacing:0.06em;">内容形态</h3>
+    <div class="news-section">
+      <div class="news-toggle-row">
+        <h3 style="font-size:0.75rem;color:var(--algae-dim);margin:0;letter-spacing:0.08em;">联系新闻</h3>
+        <label class="news-check">
+          <input type="checkbox" id="newsToggle">
+          <span style="font-size:0.65rem;">结合当前事件一起演化</span>
+        </label>
+      </div>
+      <textarea class="news-input" id="newsInput" placeholder="用几句话说清楚：最近发生了什么关键事件？它和你选的选题有什么潜在的联系？
+例如：Meta刚发布了Llama 4开源模型，行业震动。这个事件是否暗示了「开源AI生态」将成为未来的主战场？"></textarea>
+    </div>
+  </div>
+
+  <div class="fade-in delay-3">
+    <h3 style="font-size:0.75rem;color:var(--algae-dim);margin-bottom:0.6rem;letter-spacing:0.08em;">内容形态</h3>
     <div class="type-selector" id="typeSelector">
-      <div class="type-chip selected" data-type="视频">▶ 视频</div>
-      <div class="type-chip" data-type="文章">¶ 文章</div>
+      <div class="type-chip selected" data-type="文章">¶ 文章</div>
+      <div class="type-chip" data-type="视频">▶ 视频</div>
       <div class="type-chip" data-type="播客">◉ 播客</div>
       <div class="type-chip" data-type="Newsletter">✉ Newsletter</div>
     </div>
   </div>
 
   <button class="evolve-btn fade-in delay-4" id="evolveBtn" onclick="evolve()">
-    开始演化 · EVOLVE
+    开始演化
   </button>
 
+  <button class="gen-final-btn fade-in delay-4" onclick="window.generateFinal()" style="display:none;" id="genFinalBtn">✎ 生成最终文案</button>
+  <div class="final-output" id="finalOutput"></div>
+
   <div class="branches-container" id="branchesContainer">
-    <h3 style="font-size:0.85rem;color:var(--star-dim);margin-bottom:1rem;letter-spacing:0.06em;">
-      演化分支 · 保留1-2个最有感觉的方向
-    </h3>
+    <div class="branches-header">
+      <span class="line"></span>
+      <h3>演化分支</h3>
+      <div style="display:none;" id="downloadGroup">
+        <div class="format-selector">
+          <span class="format-chip active" data-format="md">md</span>
+          <span class="format-chip" data-format="txt">txt</span>
+        </div>
+        <button class="download-btn" onclick="window.downloadHistory()" id="downloadBtn">↓ 下载</button>
+      </div>
+      <span class="line"></span>
+    </div>
     <div id="branchesList"></div>
   </div>
 </div>
@@ -362,7 +912,10 @@
 <script src="../assets/js/shared.js"></script>
 <script>
 (function() {
-  var selectedType = '视频';
+  var selectedType = '文章';
+  var downloadFormat = 'md';
+  var evolutionHistory = [];
+  var lastGeneratedArticle = '';
 
   var DEFAULT_URL = 'https://api.deepseek.com';
   var DEFAULT_MODEL = 'deepseek-v4-flash';
@@ -372,6 +925,23 @@
   document.getElementById('apiModel').value = localStorage.getItem('microera_model') || DEFAULT_MODEL;
   document.getElementById('apiKey').value = localStorage.getItem('microera_key') || DEFAULT_KEY;
 
+  // Settings toggle
+  document.getElementById('settingsToggle').addEventListener('click', function() {
+    var panel = document.getElementById('configPanel');
+    panel.classList.toggle('open');
+    this.classList.toggle('active');
+  });
+
+  // Format selector
+  document.getElementById('downloadGroup').addEventListener('click', function(e) {
+    if (e.target.classList.contains('format-chip')) {
+      document.querySelectorAll('.format-chip').forEach(function(c) { c.classList.remove('active'); });
+      e.target.classList.add('active');
+      downloadFormat = e.target.dataset.format;
+    }
+  });
+
+  // Type selector
   document.getElementById('typeSelector').addEventListener('click', function(e) {
     if (e.target.classList.contains('type-chip')) {
       document.querySelectorAll('.type-chip').forEach(function(c) { c.classList.remove('selected'); });
@@ -379,6 +949,14 @@
       selectedType = e.target.dataset.type;
     }
   });
+
+  // News toggle
+  document.getElementById('newsToggle').addEventListener('change', function() {
+    document.getElementById('newsInput').classList.toggle('open', this.checked);
+  });
+
+  // Config status
+  var statusEl = document.getElementById('configStatus');
 
   window.saveConfig = function() {
     var url = document.getElementById('apiUrl').value.trim();
@@ -388,7 +966,8 @@
     localStorage.setItem('microera_url', url);
     localStorage.setItem('microera_model', model);
     localStorage.setItem('microera_key', key);
-    alert('配置已保存 ✓');
+    statusEl.classList.add('show');
+    setTimeout(function() { statusEl.classList.remove('show'); }, 2000);
   };
 
   window.evolve = function() {
@@ -396,6 +975,11 @@
     if (!seed) {
       alert('请先写下你的想法种子');
       return;
+    }
+
+    var newsContext = '';
+    if (document.getElementById('newsToggle').checked) {
+      newsContext = document.getElementById('newsInput').value.trim();
     }
 
     var url = localStorage.getItem('microera_url') || DEFAULT_URL;
@@ -407,14 +991,27 @@
     var btn = document.getElementById('evolveBtn');
 
     if (!url || !model || !key) {
-      list.innerHTML = demoBranches(seed, selectedType);
+      var demoData = demoBranchesData(selectedType);
+      list.innerHTML = renderBranchesHtml(demoData);
       container.classList.add('active');
+      document.getElementById('downloadGroup').style.display = 'flex';
+      document.getElementById('genFinalBtn').style.display = 'block';
+      evolutionHistory.push({ round: evolutionHistory.length + 1, seed: seed, type: selectedType, newsContext: newsContext, branches: demoData });
       return;
     }
 
     container.classList.add('active');
+    document.getElementById('downloadGroup').style.display = 'flex';
+    document.getElementById('genFinalBtn').style.display = 'block';
     list.innerHTML = '<div class="loading-indicator"><div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>演化中...</div>';
     btn.disabled = true;
+
+    var systemPrompt = '你是一个内容策划助手。用户的"种子"是一个模糊的选题想法。请生成4个具体的、有差异的内容分支方向。\n\n要求：\n1. 每个分支有一个吸引人的标题（8-15字）\n2. 每个分支有一个独特的切入角度（30-50字）\n3. 每个分支有2-3个关键词标签\n4. 每个分支有一段具体展开的叙事描述（80-120字），说明如何从这个角度展开内容\n5. 每个分支必须扎根于真实世界——引用近期的新闻事件、行业动态、社会现象或公开报道作为叙事的现实坐标系。即使种子没有明确提供新闻背景，也要自动查找与该主题相关的事实性事件或趋势来支撑\n6. 每个分支必须包含1-2个参考方向，格式为"参考：某某媒体/机构对XXX的报道或分析"（不是真实url，是参考方向建议）\n7. 4个分支之间的角度要有明显差异（不同情绪、不同视角、不同受众）\n8. 针对"' + selectedType + '"这种内容形态来思考\n\n返回JSON格式：\n[{"title":"...","angle":"...","tags":["...","..."],"narrative":"...","refs":["参考：...","参考：..."]}]';
+
+    var userMessage = '我的选题种子：' + seed + '\n我希望做成的内容形态：' + selectedType;
+    if (newsContext) {
+      userMessage += '\n\n【结合新闻事件】\n' + newsContext + '\n\n请将以上新闻事件作为每个分支的"现实坐标系"，确保切入角度和展开叙事中都有新闻事件的回响。';
+    }
 
     fetch(url + '/chat/completions', {
       method: 'POST',
@@ -424,15 +1021,9 @@
       },
       body: JSON.stringify({
         model: model,
-        messages: [{
-          role: 'system',
-          content: '你是一个内容策划助手。用户的"种子"是一个模糊的选题想法。请生成4个具体的、有差异的内容分支方向。\n\n要求：\n1. 每个分支有一个吸引人的标题（8-15字）\n2. 每个分支有一个独特的切入角度（30-50字）\n3. 每个分支有2-3个关键词标签\n4. 4个分支之间的角度要有明显差异（不同情绪、不同视角、不同受众）\n5. 针对"'+selectedType+'"这种内容形态来思考\n\n返回JSON格式：\n[{"title":"...","angle":"...","tags":["...","..."]}]'
-        }, {
-          role: 'user',
-          content: '我的选题种子：' + seed + '\n我希望做成的内容形态：' + selectedType
-        }],
+        messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }],
         temperature: 0.9,
-        max_tokens: 1500
+        max_tokens: 2000
       })
     })
     .then(function(r) { return r.json(); })
@@ -443,24 +1034,30 @@
       var branches = match ? JSON.parse(match[0]) : null;
       if (!branches) throw new Error('解析失败');
       renderBranches(branches);
+      evolutionHistory.push({ round: evolutionHistory.length + 1, seed: seed, type: selectedType, newsContext: newsContext, branches: branches });
     })
     .catch(function(err) {
-      list.innerHTML = '<p style="color:var(--accent-rose);text-align:center;">LLM调用失败，显示预置演示：</p>';
-      list.innerHTML += demoBranches(seed, selectedType);
+      var fallbackData = demoBranchesData(selectedType);
+      list.innerHTML = '<p style="color:var(--algae-dim);text-align:center;font-size:0.75rem;">调用失败，显示预置演示：</p>';
+      list.innerHTML += renderBranchesHtml(fallbackData);
+      evolutionHistory.push({ round: evolutionHistory.length + 1, seed: seed, type: selectedType, newsContext: newsContext, branches: fallbackData });
     })
     .finally(function() {
       btn.disabled = false;
     });
   };
 
-  function demoBranches(seed, type) {
-    var branches = [
-      { title: '从个人叙事出发的情感切面', angle: '不讨论宏观趋势，而是用一个亲历者的微观故事，把' + type + '变成一种情感传递的容器。', tags: ['个人叙事', '情感共鸣', '第一人称'] },
-      { title: '反向视角的批判性解构', angle: '不从主流叙事入手，而是找出被忽视的反面——那些被遗漏的声音和隐藏的代价。', tags: ['批判性', '反直觉', '深度'] },
-      { title: '跨领域连接的创新视角', angle: '把一个看似不相关的领域逻辑嫁接到这个主题上，创造意外的洞察和新鲜感。', tags: ['跨界', '隐喻', '创新'] },
-      { title: '数据驱动的系统性梳理', angle: '用数据和事实构建骨架，把模糊的感觉变成可被定量理解的趋势脉络。', tags: ['数据', '结构', '理性'] }
+  function demoBranchesData(type) {
+    return [
+      { title: '从个人叙事出发的情感切面', angle: '不讨论宏观趋势，而是用一个亲历者的微观故事，把' + type + '变成一种情感传递的容器。', tags: ['个人叙事', '情感共鸣', '第一人称'], narrative: '找一个受这个主题影响的真实个体——ta的困惑、ta的选择、ta某天下午突然想通的事。用第一人称口吻展开，让读者忘记这是一篇' + type + '，而像是在听一个朋友讲自己的故事。细节比结论重要。', refs: ['参考：某平台用户故事栏目的深度人物访谈', '参考：纽约时报The Daily关于个人叙事的播客系列'] },
+      { title: '反向视角的批判性解构', angle: '不从主流叙事入手，而是找出被忽视的反面——那些被遗漏的声音和隐藏的代价。', tags: ['批判性', '反直觉', '深度'], narrative: '所有人都往一个方向看的时候，你往反方向走。收集3-4个被主流叙事忽略的"不适感"——这些不适感往往比共识更接近真相。用事实和逻辑把它们串起来，形成一条完整的反叙事线索。', refs: ['参考：FT中文网对某行业逆流现象的分析', '参考：哈佛商业评论的反直觉案例研究'] },
+      { title: '跨领域连接的创新视角', angle: '把一个看似不相关的领域逻辑嫁接到这个主题上，创造意外的洞察和新鲜感。', tags: ['跨界', '隐喻', '创新'], narrative: '找一个与该主题看似毫无关联的领域——生物学、考古学、体育、烹饪……然后用这个领域的框架重新解释主题中的某个现象。关键是比喻要精准，不能只是"像"而已，要用对方领域的核心概念去理解本主题的结构。', refs: ['参考：Wired杂志的跨界创新专栏', '参考：Nature期刊中关于跨学科思维的综述'] },
+      { title: '数据驱动的系统性梳理', angle: '用数据和事实构建骨架，把模糊的感觉变成可被定量理解的趋势脉络。', tags: ['数据', '结构', '理性'], narrative: '收集3-5个关键数据点或时间节点，用它们构建一条时间线。每一个数据点不只是一个数字，而是用一小段解读说明它"为什么重要"。最终让读者看到一张完整的演变地图，而不是零散信息。', refs: ['参考：Our World in Data的统计数据可视化', '参考：经济学人周刊的数据叙事专栏'] }
     ];
-    return renderBranchesHtml(branches);
+  }
+
+  function demoBranches(seed, type) {
+    return renderBranchesHtml(demoBranchesData(type));
   }
 
   function renderBranches(branches) {
@@ -469,28 +1066,71 @@
 
   function renderBranchesHtml(branches) {
     return branches.map(function(b, i) {
+      var narrative = b.narrative || '';
+      var refs = b.refs || [];
+      var refsHtml = refs.length > 0
+        ? '<div class="detail-source">' + refs.map(function(r) { return escapeHtml(r); }).join('<br>') + '</div>'
+        : '<div class="detail-meta">暂无参考链接建议</div>';
       return '<div class="branch-card" id="branch' + i + '">' +
-        '<div class="branch-id">分支 ' + (i + 1) + ' / 4</div>' +
+        '<div class="branch-id">分支 ' + (i + 1) + ' · ' + escapeHtml(b.title.slice(0, 6)) + '</div>' +
         '<div class="branch-title">' + escapeHtml(b.title) + '</div>' +
         '<div class="branch-angle">' + escapeHtml(b.angle) + '</div>' +
         '<div class="branch-tags">' + (b.tags || []).map(function(t) { return '<span class="branch-tag">#' + escapeHtml(t) + '</span>'; }).join('') + '</div>' +
         '<div class="branch-actions">' +
-          '<button class="mini-btn" onclick="document.getElementById(\'branch' + i + '\').style.opacity=\'0.3\'">舍弃</button>' +
-          '<button class="mini-btn locked" onclick="this.classList.toggle(\'locked\'); this.textContent = this.classList.contains(\'locked\') ? \'已锁定\' : \'锁定\'">锁定</button>' +
-          '<button class="mini-btn" onclick="expandBranch(' + i + ')">展开</button>' +
+          '<button class="mini-btn" onclick="window.toggleDiscard(' + i + ')">舍弃</button>' +
+          '<button class="mini-btn" onclick="window.adoptBranch(' + i + ')">采用</button>' +
+          '<button class="mini-btn" onclick="window.toggleExpand(' + i + ')">展开</button>' +
+        '</div>' +
+        '<div class="branch-detail" id="branchDetail' + i + '">' +
+          '<div class="detail-narrative">' + escapeHtml(narrative) + '</div>' +
+          refsHtml +
         '</div>' +
       '</div>';
     }).join('');
   }
 
-  window.expandBranch = function(idx) {
+  window.toggleDiscard = function(idx) {
+    var card = document.getElementById('branch' + idx);
+    if (!card) return;
+    var btn = card.querySelector('.mini-btn');
+    if (card.classList.contains('dimmed')) {
+      card.classList.remove('dimmed');
+      btn.classList.remove('discarded');
+      btn.textContent = '舍弃';
+    } else {
+      card.classList.add('dimmed');
+      btn.classList.add('discarded');
+      btn.textContent = '恢复';
+    }
+  };
+
+  window.adoptBranch = function(idx) {
     var card = document.getElementById('branch' + idx);
     if (!card) return;
     var title = card.querySelector('.branch-title').textContent;
     var angle = card.querySelector('.branch-angle').textContent;
-    document.getElementById('seedInput').value = title + '\n\n切入点：' + angle + '\n\n在此方向上继续深化：';
+    var detail = document.getElementById('branchDetail' + idx);
+    var narrative = detail ? detail.querySelector('.detail-narrative').textContent : '';
+    document.getElementById('seedInput').value = title + '\n\n切入点：' + angle + '\n\n' + narrative + '\n\n在此方向上继续深化：';
+
+    var refsEl = detail ? detail.querySelector('.detail-source') : null;
+    var refsText = refsEl ? refsEl.textContent.trim() : '';
+    if (refsText && refsText !== '暂无参考链接建议') {
+      document.getElementById('newsToggle').checked = true;
+      document.getElementById('newsInput').classList.add('open');
+      document.getElementById('newsInput').value = refsText;
+    }
+
     document.getElementById('seedInput').focus();
     window.scrollTo({ top: document.getElementById('seedInput').offsetTop - 50, behavior: 'smooth' });
+  };
+
+  window.toggleExpand = function(idx) {
+    var detail = document.getElementById('branchDetail' + idx);
+    if (!detail) return;
+    detail.classList.toggle('open');
+    var btn = document.getElementById('branch' + idx).querySelectorAll('.mini-btn')[2];
+    btn.textContent = detail.classList.contains('open') ? '收起' : '展开';
   };
 
   function escapeHtml(text) {
@@ -498,6 +1138,248 @@
     d.textContent = text;
     return d.innerHTML;
   }
+
+  window.downloadHistory = function() {
+    var now = new Date();
+    var dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var timeStr = dateStr + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    var filename = 'micro-era-evolution-' + dateStr + '.' + downloadFormat;
+
+    var isTxt = downloadFormat === 'txt';
+
+    var lines = [];
+
+    if (isTxt) {
+      lines.push('micro · era - 内容演化记录');
+      lines.push('导出时间：' + timeStr);
+      lines.push('');
+      lines.push('====================');
+      lines.push('');
+    } else {
+      lines.push('# micro · era — 内容演化记录');
+      lines.push('');
+      lines.push('> 导出时间：' + timeStr);
+      lines.push('');
+      lines.push('---');
+      lines.push('');
+    }
+
+    if (lastGeneratedArticle) {
+      if (isTxt) {
+        lines.push('## 最终文案');
+        lines.push('');
+        lines.push(lastGeneratedArticle);
+        lines.push('');
+        lines.push('====================');
+        lines.push('');
+      } else {
+        lines.push('## 最终文案');
+        lines.push('');
+        lines.push(lastGeneratedArticle);
+        lines.push('');
+        lines.push('---');
+        lines.push('');
+      }
+    }
+
+    if (evolutionHistory.length === 0) {
+      if (isTxt) {
+        lines.push('（暂无演化记录）');
+      } else {
+        lines.push('*暂无演化记录*');
+      }
+      lines.push('');
+    } else {
+      for (var r = 0; r < evolutionHistory.length; r++) {
+        var record = evolutionHistory[r];
+        var roundLabel = '第 ' + record.round + ' 轮演化';
+
+        if (isTxt) {
+          lines.push('## ' + roundLabel);
+          lines.push('');
+          lines.push('想法种子：');
+          lines.push(record.seed);
+          lines.push('');
+          lines.push('内容形态：' + record.type);
+          lines.push('');
+          if (record.newsContext) {
+            lines.push('结合新闻事件：');
+            lines.push(record.newsContext);
+            lines.push('');
+          }
+          lines.push('---');
+          lines.push('');
+        } else {
+          lines.push('## ' + roundLabel);
+          lines.push('');
+          lines.push('### 想法种子');
+          lines.push('');
+          lines.push(record.seed);
+          lines.push('');
+          lines.push('**内容形态：** ' + record.type);
+          lines.push('');
+          if (record.newsContext) {
+            lines.push('### 结合新闻事件');
+            lines.push('');
+            lines.push(record.newsContext);
+            lines.push('');
+          }
+          lines.push('---');
+          lines.push('');
+        }
+
+        if (record.branches && record.branches.length > 0) {
+          if (isTxt) {
+            lines.push('演化分支：');
+            lines.push('');
+          } else {
+            lines.push('### 演化分支');
+            lines.push('');
+          }
+
+          for (var b = 0; b < record.branches.length; b++) {
+            var br = record.branches[b];
+            var tagText = (br.tags || []).join('、');
+            var refText = (br.refs || []).join('\n');
+
+            if (isTxt) {
+              lines.push('  分支 ' + (b + 1) + '：' + (br.title || ''));
+              lines.push('  切入角度：' + (br.angle || ''));
+              if (tagText) { lines.push('  标签：' + tagText); }
+              lines.push('  展开叙事：');
+              lines.push('  ' + (br.narrative || ''));
+              if (refText) {
+                lines.push('  参考方向：');
+                lines.push('  ' + refText);
+              }
+              lines.push('');
+            } else {
+              lines.push('#### 分支 ' + (b + 1) + '：' + (br.title || ''));
+              lines.push('');
+              lines.push('**切入角度：** ' + (br.angle || ''));
+              lines.push('');
+              if (tagText) {
+                lines.push('**标签：** ' + tagText);
+                lines.push('');
+              }
+              lines.push('**展开叙事：**');
+              lines.push('');
+              lines.push(br.narrative || '');
+              lines.push('');
+              if (refText) {
+                lines.push('**参考方向：**');
+                lines.push('');
+                lines.push(refText);
+                lines.push('');
+              }
+              lines.push('---');
+              lines.push('');
+            }
+          }
+        }
+      }
+    }
+
+    var content = lines.join('\n');
+    var mimeType = isTxt ? 'text/plain;charset=utf-8' : 'text/markdown;charset=utf-8';
+    var blob = new Blob([content], { type: mimeType });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  window.generateFinal = function() {
+    var seed = document.getElementById('seedInput').value.trim();
+    if (!seed) {
+      alert('请先填写想法种子');
+      return;
+    }
+
+    var nonDimmed = [];
+    var cards = document.querySelectorAll('.branch-card');
+    cards.forEach(function(card) {
+      if (!card.classList.contains('dimmed')) {
+        var title = card.querySelector('.branch-title').textContent;
+        var angle = card.querySelector('.branch-angle').textContent;
+        var tags = [];
+        card.querySelectorAll('.branch-tag').forEach(function(t) { tags.push(t.textContent); });
+        nonDimmed.push({ title: title, angle: angle, tags: tags });
+      }
+    });
+
+    if (nonDimmed.length === 0) {
+      alert('请至少保留一个演化分支（未被舍弃）来生成文案');
+      return;
+    }
+
+    var newsContext = '';
+    if (document.getElementById('newsToggle').checked) {
+      newsContext = document.getElementById('newsInput').value.trim();
+    }
+
+    var url = localStorage.getItem('microera_url') || DEFAULT_URL;
+    var model = localStorage.getItem('microera_model') || DEFAULT_MODEL;
+    var key = localStorage.getItem('microera_key') || DEFAULT_KEY;
+
+    var btn = document.getElementById('genFinalBtn');
+    var output = document.getElementById('finalOutput');
+
+    if (!url || !model || !key) {
+      output.innerHTML = '<h4 class="final-header">✎ 最终文案</h4><p style="color:var(--algae-dim);">请先配置 API Key 以生成文案</p>';
+      output.classList.add('open');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '生成中...';
+    output.innerHTML = '<h4 class="final-header">✎ 最终文案</h4><div class="loading-indicator"><div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>撰写中...</div>';
+    output.classList.add('open');
+
+    var branchInfo = nonDimmed.map(function(b, i) {
+      return '分支' + (i + 1) + '：' + b.title + '\n切入角度：' + b.angle + '\n标签：' + b.tags.join('、');
+    }).join('\n\n');
+
+    var systemPrompt = '你是一个内容创作助手。基于用户提供的选题种子、内容形态和演化分支方向，写一篇完整的文章。\n\n要求：\n1. 字数控制在800-1000字之间\n2. 文章结构完整：有引入、主体、结论\n3. 语言流畅自然，有感染力\n4. 融合演化分支中的多个视角，形成有机统一的叙事\n5. 避免空洞的套话，用具体的案例和观察支撑观点';
+
+    var userMessage = '选题种子：' + seed + '\n内容形态：' + selectedType;
+    if (newsContext) {
+      userMessage += '\n\n新闻背景：' + newsContext + '\n\n请将以上新闻事件融入文章中';
+    }
+    userMessage += '\n\n以下是我保留的演化分支方向，请将它们融合到文章中：\n\n' + branchInfo;
+
+    fetch(url + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }],
+        temperature: 0.8,
+        max_tokens: 2500
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) throw new Error(data.error.message);
+      var text = data.choices[0].message.content;
+      lastGeneratedArticle = text;
+      output.innerHTML = '<h4 class="final-header">✎ 最终文案</h4>' + text.replace(/\n/g, '<br>');
+    })
+    .catch(function(err) {
+      output.innerHTML = '<h4 class="final-header">✎ 最终文案</h4><p style="color:var(--algae-dim);font-size:0.75rem;">生成失败：' + escapeHtml(err.message) + '</p>';
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = '✎ 生成最终文案';
+    });
+  };
 })();
 </script>
 </body>
