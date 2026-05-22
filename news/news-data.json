@@ -1,24 +1,73 @@
 [
   {
+    "num": "2026-05-23",
+    "date": "2026-05-23",
+    "time": "",
+    "summary": "本期多个AI产品有新动作：腾讯<strong>Mavis</strong>凭借魔性界面出圈，【向阳乔木】发布收录500+提示词的Chrome插件，<strong>DeepSeek</strong>永久降价仅同级模型1/3，<strong>Google DeepMind Project Genie</strong>上线街景视图。",
+    "companies": [],
+    "cats": [
+      "产品工具"
+    ],
+    "items": [
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "向阳乔木发布Chrome插件，内置500+提示词模板",
+        "body": "插件收录了作者和【姚老师】积累的提示词、苍何整理的<strong>GPT-Image-2</strong>提示词（带效果预览）以及全网500套常用提示词，覆盖开发、设计、营销等场景，支持一键复制、自动补全和导出。项目地址：https://t.co/XrDOt3Fgoi",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2057820198502068399"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "腾讯Mavis凭借魔性交互界面在抖音出圈",
+        "body": "腾讯AI产品<strong>Mavis</strong>因极其魔性的界面交互在抖音走红，用户纷纷模仿喝咖啡、跑步等场景，形成病毒式传播。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2057737525863866584"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "歸藏入手M5 Stack新品，配备麦克风和扬声器",
+        "body": "歸藏购买M5 Stack系列新硬件，该设备支持<strong>麦克风和扬声器</strong>，可玩性大大增强。用户可结合AI进行更多互动场景开发。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2057783822893318277"
+          }
+        ]
+      }
+    ],
+    "issueRange": "1175"
+  },
+  {
     "num": "2026-05-22",
     "date": "2026-05-22",
     "time": "",
-    "summary": "本期动态包括：腾讯<strong>Hy-MT2</strong>翻译模型获用户实测好评，可本地部署；<strong>智谱GLM-5.1 highspeed</strong>输出速度飙至<strong>400 TPS</strong>，10倍提升；<strong>Gemini Omni</strong>正式上线展示多模态创作；AI应用翻车事件频发，毕业典礼念名出错、航班信息不准确引发信任讨论；<strong>AI编码工具</strong>Token成本暴涨，企业开始收紧预算。 | <strong>MiniMax</strong>在美国参与多项AI生态活动，包括与<strong>Vercel</strong>、<strong>Notion</strong>联合举办黑客马拉松，以及参与<strong>AWS</strong>AI Agent深度研讨。 | 本期重点：OpenAI Codex发布多项新功能，包括Appshots、远程Mac使用、/goal模式毕业等；向阳乔木分享用Codex/Claude Code自动配置<strong>海外VPS</strong>的实操教程；Qwen3.7-Max验证跨测试泛化能力。 | 本期重点：阿里<strong>Qwen3.7-Max</strong>正式发布，专为Agent时代打造，支持长时自主执行；YC孵化两款AI新工具<strong>Pentagon</strong>和<strong>Netter.ai</strong>；<strong>Arena.ai</strong>分析显示GPT-4级别质量成本暴跌500倍。",
+    "summary": "本期动态包括：腾讯<strong>Hy-MT2</strong>翻译模型获用户实测好评，可本地部署；<strong>智谱GLM-5.1 highspeed</strong>输出速度飙至<strong>400 TPS</strong>，10倍提升；<strong>Gemini Omni</strong>正式上线展示多模态创作；AI应用翻车事件频发，毕业典礼念名出错、航班信息不准确引发信任讨论；<strong>AI编码工具</strong>Token成本暴涨，企业开始收紧预算。 | <strong>MiniMax</strong>在美国参与多项AI生态活动，包括与<strong>Vercel</strong>、<strong>Notion</strong>联合举办黑客马拉松，以及参与<strong>AWS</strong>AI Agent深度研讨。 | 本期重点：OpenAI Codex发布多项新功能，包括Appshots、远程Mac使用、/goal模式毕业等；向阳乔木分享用Codex/Claude Code自动配置<strong>海外VPS</strong>的实操教程；Qwen3.7-Max验证跨测试泛化能力。 | 本期重点：阿里<strong>Qwen3.7-Max</strong>正式发布，专为Agent时代打造，支持长时自主执行；YC孵化两款AI新工具<strong>Pentagon</strong>和<strong>Netter.ai</strong>；<strong>Arena.ai</strong>分析显示GPT-4级别质量成本暴跌500倍。 | 本周<strong>Qwen3.7-Max</strong>与<strong>Qwen3.5-LiveTranslate</strong>相继发布，第三方评测显示Qwen3.7-Max在Agent任务中全面超越对手；网易有道开源<strong>Confucius4</strong>双模型，飞书连接Claude Code的实用体验获用户好评。 | 本期重点：OpenAI <strong>Codex</strong>发布史诗级更新，歸藏分享详细使用教程；网易有道开源<strong>Confucius4</strong>双模型；<strong>Google</strong>为Antigravity付费用户再次三倍提升Gemini配额。",
     "companies": [
-      "Zhipu",
-      "OpenAI",
-      "DeepSeek",
-      "Qwen",
-      "OpenAI / Claude",
       "Claude",
-      "MiniMax",
+      "DeepSeek",
+      "Gemini",
       "Google",
-      "Gemini"
+      "MiniMax",
+      "OpenAI",
+      "OpenAI / Claude",
+      "Qwen",
+      "Zhipu"
     ],
     "cats": [
-      "模型动态",
       "产品工具",
       "技巧教程",
+      "模型动态",
       "行业观察"
     ],
     "items": [
@@ -321,9 +370,137 @@
             "url": "https://x.com/oran_ge/status/2057380350188482592"
           }
         ]
+      },
+      {
+        "company": "Qwen",
+        "cat": "model",
+        "title": "Qwen3.5-LiveTranslate 实时翻译模型发布",
+        "body": "通义实验室推出<strong>Qwen3.5-LiveTranslate</strong>，专注实时翻译场景，与旗舰模型<strong>Qwen3.7-Max</strong>一同上线，进一步丰富Qwen模型矩阵。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/Ali_TongyiLab/status/2057742839157829719"
+          }
+        ]
+      },
+      {
+        "company": "Qwen",
+        "cat": "model",
+        "title": "第三方Agent任务评测：Qwen3.7-Max 成本与效果全面领先",
+        "body": "atomic.chat测试显示，在编写自训练俄罗斯方块机器人任务中，<strong>Qwen3.7-Max</strong>成本仅$1.32，提升56%，而Claude Opus 4.7成本$12.15提升28%，GPT-5.5成本$2.85提升7%，Qwen在<strong>成本</strong>和【性能】上均碾压对手。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/Alibaba_Qwen/status/2057764624720875975"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "网易有道开源 Confucius4 双模型（数学视觉推理+语音克隆）",
+        "body": "网易有道发布<strong>Confucius4</strong>系列，一个用于数学视觉推理，另一个用于语音克隆，均开源<strong>完整权重</strong>而非仅API，强调工程精度与落地成本。多模态：https://t.co/BuDbufmelc  语音：https://t.co/gqj5PyUkXh",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/xiaohu/status/2057710994760302731"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tutorial",
+        "title": "用户分享：将Claude Code接入飞书的实用体验与评价",
+        "body": "向阳乔木详细体验了开源工具lark-channel-bridge，实现飞书与本地<strong>Claude Code</strong>交互。亮点包括：飞书可交互卡片、AI生成图片/文件直接显示、聊天记录全量搜索。安装指令：npx -y lark-channel-bridge@latest start。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2057751033615700128"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2057756179363995755"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "观点：小模型使翻译API速度优势消失",
+        "body": "有开发者在X上指出，随着小模型推理速度可达200 tokens/s，翻译软件与API仅剩的【速度优势】不复存在，本地部署方案更具竞争力。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/karminski3/status/2057639865119068665"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "小红书支持上传自定义Skill",
+        "body": "<strong>小红书</strong>平台新增Skill上传功能，用户可提交自定义AI技能，被博主誉为“很大的事件”。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2057711810728559034"
+          }
+        ]
+      },
+      {
+        "company": "Gemini",
+        "cat": "tool",
+        "title": "Google 再次三倍Gemini配额，重置所有付费用户额度",
+        "body": "<strong>Antigravity</strong>平台所有付费用户每周<strong>Gemini</strong>配额再次翻三倍，并重置所有已有额度，回应开发者对配额不足的担忧。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2057680511217393899"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2057679246085226965"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Browser Use 推出LLM使用量仪表盘",
+        "body": "开源浏览器自动化库<strong>Browser Use</strong>新增使用量仪表盘，可统一追踪LLM调用次数、Token消耗及成本。项目地址：https://github.com/browser-use/browser-use",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/browser_use/status/2057679470463717541"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "开源项目：Claude Code 飞书桥，在飞书内与Claude Code交互",
+        "body": "Zara Zhang发布<strong>Claude Code Lark/Feishu Bridge</strong>开源项目，支持在飞书聊天中调用Claude Code，可读写飞书文档、管理多会话、发送交互卡片。项目地址：https://github.com/zarazhangrui/feishu-claude-code-bridge",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/zarazhangrui/status/2057710284920520906"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tutorial",
+        "title": "歸藏深度体验Codex更新：截图添加上下文、/goal模式开启方法",
+        "body": "Codex新增<strong>Appshots</strong>自动截取窗口并识别未显示文本；<strong>/goal</strong>模式可设定目标让Codex持续执行数小时至数天，需在config.toml中启用 features.goals = true。内置浏览器支持<strong>高级注释</strong>直接编辑页面元素。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2057678002675413057"
+          }
+        ]
       }
     ],
-    "issueRange": "1169-1172"
+    "issueRange": "1169-1174"
   },
   {
     "num": "2026-05-21",
@@ -7899,358 +8076,5 @@
       }
     ],
     "issueRange": "1054-1059"
-  },
-  {
-    "num": "2026-05-01",
-    "date": "2026-05-01",
-    "time": "",
-    "summary": "本期重点：<strong>ElevenLabs</strong>在伦敦电话亭部署AI Agent互动装置，以及<strong>Marc Andreessen</strong>密集发表关于AI安全、生物技术、监管恐慌的系列观点。此外<strong>GPT-Image-2.0</strong>提示词玩法继续社区热传。 | 本期热点：社区掀起<strong>GPT-Image-2.0创意用法</strong>热潮，包括手绘标注和PPT制作；<strong>OpenLess</strong>开源语音输入工具发布，对标付费产品；<strong>Codex</strong>更新支持连接Slack和谷歌云盘。 | 本期热点：开发者用【Codex一键生成游戏】并开源，<strong>Grok 4.3</strong>上线竞技场开放评测，<strong>IBM Granite 4.1</strong>以小搏大挑战4倍大小模型。 | 本期热点包括<strong>DeepSeek-V4 API</strong>的致命兼容性避坑指南，以及<strong>OpenAI Codex</strong>密集展示其工作流与教育应用案例。",
-    "companies": [
-      "Gemma / Qwen",
-      "OpenAI",
-      "Hunyuan",
-      "DeepSeek",
-      "Qwen",
-      "xAI",
-      "Gemma / NVIDIA",
-      "Claude"
-    ],
-    "cats": [
-      "模型动态",
-      "产品工具",
-      "行业观察",
-      "技巧教程"
-    ],
-    "items": [
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "ElevenLabs在伦敦电话亭部署AI Agent互动装置",
-        "body": "<strong>ElevenLabs</strong>在伦敦标志性红色电话亭安装了<strong>ElevenAgent</strong>，使用迈克尔·凯恩爵士的声音向AI工程师峰会参与者提问英国AI历史。这是语音AI与线下场景结合的创新尝试。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/ElevenLabs/status/2050171771022655682"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "GPT-Image-2.0手绘标注提示词社区持续走红",
-        "body": "社区热传<strong>GPT-Image-2.0</strong>的“拉跨鼠标手绘图”标注提示词，可用于晒照片和做PPT。原贴附有完整提示词链接：https://t.co/KMgmP7dVMA",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050075020714815898"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "industry",
-        "title": "Marc Andreessen密集发表AI安全与监管观点",
-        "body": "<strong>Marc Andreessen</strong>连续发推讨论AI议题：转发合成生物学博士关于<strong>AI生物安全</strong>“表演性剧场”的批评，赞同科幻作家关于“AI最大威胁是权力过度集中”的观点，并回顾VCR时代的技术恐慌。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/pmarca/status/2050157073883902069"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/pmarca/status/2050155852460675379"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/pmarca/status/2050135501550883051"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/pmarca/status/2050131426499301840"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/pmarca/status/2050131011095404902"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "industry",
-        "title": "Orange AI分享产品、Agent与模型的结构化思考",
-        "body": "Orange AI提出【一切皆结构】的观点：做产品、做Agent、做大模型、做公司都是在“刻河床”。好的结构化设计能让用户和模型自然流淌，产生自我驱动的力量。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/oran_ge/status/2050006324856127587"
-          }
-        ]
-      },
-      {
-        "company": "DeepSeek",
-        "cat": "industry",
-        "title": "Orange AI指出DeepSeek中文能力不足",
-        "body": "Orange AI直言<strong>DeepSeek</strong>的中文表现不佳。这是来自业内人士对模型中文能力的直接反馈。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/oran_ge/status/2050088756565422560"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "industry",
-        "title": "歸藏预测AI将催生游戏Mod演化出爆款",
-        "body": "<strong>歸藏</strong>认为，类似Dota和PUBG从Mod演变的路径，现在<strong>每个人都能用AI构建游戏</strong>。缺的是一个整合能力的平台工具，可能催生下一个爆款游戏类型。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050076458266308853"
-          }
-        ]
-      },
-      {
-        "company": "Qwen",
-        "cat": "model",
-        "title": "通义实验室发布基于Qwen-Image 2.0的LoRA，支持3D分解视图生成",
-        "body": "<strong>Omni-Section-V2-Clean</strong>LoRA微调自<strong>Qwen-Image 2.0</strong>，为生成流程带来Z轴几何推理，可即时生成复杂物体的<strong>3D空间分解图（爆炸视图）</strong>。获取地址：https://t.co/XDbX7OMkh6",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/Ali_TongyiLab/status/2050032461950660831"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "开源语音输入工具OpenLess发布，对标Typeless等付费产品",
-        "body": "<strong>OpenLess</strong>是一款按住快捷键说话、松开后自动完成录音转写和AI润色的工具，结果直接插入光标或复制到剪贴板。开源免费，项目地址：https://t.co/N8PQ3J0Pl3",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/geekbb/status/2050077628913345007"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tool",
-        "title": "Codex更新：连接Slack、邮箱和谷歌云盘执行任务",
-        "body": "<strong>Codex</strong>现在可连接【Slack、邮箱及谷歌云盘】，从中获取内容执行任务，也能将信息添加到谷歌日历。进一步强化了个人助理能力。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050041028510708086"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "ElevenLabs推出ElevenCreative Flows实时协作功能",
-        "body": "<strong>ElevenCreative Flows</strong>新增<strong>实时协作</strong>功能，创作者和营销人员可同时在同一个Flow中构建和生成。Basic Seats让审核者不占座位即可参与。体验地址：elevenlabs.io/app/flows",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/ElevenLabs/status/2050100453589852452"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/ElevenLabs/status/2050100457456935419"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/ElevenLabs/status/2050100456693637203"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "开发者开源反制“Slopsquatting”供应链攻击的CLI工具",
-        "body": "<strong>dep-doctor</strong>CLI工具扫描包依赖清单，检测<strong>Slopsquatting</strong>攻击（攻击者注册与合法包相似的恶意包名，利用AI幻觉诱骗安装）。Repo：https://github.com/zhendahu/dep-doctor",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/ClaudeAI/comments/1t0ltr5/built_open_sourced_antislopsquatting_cli/"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tutorial",
-        "title": "社区热传GPT-Image-2.0手绘标注提示词，用于晒照片和做PPT",
-        "body": "网友分享<strong>GPT-Image-2.0</strong>手绘风格标注提示词：一笔画描边轮廓+手写日记感文字，适合给照片加注解。另有用户用它制作PPT，效果有趣。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050079838179135746"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/zarazhangrui/status/2050084126414471221"
-          }
-        ]
-      },
-      {
-        "company": "xAI",
-        "cat": "model",
-        "title": "xAI Grok 4.3 上线 lmarena 竞技场开放评测",
-        "body": "xAI最新<strong>Grok 4.3</strong>模型在lmarena.ai平台上线，支持文本、视觉、文档和代码多领域<strong>战斗模式评测</strong>，邀请用户用最难提示词挑战。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/arena/status/2049992559070712284"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/arena/status/2049992557527187794"
-          }
-        ]
-      },
-      {
-        "company": "Gemma / NVIDIA",
-        "cat": "model",
-        "title": "NVIDIA 发布 Gemma-4-26B-A4B-NVFP4 可在5090上运行",
-        "body": "NVIDIA发布<strong>Gemma-4-26B-A4B-NVFP4</strong>模型，确认可在单张<strong>RTX 5090</strong>上本地运行，并公布了GPQA、AIME等高精度基准分数。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t0i18e/nvidiagemma426ba4bnvfp4/"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "model",
-        "title": "IBM Granite 4.1 8B模型声称匹敌四倍大小模型",
-        "body": "IBM发布<strong>Granite 4.1</strong>8B模型，宣称其性能能与【四倍大小】的模型竞争，是重要的模型性能对比新闻。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t0dxdw/granite_41_ibms_8b_model_is_competing_with_models/"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tool",
-        "title": "开发者用Codex一下午开发《杀戮尖塔》风格卡牌游戏并开源",
-        "body": "开发者<strong>歸藏</strong>用Codex一下午完整开发了一款类《杀戮尖塔》的卡牌游戏，Codex能自动从上千张素材中拼图筛选素材，项目已开源。项目地址：https://t.co/ldJn21Fsy0",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050024106578661458"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2050030364018819581"
-          }
-        ]
-      },
-      {
-        "company": "Claude",
-        "cat": "tutorial",
-        "title": "为 Claude 构建基于 Obsidian 的持久记忆系统",
-        "body": "开发者分享了为<strong>Claude Cowork</strong>构建基于<strong>Obsidian</strong>第二大脑的长期记忆系统，使用MCP服务器和Opus 4.6，能记住11个会话的内容。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/ClaudeAI/comments/1t0epds/i_gave_claude_cowork_an_obsidian_second_brain/"
-          }
-        ]
-      },
-      {
-        "company": "Gemma / Qwen",
-        "cat": "tutorial",
-        "title": "对比 Qwen 3.6 与 Gemma 4 本地生成游戏性能",
-        "body": "社区对比了<strong>Qwen 3.6 27B</strong>和<strong>Gemma 4 31B</strong>在本地生成Pacman游戏的表现，讨论了生成速度与质量的权衡，对本地模型评估有参考价值。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t0epei/qwen_36_27b_vs_gemma_4_31b_making_packman_game/"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tutorial",
-        "title": "用OpenYak实现本地模型与Office文件的交互",
-        "body": "开发者展示<strong>OpenYak</strong>桌面AI工作区，支持<strong>Ollama本地模型</strong>与本地Office/PDF文件交互，并演示了Qwen模型处理预算表格。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t0fdxv/looking_for_feedback_using_ollama_with_local/"
-          }
-        ]
-      },
-      {
-        "company": "Hunyuan",
-        "cat": "model",
-        "title": "腾讯混元 Hy3-Preview 跻身文本竞技场开源模型前七",
-        "body": "<strong>腾讯混元 Hy3-Preview</strong>在 Arena 文本竞技场中排名开源模型第七，总榜第80。该模型为 MoE 架构，总参数量<strong>295B</strong>，激活参数<strong>21B</strong>，定价为每百万 tokens $0.29/$1.17。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/arena/status/2049905966188249230"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tool",
-        "title": "OpenAI 密集展示 Codex 实际工作流程与进度可视化",
-        "body": "OpenAI 官方连续发布演示，展示<strong>Codex</strong>在生成演示文稿时能实时查看任务进度、使用的文件和工具，并支持在同一对话线程中持续修改和迭代。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2049928782019256561"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2049928780588966270"
-          }
-        ]
-      },
-      {
-        "company": "DeepSeek",
-        "cat": "tutorial",
-        "title": "DeepSeek-V4 API 罕见踩坑：必须原样回传空字符串 reasoning_content",
-        "body": "开发者发现调用<strong>DeepSeek-V4 API</strong>时，若模型返回空字符串的 reasoning_content 字段，必须原样回传该字段（值为空字符串），否则会报错。现有 IDE 和 Agent 默认会过滤此字段，导致任务崩溃，复现概率高达 59%。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/karminski3/status/2049926904120267144"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "industry",
-        "title": "UC Berkeley 学生参加 Codex Creator 挑战赛，用 AI 学习编程",
-        "body": "OpenAI 官方透露，加州大学伯克利分校的学生在<strong>Codex Creator Challenge</strong>中一边构建应用一边学习编程，展示了 Codex 在教育场景的潜力。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAIDevs/status/2049888218464870670"
-          }
-        ]
-      },
-      {
-        "company": "Claude",
-        "cat": "industry",
-        "title": "Anthropic 研究闭环：将 Claude 实际使用中的不足用于训练新模型",
-        "body": "Anthropic 宣布正在构建一个闭环流程，通过分析人们如何使用<strong>Claude</strong>，找出模型与原则的差距，并将这些发现直接用于<strong>训练新模型</strong>。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/AnthropicAI/status/2049927628161999317"
-          }
-        ]
-      }
-    ],
-    "issueRange": "1050-1053"
   }
 ]
