@@ -1,1 +1,5 @@
 server.ps1
+*.srt
+__pycache__/
+news/news-data.json
+news/state.json
