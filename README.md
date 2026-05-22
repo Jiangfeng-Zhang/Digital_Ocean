@@ -1,8 +1,8 @@
 # Digital Ocean · 数字海洋
 
-一个静态个人星系网站集群，部署在 GitHub Pages 上，国内可直接访问。
+一个静态个人网站集群，部署在 GitHub Pages 上，国内可直接访问。
 
-主站以 **数字海洋** 为意象——全屏 Canvas 粒子系统模拟数据洋流，鼠标移动产生涟漪，向下滚动从海面"下潜"到深海，AI 能力层层递进展示。
+主站以 **数字海洋** 为意象——全屏 Canvas 粒子系统模拟信息洋流，鼠标移动产生涟漪，向下滚动从海面"下潜"到深海，各节点能力层层递进展示。
 
 ## 站点导航
 
@@ -10,11 +10,11 @@
 |---|---|---|
 | `/` | 数字海洋（主站） | 全屏深海粒子场景，滚动下潜叙事体验 |
 | `/dust/` | DUST · 尘 | 技术变革编年史，记录数字时代的逝去与留存 |
-| `/mirror/` | 镜 · 灯下 | 接入 DeepSeek API 的私密对话界面，温暖的灯下倾诉体验 |
-| `/rimlog/` | RimLog · 外沿记录层 | 数字海洋上的观测船，多屏终端：驾驶台 / 航行日志 / 世界海图 / 无线电 |
-| `/bluespace/` | 蓝色空间 · 时序薯盘 | 星图式金融数据可视化界面 |
-| `/microera/` | micro · era | AI 驱动的选题演化与内容方向锁定工具 |
-| `/resume/` | darkforest · resume · os | LLM Agent 简历优化框架，结构化建模 + JD 动态匹配 |
+| `/mirror/` | 镜 · 灯下  | 接入 DeepSeek API 的私密对话界面，温暖的灯下倾诉体验 |
+| `/rimlog/` | RimLog · 边缘日志 | 数字海洋上的观测船，多屏终端：驾驶台 / 航行日志 / 世界海图 / 无线电 |
+| `/news/` | Joural · 日报 | AI 行业日报聚合，每日自动抓取 news.daheiai.com 并合并为日报，支持懒加载与全文搜索 |
+| `/microera/` | Micro · Era | AI 驱动的选题演化与内容方向锁定工具 |
+| `/resume/` | Resume · OS | LLM Agent 简历优化框架，结构化建模 + JD 动态匹配 |
 
 ## 快速上手
 
@@ -28,6 +28,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File server.ps1
 
 默认访问 `http://localhost:8004/`。
 
+### 更新 News 日报数据
+
+News 子站（Joural · 日报）每天从 https://news.daheiai.com/ 自动抓取最新 6 期快讯，合并到对应日期的日报中：
+
+```powershell
+python scripts\fetch_news.py         # 增量更新（日常使用）
+python scripts\fetch_news.py --full  # 强制全量重新抓取
+```
+
+或双击 `update_news.bat`。
+
 ### 部署到 GitHub Pages
 
 1. 将仓库推送到 GitHub
@@ -40,9 +51,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File server.ps1
 - 纯静态 HTML / CSS / JavaScript，零 npm 依赖
 - Canvas 2D 粒子系统（主站海洋粒子效果）
 - CSS-only 动画（扫描线、脉冲、淡入滚动）
-- IntersectionObserver 驱动滚动动画
+- IntersectionObserver 驱动滚动动画 + 懒加载
 - DeepSeek API（Mirror 子站的对话功能）
 - SVG 矢量世界地图（RimLog Nav 面板）
+- Python 爬虫（News 子站数据抓取与日报合并）
 - PowerShell 本地开发服务器
 
 ## 许可
