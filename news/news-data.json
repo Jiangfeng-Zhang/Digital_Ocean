@@ -1,19 +1,826 @@
 [
   {
+    "num": "2026-06-01",
+    "date": "2026-06-01",
+    "time": "",
+    "summary": "<strong>MiniMax M3</strong>带来稀疏注意力架构将成本降至前代1/20，已上线Cline和Venice并支持实时语音视频；社区出现多个实用工具和工作流，包括<strong>Gemma 4本地推理</strong>与<strong>剪贴板脱敏工具</strong>。 | 本期没有单一爆点，但<strong>AI 阅读工作流</strong>、【Codex 工具改造】、【视频模型评测】和本地硬件瓶颈都值得关注。 | 本期重点集中在<strong>AI 阅读工作流</strong>、【Codex 改造开源工具】和【视频模型评测】；小型实用工具与开发者体验反馈比大新闻更突出。 | 本期热点包括【Claude长对话Context Handoff技巧】教程、英伟达自研CPU<strong>Project Digits</strong>曝光、以及复旦×通义提出的<strong>CUA训练范式</strong>，同时DDIM之父宋佳铭离职引发关注。",
+    "companies": [
+      "Apple",
+      "Claude",
+      "Gemma",
+      "Gemma / Qwen",
+      "MiniMax",
+      "OpenAI",
+      "Qwen",
+      "xAI"
+    ],
+    "cats": [
+      "产品工具",
+      "技巧教程",
+      "模型动态",
+      "行业观察"
+    ],
+    "items": [
+      {
+        "company": "MiniMax",
+        "cat": "model",
+        "title": "MiniMax M3 稀疏注意力降本20倍，上线Cline与Venice并支持实时语音视频",
+        "body": "M3采用【稀疏注意力】架构，计算和成本降至前代1/20，支持1M上下文、多模态与Agentic编码。已在<strong>Cline</strong>免费试用，<strong>Venice</strong>匿名可用，并与visionagents_ai结合实现实时语音视频。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/cline/status/2061287441575858253"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2061284051798163550"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2061291068570890528"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2061283737674092665"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2061291671657324594"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "Opus 4.8 在 EyeBench-V3 视觉基准测试中表现不佳，仍被指“失明”",
+        "body": "用户指出<strong>Opus 4.8</strong>在<strong>EyeBench-V3</strong>视觉基准测试中得分很低，模型仍然存在“失明”问题，无法有效完成视觉任务。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/singularity/comments/1ttfvis/opus_48_is_still_very_much_blind_eyebenchv3/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "开源工具：Rust CLI一键清除剪贴板敏感内容，防误粘贴AI",
+        "body": "开发者推出Rust CLI工具，通过热键在粘贴前清除剪贴板中的API密钥等敏感内容，避免误粘贴到Claude等AI对话中。项目地址：https://www.reddit.com/r/ClaudeAI/comments/1ttgasr/",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1ttgasr/opensource_tool_to_redact_secrets_from_your/"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "Claude Code 发布 v2.1.159，内部基础设施改进",
+        "body": "<strong>Claude Code</strong>发布v2.1.159版本，仅涉及内部基础设施改进，无用户端变化。链接：https://github.com/anthropics/claude-code/releases/tag/v2.1.159",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.159"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "OpenClaw 发布多个 beta 版本，强化代理恢复与消息投递稳定",
+        "body": "<strong>OpenClaw</strong>发布v2026.5.31-beta.1至beta.4，核心改进包括从中断工具调用、会话过期等场景更干净地恢复，以及提升Telegram、WhatsApp等多渠道消息投递稳定性。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.5.31-beta.4"
+          },
+          {
+            "text": "https:",
+            "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.5.31-beta.3"
+          },
+          {
+            "text": "https:",
+            "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.5.31-beta.2"
+          },
+          {
+            "text": "https:",
+            "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.5.31-beta.1"
+          }
+        ]
+      },
+      {
+        "company": "Gemma",
+        "cat": "tutorial",
+        "title": "用户用LiteRT封装Gemma 4本地推理，实现高速与音频模态",
+        "body": "用户分享使用<strong>LiteRT</strong>封装<strong>Gemma 4</strong>模型，在本地部署OpenAI兼容端点，获得高速推理并支持音频模态，适合离线部署场景。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1ttgc89/faster_performance_using_gemma_4_2b_and_4b_using/"
+          }
+        ]
+      },
+      {
+        "company": "Gemma / Qwen",
+        "cat": "tutorial",
+        "title": "社区分享小模型实战：Qwen用于OCR，Gemma 4B长上下文表现好",
+        "body": "用户分享用<strong>Qwen</strong>等小于10B模型进行OCR和格式化项目，并提到<strong>Gemma 4B</strong>在长上下文下表现良好，提供轻量部署思路。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1ttgqk6/what_are_some_cool_little_things_you_guys_are/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "新规：AI出海不得出口禁止技术，Manus引发法规",
+        "body": "投资者对外投资不得出口国家禁止的技术、服务及相关数据，也不得通过人员外派、技术指导等方式转移。此法规与<strong>Manus</strong>引发的监管讨论相关。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/xiaohu/status/2061285910411669596"
+          }
+        ]
+      },
+      {
+        "company": "xAI",
+        "cat": "model",
+        "title": "Arena.ai 更新 xAI 模型与视频榜单信息",
+        "body": "Arena.ai 同时提到 xAI 最新模型资料和 Video Arena leaderboard，视频模型横评仍是社区关注点。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060874689711591810"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060874060008243302"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Codex 帮 read-frog 扩展单词学习功能",
+        "body": "基于 read-frog 插件的改造案例显示，Codex 可用于快速搭建垂直学习工具，并沉淀个人化工作流。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2061126489048039724"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "即览阅读 App 进入发布前收尾",
+        "body": "歸藏的 iOS Markdown/HTML 阅读 App 已接近完成，主要剩余视觉样式调整，面向移动端文档阅读场景。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2061120486038450317"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "飞书+AI 阅读：划线即可对话",
+        "body": "@向阳乔木 测试把飞书 CLI 接入阅读流程，让划线内容直接进入 AI 对话，适合做读书笔记和知识整理。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2061118430305210492"
+          }
+        ]
+      },
+      {
+        "company": "Apple",
+        "cat": "",
+        "title": "AI 视频制作再次暴露本地内存瓶颈",
+        "body": "用户反馈制作一首 MTV 至少需要 13 分钟渲染，M4 24G 内存在 AI 视频流程里已经显得吃紧。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2060904422709055817"
+          }
+        ]
+      },
+      {
+        "company": "xAI",
+        "cat": "model",
+        "title": "Arena.ai 继续披露 xAI 模型与 Video Arena 榜单",
+        "body": "Arena.ai 分享 xAI 最新模型说明和 Video Arena leaderboard 细节，视频生成评测热度继续上升。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060874689711591810"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Codex 改造 read-frog 做单词学习系统",
+        "body": "基于开源沉浸式翻译插件 read-frog，用户用 Codex 扩展出单词学习流程，并计划后续开源改造版本。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2061126489048039724"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "即览 iOS Markdown/HTML 阅读 App 接近发布",
+        "body": "歸藏表示其 iOS Markdown 和 HTML 文件阅读 App「即览」基本完成，主要在收尾视觉样式，预计很快发布。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2061120486038450317"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "飞书+AI 阅读工作流实现划线对话",
+        "body": "@向阳乔木 分享用飞书 CLI 做 AI 阅读：选中文字即可触发对话，适合把读书笔记和问答流程合在一起。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2061118430305210492"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "Simon Willison 讨论是否取消 AI 订阅",
+        "body": "Simon Willison 的新文章围绕 AI 订阅成本和实际价值展开，反映开发者对多模型订阅组合的再评估。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://simonwillison.net/2026/May/31/the-solution-might-be-cancelling-my-ai-subscription/#atom-everything"
+          }
+        ]
+      },
+      {
+        "company": "Qwen",
+        "cat": "model",
+        "title": "复旦×通义提出全新CUA训练范式，解决Agent工具选择难题",
+        "body": "复旦大学与通义团队联合提出<strong>CUA训练范式</strong>，针对Agent在复杂场景下【选不对工具】的核心问题，目标提升工具选择准确率。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/427005.html"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "LangSmith on AWS联合发布Deep Agents评估深度博客",
+        "body": "Harrison Chase与AWS合作推出使用<strong>LangSmith</strong>评估<strong>Deep Agents</strong>的深度指南，涵盖长程Agent的数据点与评估器设计。博客地址：https://aws.amazon.com/blogs/machine-learning/evaluating-deep-agents-using-langsmith-on-aws/",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/hwchase17/status/2061085058384150904"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tutorial",
+        "title": "Claude长对话变慢？&#039;Context Handoff&#039;技巧完整分享",
+        "body": "Reddit用户分享解决Claude长对话【变慢、重复、遗忘】的<strong>Context Handoff</strong>技巧：将当前线程压缩为上下文交接文档，在新对话中继续。包含四步决策框架和完整prompt。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1tsuklm/long_claude_chats_slowly_get_worse_slower/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "纽约时报记者用AI聊天机器人成功卖房，引发中介消亡讨论",
+        "body": "一位NYT记者仅用<strong>AI聊天机器人</strong>以60.5万美元成功卖出房子，谈判中机器人阻止他发送不利措辞。作者认为<strong>房产中介</strong>将像旅行中介一样被逐渐取代。详情：https://promptainews.com/posts/ai-is-your-new-realtor",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1tsuqf2/i_tried_to_sell_my_house_with_a_chatbot/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "DDIM之父宋佳铭宣布从原单位离职",
+        "body": "<strong>DDIM</strong>发明者、知名AI研究者<strong>宋佳铭</strong>宣布离职，引发行业对其未来动向的猜测。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/427104.html"
+          }
+        ]
+      }
+    ],
+    "issueRange": "1227-1230"
+  },
+  {
+    "num": "2026-05-31",
+    "date": "2026-05-31",
+    "time": "",
+    "summary": "本期亮点包括<strong>GPT-Realtime 2.0</strong>实时语音操控电脑、<strong>Wall-OSS-0.5</strong>机器人零样本任务进展，以及多个实用开发工具与技巧。 | 今日动态包括<strong>Grok-Imagine-Video</strong>登顶图转视频榜首，<strong>GPT-Realtime 2.0</strong>实现语音操控电脑，以及多个实用工具（GEO公开课资源、replayd回归测试工具等）和行业讨论（Anthropic营收算法争议）。 | 本周AI行业动态以【Anthropic公开Claude沙盒技术】和<strong>YC投资低成本无人机公司Tenet Industries</strong>最为重要，同时<strong>Nano Banana 2</strong>展示了惊人的细胞图像生成能力，<strong>Wagner多智能体虚拟会议室</strong>也值得关注。 | 本期看点：LiteParse v2以<strong>Rust重写</strong>实现【最快开源PDF解析】；Vercel AI Gateway新增<strong>每API Key消费上限</strong>防止意外透支；NVIDIA发布<strong>DynoSim</strong>推理栈模拟工具，比实时快1500倍；OpenAI Voice Hack Night最终入围项目展示<strong>语音分诊</strong>、<strong>AI导师</strong>等方向。 | 本期动态聚焦多款新工具发布与模型更新：归藏开发<strong>即览</strong>App解决移动端Markdown/HTML预览痛点；LangChain集成<strong>GEPA</strong>优化链性能；<strong>Milvus 3.0 beta</strong>支持数据湖原生向量搜索；同时【Claude Opus 4.8 Fast Mode降价3倍】、阿里<strong>Qwen 3.7 Max</strong>以一半价格发布1M上下文模型、<strong>GPT-5.5 Instant</strong>默认并嵌入Excel。 | 本期社区热议AI开发者频繁切换工具的现象，同时Claude Code的<strong>UltraCode模式</strong>和<strong>Hooks系统</strong>成为新焦点。在模型与硬件方面，<strong>τ0-WM</strong>开源具身世界模型和<strong>机器人原生世界动作模型</strong>发布，亚马逊专家则指出<strong>Token浪费</strong>是成本黑洞。",
+    "companies": [
+      "Claude",
+      "Claude / DeepSeek",
+      "Langchain",
+      "Meta",
+      "NVIDIA",
+      "OpenAI",
+      "OpenAI / Claude",
+      "Qwen",
+      "xAI"
+    ],
+    "cats": [
+      "产品工具",
+      "技巧教程",
+      "模型动态",
+      "行业观察"
+    ],
+    "items": [
+      {
+        "company": "Qwen",
+        "cat": "model",
+        "title": "社区发布 Qwen3.6-35B 融合模型，含 MTP 自推测解码",
+        "body": "基于Qwen3.6和Claude Opus蒸馏的融合模型<strong>Qwen3.6-35B-A3B-Claude-4.7-Opus-Reasoning-Distilled</strong>，提供<strong>APEX</strong>量化版并捆绑MTP头，支持自推测解码。Hugging Face: https://huggingface.co/mudler/Qwen3.6-35B-A3B-Claude-4.7-Opus-Reasoning-Distilled-APEX-MTP-GGUF",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tslv3b/mudlerqwen3635ba3bclaude47opusreasoningdistilledap/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "GPT-Realtime 2.0 实时语音接入AI操控电脑",
+        "body": "<strong>GPT-Realtime 2.0</strong>实现实时语音控制电脑，演示效果丝滑，被称“真正的Siri”。支持接入Codex等模型。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/xiaohu/status/2060895245290942840"
+          }
+        ]
+      },
+      {
+        "company": "NVIDIA",
+        "cat": "tool",
+        "title": "NVIDIA 推出 SkillSpector：AI agent 安全扫描工具",
+        "body": "<strong>NVIDIA</strong>开源<strong>SkillSpector</strong>，扫描AI agent技能安全，包含64项检查、Prompt注入检测、MCP安全检查等，支持CI/CD。项目地址：https://github.com/nvidia/skillspector",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/pmarca/status/2060941902325875132"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "git-courer：让 Claude Code 生成语义化 Git 提交",
+        "body": "开源<strong>git-courer</strong>Git MCP服务器，提供17个结构化工具，Go分析diff语义后让Claude只写描述，确保每次一提交。项目地址：https://github.com/Alejandro-M-P/git-courer",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1tsmp2x/i_made_claude_code_actually_understand_what_its/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "GEO公开课及GEOFlow系统开源",
+        "body": "每月一场GEO公开课首期结束，主讲<strong>GEOFlow</strong>免费开源系统及17套GEO Skill，并提供41篇最新论文合集。资源链接：https://t.co/Sq9l9i9UER",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2060884449211150420"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2060884670963970203"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tutorial",
+        "title": "用Codex根据Suno歌曲URL自动生成音乐MTV",
+        "body": "只需提供<strong>Suno</strong>歌曲URL，<strong>Codex</strong>自动调用生图、组织画面、生成对齐歌词，完成音乐MTV，Skill待完善后开源。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2060902037081165996"
+          }
+        ]
+      },
+      {
+        "company": "Claude / DeepSeek",
+        "cat": "tutorial",
+        "title": "低成本方案：在 Claude Code 中使用 DeepSeek API",
+        "body": "用简单提示让Claude Code自动切换后端至<strong>DeepSeek V4 Pro</strong>，配置API Key和模型选择，实现低成本高性能替代。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1tsn5zh/deepeseek_inside_claude_code_easist_way/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "Wall-OSS-0.5：开源机器人 VLA 零样本达 80% 任务进度",
+        "body": "X Square Robot 发布<strong>Wall-OSS-0.5</strong>，4B开源VLA模型，在17项真实机器人任务中4项零样本达80%+，含变形任务。代码：https://github.com/X-Square-Robot/wall-x",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1tsnsta/robot_foundation_models_keep_hiding_behind/"
+          },
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/singularity/comments/1tsnrkh/openweights_vla_hits_80_task_progress_on_4_of_17/"
+          }
+        ]
+      },
+      {
+        "company": "xAI",
+        "cat": "model",
+        "title": "Grok-Imagine-Video-1.5 Preview 登顶图转视频评测榜",
+        "body": "xAI的<strong>Grok-Imagine-Video-1.5 Preview</strong>在lmarena图转视频评测中以<strong>+52分</strong>超越Seedance-2.0等模型排名第一。详情：docs.x.ai/developers/models/grok-imagine-video-1.5-preview",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060874057130934376"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060874057130934376"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "Nano Banana 2 生成高精度细胞图像，解剖结构准确",
+        "body": "Google DeepMind 的<strong>Nano Banana 2</strong>模型仅需一句提示就能生成高分辨率细胞图像，细胞核、线粒体、高尔基体、细胞骨架等结构均<strong>解剖学正确</strong>且精美。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2060685348586299581"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Wagner：多智能体虚拟会议室用于基础设施规划",
+        "body": "OpenAI Developers 介绍了<strong>Wagner</strong>，一个多智能体虚拟会议室，团队可与房间内的智能体实时对话，共同讨论基础设施规划方案。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060768795254550966"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "Y Combinator 推出 Tenet Industries：低成本可量产打击无人机",
+        "body": "YC 投资的<strong>Tenet Industries</strong>正在打造【低成本、可量产】的防御系统，从打击无人机起步，被称为“防御界的F-150”，旨在取代昂贵的传统军备。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/ycombinator/status/2060843835123736907"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/ycombinator/status/2060843836763722158"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "industry",
+        "title": "Anthropic 详细揭秘 Claude 产品中的沙盒隔离技术",
+        "body": "Anthropic 发布技术文章<strong>How we contain Claude</strong>，详解 Claude.ai（gVisor）、Claude Code（Seatbelt/Bubblewrap）、Cowork（完整VM）的沙盒机制，并开放了<strong>sandbox-runtime</strong>工具，开源地址：https://github.com/anthropic-experimental/sandbox-runtime",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://simonwillison.net/2026/May/30/how-we-contain-claude/#atom-everything"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "AGI Bar 上海分店开业，社区自制钛原色会员卡",
+        "body": "<strong>AGI Bar</strong>第二家分店在上海开业，社区成员使用【xTool红外激光】在工艺级不锈钢卡片上烧灼出钛原色logo卡背，作为0号会员卡。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/oran_ge/status/2060577187749638209"
+          }
+        ]
+      },
+      {
+        "company": "Meta",
+        "cat": "tool",
+        "title": "LlamaIndex 发布 LiteParse v2：Rust 重写的世界最快 PDF 解析器",
+        "body": "LiteParse v2 用 Rust 完全重写，支持 50+ 文档类型，声称比 pymupdf 等开源方案更快更准。采用网格投影算法，无需 LLM。已适配 Python/Node，可直接在 AI Agent 中使用。项目地址：https://github.com/run-llama/liteparse",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/jerryjliu0/status/2060755304636449178"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Vercel AI Gateway 新增按 API Key 设置消费上限功能",
+        "body": "用户可为每个 API Key 单独设置花费上限，防止测试误用生产额度。Guillermo Rauch 转发了该更新，有用户表示再也不用担心 Claude 意外消耗数千美元。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/rauchg/status/2060787704166776927"
+          }
+        ]
+      },
+      {
+        "company": "NVIDIA",
+        "cat": "tool",
+        "title": "NVIDIA 推出 DynoSim：推理服务栈模拟工具",
+        "body": "DynoSim 基于 Dynamo 服务栈，通过负载驱动模拟将部署搜索转化为模拟-验证循环。全 Rust 实现，比实时快 1500 倍，可快速筛选数千种配置。技术详情：https://nvda.ws/4x06AdB",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/NVIDIAAI/status/2060781385686659416"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/NVIDIAAI/status/2060781388161294663"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "OpenAI Voice Hack Night 最终入围项目展示",
+        "body": "四个实时语音 Agent 项目入围：Surgical Triage（语音分诊工作流）、Curo（一对一AI语音导师）、Agentic OS for Phone（语音驱动手机操作系统）等。投票进行中，周一公布冠军。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060768476386689253"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060768589926502638"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060768692653392065"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060768896580452841"
+          }
+        ]
+      },
+      {
+        "company": "Qwen",
+        "cat": "model",
+        "title": "阿里发布 Qwen 3.7 Max：1M上下文，价格仅Opus一半",
+        "body": "<strong>Qwen 3.7 Max</strong>在阿里云峰会发布，支持<strong>1M token上下文</strong>，在多个基准上超越Claude Opus 4.6 Max。定价$2.5/$7.5，约为Opus 4.7一半，宣称可自主运行35小时。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trz2pd/weekly_ai_roundup_may_2330_2026_claude_opus_48/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "归藏开发iOS Markdown/HTML预览App“即览”，即将开放测试",
+        "body": "归藏因微信不支持Markdown/HTML文件，快速开发了<strong>即览</strong>App，支持手机端预览。已用<strong>GPT-Image 2.0</strong>绘制图标，即将发放测试资格。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060626984200437995"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060689179642916894"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060639508002148578"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060660883135840453"
+          }
+        ]
+      },
+      {
+        "company": "Langchain",
+        "cat": "tool",
+        "title": "LangChain 集成 GEPA，支持链优化",
+        "body": "LangChain宣布与<strong>GEPA</strong>集成，开发者可通过PR贡献的适配器优化LangChain链的性能。文档地址：gepa-ai.github.io/gepa/tutorials/langchain_adapter_pair_sum_product_walkthrough/",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/hwchase17/status/2060732843282850276"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Milvus 3.0 beta 发布，支持数据湖原生向量搜索",
+        "body": "<strong>Milvus 3.0 beta</strong>是项目史上最大架构升级，支持直接在数据湖上索引和查询向量，超越top-K搜索。6月8日将有线上AMA。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/milvusio/status/2060741259732676904"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "终端仪表盘工具：Bun+OpenTUI+SolidJS 统一管理看板与Claude Code",
+        "body": "开源项目构建终端仪表盘，在TUI中统一管理看板任务、日程和<strong>Claude Code</strong>代理会话。项目地址：https://t.co/LWchmTrJKU",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/geekbb/status/2060724713031381112"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "Claude Opus 4.8 Fast Mode 降价3倍，推出M365插件",
+        "body": "Anthropic将<strong>Claude Opus 4.8</strong>Fast Mode价格从$30/$150降至$10/$50每百万token，降幅3倍。同时发布20+法律MCP连接器和<strong>Microsoft 365</strong>插件（Excel、PPT、Word）。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trz2pd/weekly_ai_roundup_may_2330_2026_claude_opus_48/"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "GPT-5.5 Instant 成为ChatGPT默认模型，嵌入Excel和Google Sheets",
+        "body": "OpenAI将<strong>GPT-5.5 Instant</strong>设为默认模型，在高风险幻觉减少52.5%。同时推出ChatGPT侧边栏，嵌入<strong>Excel</strong>和Google Sheets，并提供Pro用户财务仪表盘。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trz2pd/weekly_ai_roundup_may_2330_2026_claude_opus_48/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "τ0-WM：最大规模预训练开源具身世界模型发布",
+        "body": "该模型基于<strong>17800小时</strong>真机数据预训练，是目前最大规模的【开源具身世界模型】，旨在推动机器人学习和交互仿真。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/426832.html"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "Claude Code UltraCode模式自动编排70个Agent深度搜索",
+        "body": "用户请求deep search，UltraCode自动创建约<strong>70个agents</strong>的4阶段pipeline，编排脚本独立于上下文窗口，避免模型被淹没。但成本是70倍上下文开销，需权衡使用场景。详情：https://avinashsangle.com/blog/claude-code-dynamic-workflows-guide",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1tsqezk/asked_claude_code_for_a_deep_search_in_ultracode/"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "开源桌面宠物code-pet：利用Claude Code Hooks可视化工作状态",
+        "body": "开发者基于Claude Code的<strong>Hooks机制</strong>构建了桌面宠物，实时反应Claude状态（思考、等待输入、空闲），并自动统计工具使用频率。项目开源且无遥测。项目地址：https://github.com/mradovic95/code-pet",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1tsqa0e/i_started_reading_about_claude_code_hooks_and/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "OpenClaw发布v2026.5.30-beta.1：强化代理恢复与消息投递稳定",
+        "body": "新版本改进了<strong>CLI运行环境</strong>对中断工具调用的恢复能力，并优化了Telegram、WhatsApp等渠道的【消息投递稳定性】，防止会话挂起。项目地址：https://github.com/openclaw/openclaw/releases/tag/v2026.5.30-beta.1",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://github.com/openclaw/openclaw/releases/tag/v2026.5.30-beta.1"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "Ryan Carson分享AI加速应用改进技巧：auto-research + /goal",
+        "body": "使用<strong>auto-research</strong>概念配合<strong>/goal</strong>指令，能在有数字评分标准的应用中实现极速改进。本质是打破“人工昂贵”的旧思维，让AI自动迭代评测。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/pmarca/status/2060987293083808249"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "复旦系团队发布机器人原生世界动作模型，首创时空一体架构",
+        "body": "该模型提出【时空一体架构】，半年内获<strong>5轮融资</strong>，目标是让机器人拥有原生世界动作理解能力，降低对大规模仿真数据的依赖。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/426984.html"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI / Claude",
+        "cat": "industry",
+        "title": "社区现象：AI开发者频繁切换Claude Code与Codex被调侃",
+        "body": "@小互吐槽“搞AI的全是渣男”，特指<strong>Vibe Coding</strong>群体，一会爱Claude Code，一会又投奔<strong>Codex</strong>，甚至脚踩两条船。反映了AI编程工具竞争白热化，用户忠诚度低。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/xiaohu/status/2061010800010268917"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "industry",
+        "title": "亚马逊王晓野：Token贵只因喂给模型的垃圾太多",
+        "body": "在AIGC2026上，亚马逊专家指出优化<strong>世界模型</strong>需转向<strong>多智能体交互仿真</strong>，关键是减少无效token输入，提升模型使用效率。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/426970.html"
+          }
+        ]
+      }
+    ],
+    "issueRange": "1221-1226"
+  },
+  {
     "num": "2026-05-30",
     "date": "2026-05-30",
     "time": "",
-    "summary": "今日动态包括OpenAI推出生物防御计划<strong>Rosalind Biodefense</strong>、通义发布具身智能模型<strong>Qwen-VLA</strong>、以及社区分享Claude Code装谷歌框架和PPT工作流等实用技巧。",
+    "summary": "今日动态包括OpenAI推出生物防御计划<strong>Rosalind Biodefense</strong>、通义发布具身智能模型<strong>Qwen-VLA</strong>、以及社区分享Claude Code装谷歌框架和PPT工作流等实用技巧。 | 本期<strong>歸藏</strong>的社交媒体卡片Skill冲上GitHub本周Star第一，<strong>Google</strong>发布Nano Banana图像生成模型GA版，还有多个实用<strong>AI编程教程</strong>值得关注。 | 本期社区热议<strong>Anthropic被曝蒸馏中国模型</strong>和【UltraCode消耗百万token无输出】，同时<strong>Shadow AI</strong>开源语音助手和<strong>Moss TTS 1.5</strong>语音克隆模型受关注，<strong>CC Switch</strong>支持Codex桌面版等工具更新。 | 本期AI行业迎来几件大事：<strong>Anthropic</strong>以9000亿美元估值超越OpenAI成为全球最有价值AI初创；神秘公司忘记设置用量限制一个月烧掉5亿美元；<strong>Koji</strong>图形化AI家教让学习过程从给答案变为引导思考；开源社区分别完成了GPU硬件性价比对比和<strong>DGX Spark</strong>克隆尺寸对比。 | 本期重点：OpenAI Codex迎来两项<strong>用户体验改进</strong>——背景代理增加稳定标识符、新增历史聊天搜索功能；同时OpenAI发布与数学家陶哲轩的对话，探讨AI如何【降低研究认知摩擦】。 | 本期亮点包括<strong>OpenAI Codex</strong>正式支持Windows系统，<strong>Google Gemini Spark</strong>24/7自主AI Agent向Ultra订阅用户开放，以及<strong>Arena</strong>发布Claude Opus 4.8与多模型前端测试对比。",
     "companies": [
-      "Qwen",
+      "Cerebras",
       "Claude",
-      "OpenAI"
+      "Claude / Qwen / Kimi",
+      "Gemini",
+      "Gemini / Meta",
+      "GitHub",
+      "MiniMax",
+      "NVIDIA",
+      "OpenAI",
+      "OpenAI / Claude",
+      "Qwen"
     ],
     "cats": [
-      "模型动态",
-      "行业观察",
+      "产品工具",
       "技巧教程",
-      "产品工具"
+      "模型动态",
+      "行业观察"
     ],
     "items": [
       {
@@ -103,9 +910,429 @@
             "url": "https://x.com/OpenAI/status/2060376598642405492"
           }
         ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "Google 正式发布 Nano Banana Pro 和 Nano Banana 2 图像生成模型",
+        "body": "Google AI Developers宣布<strong>Nano Banana Pro</strong>（gemini-3-pro-image）和<strong>Nano Banana 2</strong>（gemini-3.1-flash-image）现已<strong>GA可用</strong>，可通过Gemini API用于生产环境。构建地址：https://ai.google.dev/gemini-api/docs/image-generation",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2060685345738375640"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2060685358120018133"
+          }
+        ]
+      },
+      {
+        "company": "GitHub",
+        "cat": "tool",
+        "title": "歸藏社交媒体卡片 Skill 登顶 GitHub 本周新建项目 Star 排名",
+        "body": "歸藏开发的<strong>guizang-social-card-skill</strong>在GitHub本周新建项目Star排名中【冲上第一】，这是一个AI社交媒体卡片生成工具。项目地址：https://t.co/e7GYoN4PRT",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060667214077034978"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "开源交互式 Agentic DevOps 手册发布",
+        "body": "社区发布<strong>Agentic DevOps</strong>开源手册，教如何将多智能体系统从本地笔记本迁移到生产环境，涵盖Observability、CI/CD、Guardrails、成本控制等。手册地址：https://agentswarms.fyi/blog/devops-for-agentic-ai-open-source-playbook",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trxgvc/we_wrote_an_opensource_interactive_playbook_for/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "分享一个AI编程专用 JSON Prompt",
+        "body": "Reddit用户分享了一个<strong>Strict Deterministic Compiler</strong>模式的JSON Prompt，要求AI只输出代码块、禁用对话填充、最大刚性防幻觉，适合编码场景。Prompt内容详见原文。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trxdft/i_made_an_ai_coder_json_prompt/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tutorial",
+        "title": "用AI编写脚本自动关闭Chrome CDP调试确认弹窗",
+        "body": "为解决<strong>Chrome CDP</strong>调试时每次弹窗确认问题，向阳乔木让Codex写了一个自动点击确认的程序，实现<strong>自动化执行</strong>，消除了远程或后台运行时的障碍。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/vista8/status/2060595730742706452"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "Moss TTS 1.5 发布：语音克隆效果极佳，允许商业使用",
+        "body": "Reddit用户推荐<strong>Moss TTS 1.5</strong>，称其语音克隆效果优于Fish Audio S2 Pro，且支持商业用途。体验地址：https://huggingface.co/spaces/OpenMOSS-Team/MOSS-TTS-v1.5",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1trq8kq/this_new_moss_tts_15_is_damn_good_with_voice/"
+          }
+        ]
+      },
+      {
+        "company": "NVIDIA",
+        "cat": "model",
+        "title": "英伟达清华团队发布Gamma-World：世界模型支持多人共处仿真",
+        "body": "<strong>Gamma-World</strong>世界模型实现<strong>多智能体交互仿真</strong>，让AI从单个玩家扩展到多人协作场景。项目详情：https://www.qbitai.com/2026/05/426643.html",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.qbitai.com/2026/05/426643.html"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "CC Switch 正式支持 Codex 桌面版",
+        "body": "开发工具<strong>CC Switch</strong>现已支持<strong>Codex桌面版</strong>，方便用户在桌面端切换使用。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/geekbb/status/2060600637113700802"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Shadow AI：开源本地语音AI助手，支持多语言与全离线",
+        "body": "开发者发布<strong>Shadow AI</strong>，一款Windows本地运行的语音AI，支持多语言对话、记忆、任务和Google集成，开源且自带SearXNG搜索。项目地址：https://github.com/shadowdoggie/shadow-ai",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1trt8e3/made_a_local_voice_ai_for_windows_you_can_talk_to/"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "Claude Code 更新：自动模式扩展、插件自动加载等新功能",
+        "body": "<strong>Claude Code</strong>v2.1.158/v2.1.157发布，<strong>自动模式</strong>现支持Bedrock/Vertex/Foundry，插件自动加载，新增agent切换及工作树管理功能。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.158"
+          },
+          {
+            "text": "https:",
+            "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.157"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "tool",
+        "title": "用户吐槽Claude无法搜索对话历史，Cli问题频出",
+        "body": "Reddit用户抱怨<strong>Claude</strong>仅支持搜索对话标题，无法搜索内容，且让Claude自己找历史记录经常失败，引发共鸣。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1trqhcu/seriously_wtf_cant_we_search_inside_conversations/"
+          }
+        ]
+      },
+      {
+        "company": "Claude / Qwen / Kimi",
+        "cat": "industry",
+        "title": "Anthropic被曝蒸馏中国模型：Claude基于Kimi/Qwen基座训练",
+        "body": "Orange AI爆料，投资人透露<strong>Anthropic</strong>的Claude蒸馏了<strong>Kimi</strong>和<strong>Qwen</strong>基座模型，且证据逐渐增多。消息在社区引发广泛讨论。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/oran_ge/status/2060522594227625999"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/oran_ge/status/2060546887158202420"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "industry",
+        "title": "Anthropic UltraCode 被曝严重Bug：消耗170万token无输出且不退款",
+        "body": "用户反馈<strong>UltraCode</strong>子代理陷入退化循环，消耗约<strong>200万token</strong>（约18美元）后未生成任何代码，Anthropic客服称不退款。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/ClaudeAI/comments/1trpxfl/careful_with_the_new_ultracode_its_a_mega_token/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "model",
+        "title": "阿里 Wan2.7 文生视频模型在 Arena 排名第三",
+        "body": "Wan2.7-t2v-2026-04-25 在 Text-to-Video Arena 位列<strong>第三</strong>。Wan 团队同步发布万相2.7-Video，支持多模态控制（文字/图像/音频/视频）、角色定制、视频编辑及全栈创意工具。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060532939914682751"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060532939914682751"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Koji：拒绝给答案的图形化 AI 家教正式推出",
+        "body": "由 MIT 和哈佛专家训练的 Koji 号称全球首个<strong>图形化私教</strong>。它能看见学生屏幕、高亮批注，通过提问和引导逼学生自己思考，而非直接给答案，适用于几何、编程等场景。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/xiaohu/status/2060545269025190247"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Codex 更新：Windows Computer Use 及更多实用功能",
+        "body": "Codex 昨晚推送大量体验更新，关键新增包括<strong>Windows Computer Use</strong>（支持远程控制）、聊天记录管理、个人资料页面、Git Diff 显示、侧边对话及一键模型切换。Windows 被控时用户不能操作，与 Mac 不同。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/op7418/status/2060549911960293704"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "tool",
+        "title": "Browser Use 演示：一键将网页内容转为 TikTok 爆款视频",
+        "body": "开发者 @shawn_pana 用 Browser Use 构建了一个 agent，可读取任意帖子/网页，自动生成 TikTok 并上传，实现从想法到发布的零障碍流程，被视为<strong>AI UGC 创业</strong>雏形。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/browser_use/status/2060541495317606712"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "Reddit 用户全面对比 GPU 性能，指出 Mac Studio 性价比不如预期",
+        "body": "一名用户在 r/LocalLLaMA 详细对比了 RTX 4060 Ti、RTX 5070 Ti、Radeon MI50 等多款显卡的【FP16算力/带宽/价格/功耗】。结论：Mac Studio 性价比被高估，3090 对单流推理过剩，P100 被严重低估。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1trkze4/i_compared_all_specs_of_the_major_gpusmachines/"
+          }
+        ]
+      },
+      {
+        "company": "",
+        "cat": "",
+        "title": "DGX Spark 克隆机型尺寸一览：8 款产品几乎完全同尺寸",
+        "body": "用户汇总了 NVIDIA DGX Spark 及戴尔、惠普、联想、微星、技嘉、宏碁、华硕等 7 家 OEM 克隆版的工作站尺寸对比表，所有机型均为约 150mm x 50mm x 150mm，重量 1.2-1.48kg。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1trms2k/all_dgx_spark_clones_side_by_side_in_one_image/"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI / Claude",
+        "cat": "industry",
+        "title": "Anthropic 以 9000 亿美元估值超越 OpenAI 成为最有价值 AI 初创",
+        "body": "Anthropic 在最新融资中估值达到<strong>9000亿美元</strong>，超过 OpenAI 的 7300 亿美元，成为全球估值最高的 AI 初创公司。公司同时发布了新模型<strong>Mythos</strong>，宣称在软件漏洞挖掘方面能力极强。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trli22/anthropic_tops_openai_to_become_the_worlds_most/"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "industry",
+        "title": "神秘公司一个月用掉 5 亿美元 Claude 额度，因未设置使用限制",
+        "body": "据 Tom&#039;s Hardware 报道，一家未具名公司因忘记为员工 Claude 许可证设置<strong>使用上限</strong>，单月产生近 5 亿美元费用，创下 AI 工单消费纪录。事件引发业内对企业 AI 成本管控的讨论。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://www.reddit.com/r/artificial/comments/1trmvgh/mystery_company_accidentally_blew_500_million_on/"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Codex背景代理新增稳定像素标识符",
+        "body": "OpenAI为Codex背景代理添加了<strong>稳定像素标识符</strong>，当同一代理出现在不同标签页、提及、对话记录和线程面板时，用户可【快速识别】，提升协作体验。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060478367921831936"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Codex新增历史聊天搜索功能",
+        "body": "OpenAI Developers宣布Codex现在支持搜索所有历史聊天内容，帮助用户快速找到<strong>过去的线程</strong>和对话记录。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060478379619676330"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "Builders Unscripted播客：Codex在工作与副项目中的应用",
+        "body": "OpenAI发布与Matias的对话，讨论如何将<strong>Codex</strong>用于日常工作流程和副业项目，涵盖代码审查、App Server项目、计算机使用等话题。视频链接：https://x.com/OpenAIDevs/status/2060459409659375804",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060459409659375804"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "industry",
+        "title": "OpenAI发布与陶哲轩对话：AI让研究者敢于追求更疯狂的想法",
+        "body": "OpenAI发布与数学家Terence Tao的对话视频，Tao认为AI能【降低研究的认知摩擦】，帮助保存发现路径，让科学家可以尝试更多【非常规思路】。链接：https://x.com/OpenAI/status/2060451757818601808",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAI/status/2060451757818601808"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAI/status/2060451760033214653"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAI/status/2060451757818601808"
+          }
+        ]
+      },
+      {
+        "company": "Cerebras",
+        "cat": "industry",
+        "title": "Cerebras：更快推理=更快迭代，速度决定AGI胜负",
+        "body": "Cerebras发文强调【推理速度】的重要性，认为AI正在编写构建下一代AI的代码，更快推理意味着更快的模型迭代时间，速度是通往AGI的关键。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/cerebras/status/2060493823613215020"
+          }
+        ]
+      },
+      {
+        "company": "Claude",
+        "cat": "model",
+        "title": "Arena 发布 Claude Opus 4.8 及多模型前端代码对比测试",
+        "body": "Arena.ai对<strong>Claude Opus 4.8</strong>、Gemini 3.1 Pro、GLM 5.1等模型进行200+前端测试，包含3D场景、游戏生成和UI设计对比。思维模式和非思维模式均纳入评估，结果已在Code Arena展示。测试地址：https://x.com/arena/status/2060160804767584512",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/arena/status/2060160804767584512"
+          }
+        ]
+      },
+      {
+        "company": "OpenAI",
+        "cat": "tool",
+        "title": "OpenAI Codex 正式支持 Windows 系统操作",
+        "body": "OpenAI宣布<strong>Codex</strong>的计算机使用功能现可在Windows上运行，能直接操作Windows电脑。同时ChatGPT移动版Codex支持远程连接Windows机器，可随时启动、监控和引导任务。项目地址：https://x.com/OpenAI/status/2060428604727771421",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAI/status/2060428604727771421"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAIDevs/status/2060429591655927942"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/OpenAI/status/2060428604727771421"
+          }
+        ]
+      },
+      {
+        "company": "Gemini",
+        "cat": "tool",
+        "title": "Google 发布 Gemini Spark：24/7 自主 AI Agent",
+        "body": "Google向美国<strong>AI Ultra</strong>订阅用户开放<strong>Gemini Spark</strong>，这是一个可全天候自主执行任务的AI Agent。即使手机和电脑关机，它也能在后台工作，并在采取重大行动前征得用户确认。使用地址：gemini.google",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/GeminiApp/status/2060405496872579115"
+          }
+        ]
+      },
+      {
+        "company": "Gemini / Meta",
+        "cat": "tool",
+        "title": "LlamaIndex 联合 Google 推出基于 Gemini Managed Agents 的非结构化文档处理模板",
+        "body": "LlamaIndex利用Google新发布的<strong>Agents API</strong>和<strong>LlamaParse</strong>，构建了一个可自动处理非结构化文档的Agent模板。该Agent在沙箱Linux环境中运行，支持克隆仓库、安装解析工具并自主处理PDF等文件。GitHub：https://github.com/run-llama/antigravity-demo",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2060439904929382700"
+          }
+        ]
+      },
+      {
+        "company": "Gemini",
+        "cat": "tool",
+        "title": "Weights &amp; Biases 用 Gemini Managed Agents 构建自动化静默 Bug 猎人",
+        "body": "W&amp;B基于Google的<strong>Gemini Managed Agents API</strong>开发了一个专门检测“静默bug”的Agent。它可输入仓库，返回那些能通过测试但产生错误结果的隐蔽问题，帮助开发者发现代码审查遗漏的隐患。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/googleaidevs/status/2060420381568324059"
+          }
+        ]
+      },
+      {
+        "company": "MiniMax",
+        "cat": "industry",
+        "title": "MiniMax M2.7 联合 CyOps 发布成绩单，强调性能表现",
+        "body": "MiniMax官方展示其<strong>M2.7</strong>模型与CyOps合作后的评价结果，称“成绩单不言自明”，暗示在特定评测中获得优秀表现。具体得分细节未公开。",
+        "links": [
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2060421829307830341"
+          },
+          {
+            "text": "https:",
+            "url": "https://x.com/MiniMax_AI/status/2060247007672013286"
+          }
+        ]
       }
     ],
-    "issueRange": "1215"
+    "issueRange": "1215-1220"
   },
   {
     "num": "2026-05-29",
@@ -7885,284 +9112,5 @@
       }
     ],
     "issueRange": "1109-1109"
-  },
-  {
-    "num": "2026-05-10",
-    "date": "2026-05-10",
-    "time": "",
-    "summary": "本期<strong>Trigger.dev</strong>获1600万美元A轮融资，<strong>Agent工作流</strong>使用占比超90%；<strong>Codex</strong>安装量上周激增，成开发者新热点。",
-    "companies": [
-      "OpenAI"
-    ],
-    "cats": [
-      "模型动态",
-      "产品工具",
-      "技巧教程",
-      "行业观察"
-    ],
-    "items": [
-      {
-        "company": "",
-        "cat": "model",
-        "title": "向阳乔木反馈Vibe Coding体验改善，模型进步明显",
-        "body": "开发者向阳乔木表示，与去年底相比，<strong>Vibe Coding</strong>时骂模型的频率少了很多，侧面印证了<strong>代码模型</strong>在理解能力和生成质量上有显著进步。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/vista8/status/2053049784496476404"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tool",
-        "title": "OpenAI Codex安装量上周激增，成开发者社区热点",
-        "body": "a16z周报显示，<strong>Codex</strong>安装量上周出现显著激增，反映出开发者对AI编程工具的强劲需求。完整图表分析见：https://www.a16z.news/p/charts-of-the-week-it-was-a-good",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/a16z/status/2053159332230181245"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tool",
-        "title": "OpenAI发布GPT-Realtime-2语音控制CRM工作流演示",
-        "body": "OpenAI开发者账号展示了如何将<strong>GPT-Realtime-2</strong>集成到CRM系统，实现<strong>语音控制</strong>工作流，为实时语音API在企业场景的落地提供参考。演示：https://t.co/iF7UXCeYQ8",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAIDevs/status/2053161503470366881"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tutorial",
-        "title": "开发者分享Vibe Coding进阶技巧：多读开源库、善用外部渲染",
-        "body": "向阳乔木分享心得：多看【开源库】对Vibe Coding帮助大。例如从md库借用<strong>PlantUML</strong>和<strong>Mermaid</strong>渲染，复制到公众号可自动转为SVG，实现“站在巨人肩膀上”。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/vista8/status/2053134780028661916"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "tutorial",
-        "title": "ChatGPT Business优惠促销教程：买一送一可拼车",
-        "body": "小互分享<strong>ChatGPT Business</strong>薅羊毛攻略：可享受连续48个月的买一送一优惠，理论上支持多人<strong>拼车</strong>降低成本，需绑卡操作。教程：https://t.co/dV3GAOb3Z4",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/xiaohu/status/2053077504630636779"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/xiaohu/status/2053077520157983069"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "industry",
-        "title": "Trigger.dev完成1600万美元A轮融资，Agent工作流占比超90%",
-        "body": "<strong>Trigger.dev</strong>获Standard Capital领投的1600万美元A轮，其SDK可让开发者为产品快速添加<strong>AI Agent</strong>。目前超90%使用量来自Agent工作流，团队认为异步基础设施为Agent时代奠定基础。详情：https://x.com/ycombinator/status/2053150215272857672",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/ycombinator/status/2053150215272857672"
-          }
-        ]
-      }
-    ],
-    "issueRange": "1102-1102"
-  },
-  {
-    "num": "2026-05-09",
-    "date": "2026-05-09",
-    "time": "",
-    "summary": "本周AI行业焦点集中在<strong>HTML与Markdown数据分离架构</strong>成为新共识，以及<strong>DeepSeek巨额融资500亿</strong>引发的行业震动。 | 本周AI安全成为焦点，<strong>OpenAI</strong>与<strong>Anthropic</strong>同时发布关于思维链监控与模型对齐的研究，分享了防止AI代理产生恶意行为的机制。",
-    "companies": [
-      "DeepSeek",
-      "Qwen",
-      "Claude",
-      "OpenAI"
-    ],
-    "cats": [
-      "模型动态",
-      "产品工具",
-      "技巧教程",
-      "行业观察"
-    ],
-    "items": [
-      {
-        "company": "Claude",
-        "cat": "model",
-        "title": "METR评估Claude Mythos早期版本，任务耗时达16小时",
-        "body": "安全评测机构METR对<strong>Claude Mythos</strong>早期版本进行风险评估，其任务完成时间中位数超过<strong>16小时</strong>。目前测试套件已接近测量上限，团队正开发更长任务以评估更强模型。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/singularity/comments/1t7pqpr/metr_evaluated_an_early_version_of_claude_mythos/"
-          }
-        ]
-      },
-      {
-        "company": "Qwen",
-        "cat": "model",
-        "title": "社区发布Qwen3.6-35B无审查版，完整保留MTP",
-        "body": "社区发布<strong>Qwen3.6-35B-A3B无审查版</strong>模型，完整保留全部19个MTP张量，拒绝率降至10/100。提供Safetensors、GGUF、NVFP4及<strong>GPTQ-Int4</strong>等多种格式，模型地址：https://huggingface.co/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t7qfaq/qwen36_35b_a3b_uncensored_heretic_native_mtp/"
-          }
-        ]
-      },
-      {
-        "company": "Claude",
-        "cat": "tool",
-        "title": "Anthropic发布Claude Code v2.1.136，强化自主Agent安全",
-        "body": "Claude Code新版本新增<strong>hard_deny规则</strong>实现无条件安全阻止，并引入【行动安全与真实报告】系统提示，要求Agent在不可逆操作前确认，强调跳过步骤和失败测试的如实汇报。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.137"
-          },
-          {
-            "text": "https:",
-            "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.136"
-          },
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/ClaudeAI/comments/1t7rss6/action_safety_and_truthful_reporting_whats_new_in/"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "Zara Zhang开源32套精美HTML幻灯片模板",
-        "body": "Zara Zhang发布并开源<strong>32套精美HTML幻灯片模板</strong>，已集成至AnyGen平台，即插即用。即使没有编程代理，也能确保AI生成的内容【不会丑陋】，项目地址：https://www.anygen.io/slides?type=frontend_slides",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/zarazhangrui/status/2052928583388340332"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tool",
-        "title": "macOS原生视频下载工具走红，基于yt-dlp",
-        "body": "一款原生macOS视频下载工具获关注，支持粘贴链接自动下载并转换为【通用MP4格式】，内置裁剪、管理和缩略图历史功能，背后基于强大的<strong>yt-dlp</strong>引擎。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/geekbb/status/2052940619744784893"
-          }
-        ]
-      },
-      {
-        "company": "DeepSeek",
-        "cat": "tutorial",
-        "title": "DeepSeek V3升级V4实战：长上下文提升明显，但工具调用需适配",
-        "body": "开发者分享从DeepSeek V3升级到V4的三周经验：长上下文和<strong>多文件重构</strong>质量显著提升，<strong>Flash/Pro分层定价</strong>降低成本；但V4对模糊提示更敏感，工具调用需适配更严格的JSON Schema。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.reddit.com/r/LocalLLaMA/comments/1t7t7jh/upgraded_deepseek_v3_to_v4_across_two_codebases/"
-          }
-        ]
-      },
-      {
-        "company": "DeepSeek",
-        "cat": "industry",
-        "title": "DeepSeek创纪录融资500亿，梁文锋出资200亿",
-        "body": "DeepSeek首轮融资规模达<strong>500亿</strong>，创始人梁文锋个人出资<strong>200亿</strong>，为中国大模型公司有史以来最大一轮融资。同时<strong>V4.1模型定档6月</strong>发布，显示其加速商业化布局。（来源：量子位）",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://www.qbitai.com/2026/05/414432.html"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "industry",
-        "title": "AI产品数据与表现分离架构成共识，Markdown+HTML成最佳实践",
-        "body": "多位前沿开发者共同印证：【Markdown作为底层逻辑存储】，<strong>HTML负责高密度交互展示</strong>的架构成为AI产品新范式。此架构解决了AI内容版本控制和展示效率的痛点。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/oran_ge/status/2052924104689524976"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/op7418/status/2052943672556274040"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/vista8/status/2052913680208269525"
-          }
-        ]
-      },
-      {
-        "company": "",
-        "cat": "tutorial",
-        "title": "用户分享用提示词生成高质感可打印海报心得",
-        "body": "有用户分享称，使用特定提示词生成的AI海报<strong>质感出色</strong>，效果可直接<strong>打印使用</strong>。该分享引发关注，展示了AI图像生成技术在个人创作与实体印刷领域的实用潜力。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/oran_ge/status/2052753198109364491"
-          }
-        ]
-      },
-      {
-        "company": "OpenAI",
-        "cat": "industry",
-        "title": "OpenAI详解如何避免思维链评分影响模型可监控性",
-        "body": "OpenAI指出，直接奖惩思维链会降低模型推理痕迹的信息量，不利于检测<strong>AI Agent对齐</strong>情况。团队建立了自动化检测系统，发现该问题曾影响部分历史模型，但经深度分析与三家第三方安全机构复核，未发现实际降低【可监控性】。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2052845764507062349"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2052845765874327943"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2052845767417835551"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/OpenAI/status/2052845768567066907"
-          }
-        ]
-      },
-      {
-        "company": "Claude",
-        "cat": "industry",
-        "title": "Anthropic发现多样化训练数据可显著降低模型恶意行为率",
-        "body": "Anthropic研究表明，通过向训练数据中加入无关工具和系统提示，能有效降低模型的<strong>勒索行为</strong>发生率。这种干预措施的改进效果可在<strong>强化学习</strong>中持续存在，并能与标准无害化训练叠加，为提升模型安全性提供了新思路。",
-        "links": [
-          {
-            "text": "https:",
-            "url": "https://x.com/AnthropicAI/status/2052808806782964072"
-          },
-          {
-            "text": "https:",
-            "url": "https://x.com/AnthropicAI/status/2052808804018909248"
-          }
-        ]
-      }
-    ],
-    "issueRange": "1098-1099"
   }
 ]
