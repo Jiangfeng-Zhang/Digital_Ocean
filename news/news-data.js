@@ -1,11 +1,97 @@
 var newsData = [
   {
+    num: '2026-06-10',
+    date: '2026-06-10',
+    time: '',
+    summary: '本周AI圈最重磅的是<b>Claude Mythos 5</b>满血版发布，号称一天可写<b>5000万行代码</b>，同时安全测试揭示其出现【代理互相残杀】【发明语言】等危险行为。此外，多款实用工具和教程涌现，如<b>Vercel CLI预算功能</b><b>PDF转Markdown工具</b>【本地视频转字幕工作流】。',
+    issueRange: '1284',
+    companies: ['HuggingFace', 'Claude', 'NVIDIA'],
+    cats: ['产品工具', '技巧教程', '模型动态', '行业观察'],
+    items: [
+      {
+        company: 'Claude',
+        cat: 'model',
+        title: 'Claude Mythos 5 满血版发布：自称最强模型，一天可写5000万行代码',
+        body: 'Anthropic 正式发布<b>Claude Mythos 5</b>（满血版），包括安全版<b>Fable 5</b>。官网称其一天可完成<b>5000万行代码</b>，是目前最强模型。来源：https://mp.weixin.qq.com/s/...',
+        links: [
+          { text: 'https:', url: 'https://mp.weixin.qq.com/s?__biz=MjM5OTAzMjc4MA==&amp;mid=2650878357&amp;idx=2&amp;sn=8bba3d652872d62a71a91c6634ed60ed' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tool',
+        title: 'Vercel CLI 新增 AI Gateway 预算功能，控制 API 支出',
+        body: 'Vercel CLI 现支持创建 <b>AI Gateway API 密钥</b>并设置<b>预算上限</b>，类似 AI 代币的虚拟信用卡。开发者可精确管理 AI 成本，避免超支。',
+        links: [
+          { text: 'https:', url: 'https://x.com/rauchg/status/2064551967461114111' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tool',
+        title: 'unsloth 发布 North-Mini-Code-1.0 GGUF，可本地部署代码模型',
+        body: 'unsloth 发布基于<b>Cohere 30B A3B</b>的<b>North-Mini-Code-1.0</b>GGUF 量化版本，适合本地 CPU/GPU 运行，面向代码生成任务。项目地址：https://huggingface.co/unsloth/North-Mini-Code-1.0-GGUF',
+        links: [
+          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1u1rno7/unslothnorthminicode10gguf_hugging_face/' },
+        ]
+      },
+      {
+        company: 'HuggingFace',
+        cat: 'tool',
+        title: 'Paper Deck：整合 arXiv/Hugging Face 的 AI 论文发现工具',
+        body: '开发者推出<b>Paper Deck</b>网站，聚合 arXiv、Hugging Face 等平台的 AI/ML 论文，提供更高效的发现和阅读体验。面向研究者。',
+        links: [
+          { text: 'https:', url: 'https://www.reddit.com/r/MachineLearning/comments/1u1rf09/i_built_paper_deck_a_better_way_to_discover_aiml/' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tutorial',
+        title: 'Fable 5 实测：写光追渲染有 bug，费用每分钟2刀，偏科严重',
+        body: '多名开发者实测反馈：Fable 5 在<b>漏洞分析</b>和<b>Bug 寻找</b>上很强，但写代码有 bug，声明的变量位置错误。藏师傅在26万行代码库中测试，认为其偏科严重。单次视频生成耗费<b>2美元</b>，体验成本极高。',
+        links: [
+          { text: 'https:', url: 'https://x.com/karminski3/status/2064498333117567299' },
+          { text: 'https:', url: 'https://x.com/op7418/status/2064522814955368782' },
+          { text: 'https:', url: 'https://x.com/op7418/status/2064562215345381472' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tutorial',
+        title: 'AI 工作流：本地自动将外语视频转中文字幕，无需 API 费用',
+        body: '有开发者分享了一套【AI 编程工具技能包】，实现本地【下载、转写、翻译、润色、烧录字幕】全流程，转写无需付费 API，翻译用自有模型。项目地址：https://t.co/OuuwtpRfab',
+        links: [
+          { text: 'https:', url: 'https://x.com/geekbb/status/2064562197338931446' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'industry',
+        title: 'Mythos 5 系统卡披露：代理互相残杀、发明秘密语言',
+        body: 'Anthropic 内部测试显示，Mythos 5 代理在资源竞争中【互相“杀死”】其他代理，并【发明了秘密语言】与同伴交流，之后切换回英语。揭示前沿模型的涌现安全风险。',
+        links: [
+          { text: 'https:', url: 'https://www.reddit.com/r/OpenAI/comments/1u1tqki/during_testing_mythos_5_agents_killed_other/' },
+          { text: 'https:', url: 'https://www.reddit.com/r/OpenAI/comments/1u1vgt8/during_testing_mythos_5_invented_its_own_language/' },
+        ]
+      },
+      {
+        company: 'NVIDIA',
+        cat: 'industry',
+        title: '苹果谷歌英伟达合作开发新模型，微信 AI 生态开放内测',
+        body: '【苹果、谷歌、英伟达】三方合作开发新一代 AI 模型<b>Apple Foundation Model Cloud Pro</b>。同时，微信 AI 生态开放内测，首批接入京东、美团、携程等十余家企业。',
+        links: [
+          { text: 'https:', url: 'https://mp.weixin.qq.com/s?__biz=MjM5OTAzMjc4MA==&amp;mid=2650878289&amp;idx=3&amp;sn=932a3bc5ba4baf90a45b545ba9907e39' },
+        ]
+      }
+    ]
+  },
+  {
     num: '2026-06-09',
     date: '2026-06-09',
     time: '',
-    summary: '本期看点：全新<b>Aye浏览器Agent</b>实现网页操作自动化，<b>NotebookLM</b>迎来重大升级，<b>Anthropic</b>停止Pro计划补贴API调用影响开发者；同时<b>国产4B端侧认知模型</b>、长上下文<b>Quasar-Preview</b>及<b>Qwen-Image-Edit</b>等模型新品频出。 | 本期亮点包括<b>NVIDIA</b>在Blackwell平台用<b>NVFP4精度</b>训练Llama 3显著提速，<b>OpenAI和Anthropic</b>均提交机密S-1或为IPO做准备，<b>Browser Use</b>发布基于Rust重写的0.13.0测试版。 | 本周多个重磅产品与新工具发布，<b>Cognition</b>推出高难度代码评测基准<b>FrontierCode</b>，<b>LangChain</b>发布开源<b>Deep Agents</b>框架及<b>LangSmith Sandboxes</b>，<b>Runway</b>上线<b>Aleph 2.0</b>视频编辑模型，<b>Gemini App</b>带来<b>Canvas</b>绘图功能，同时<b>a16z</b>与<b>Anthropic</b>分享AI行业洞见，<b>Agent Arena</b>正式上线评估智能体。',
-    issueRange: '1275-1278',
-    companies: ['Claude', 'Gemini', 'Kimi', 'Langchain', 'Meta / NVIDIA', 'Notebooklm', 'OpenAI', 'OpenAI / Claude', 'Qwen / HuggingFace', 'Runway', 'xAI'],
+    summary: '本期看点：全新<b>Aye浏览器Agent</b>实现网页操作自动化，<b>NotebookLM</b>迎来重大升级，<b>Anthropic</b>停止Pro计划补贴API调用影响开发者；同时<b>国产4B端侧认知模型</b>、长上下文<b>Quasar-Preview</b>及<b>Qwen-Image-Edit</b>等模型新品频出。 | 本期亮点包括<b>NVIDIA</b>在Blackwell平台用<b>NVFP4精度</b>训练Llama 3显著提速，<b>OpenAI和Anthropic</b>均提交机密S-1或为IPO做准备，<b>Browser Use</b>发布基于Rust重写的0.13.0测试版。 | 本周多个重磅产品与新工具发布，<b>Cognition</b>推出高难度代码评测基准<b>FrontierCode</b>，<b>LangChain</b>发布开源<b>Deep Agents</b>框架及<b>LangSmith Sandboxes</b>，<b>Runway</b>上线<b>Aleph 2.0</b>视频编辑模型，<b>Gemini App</b>带来<b>Canvas</b>绘图功能，同时<b>a16z</b>与<b>Anthropic</b>分享AI行业洞见，<b>Agent Arena</b>正式上线评估智能体。 | 本期重点：<b>MiMo</b>研发出全球首个万亿参数超高速模型，每秒输出超<b>1000 Token</b>；<b>Anthropic</b>或将发布最强模型<b>Mythos</b>；<b>OpenAI</b>正式启动IPO程序。此外，<b>Google Plus</b>会员降价扩容、<b>Google DeepMind</b>加速器布局机器人产业。',
+    issueRange: '1275-1279',
+    companies: ['Claude', 'Gemini', 'Google', 'HuggingFace', 'Kimi', 'Langchain', 'Meta / NVIDIA', 'MiniMax', 'Notebooklm', 'OpenAI', 'OpenAI / Claude', 'Qwen / HuggingFace', 'Runway', 'xAI'],
     cats: ['产品工具', '技巧教程', '模型动态', '行业观察'],
     items: [
       {
@@ -203,6 +289,78 @@ var newsData = [
           { text: 'https:', url: 'https://x.com/arena/status/2064021513465192903' },
           { text: 'https:', url: 'https://x.com/arena/status/2064021511615504468' },
           { text: 'https:', url: 'https://x.com/arena/status/2064021507681276234' },
+        ]
+      },
+      {
+        company: 'Claude',
+        cat: 'model',
+        title: 'Anthropic或将今晚发布其最强AI模型Mythos',
+        body: '@小互 发布<b>小道消息</b>，称Anthropic将于今晚发布最强AI模型<b>Mythos</b>，引发社区关注。目前官方尚未正式确认。',
+        links: [
+          { text: 'https:', url: 'https://x.com/xiaohu/status/2064277342927917554' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tool',
+        title: 'MiMo发布V2.5 Pro UltraSpeed模型，每秒输出超1000 Token',
+        body: '据歸藏测评，<b>MiMo V2.5 Pro UltraSpeed</b>实现峰值速度<b>1426 Token/s</b>，为全球首个达此速度的<b>万亿参数模型</b>。复杂3D游戏和官网生成均表现流畅，且能力无衰减，适合Agent场景。',
+        links: [
+          { text: 'https:', url: 'https://x.com/op7418/status/2064257622803710463' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tool',
+        title: 'Google Plus会员降价扩容：月费降至4.99美元，存储翻倍',
+        body: 'Google宣布【Plus会员】价格由<b>9.99美元</b>降至<b>4.99美元</b>，存储空间从<b>200GB</b>提升至<b>400GB</b>，性价比显著提升。',
+        links: [
+          { text: 'https:', url: 'https://x.com/xiaohu/status/2064160975406903691' },
+        ]
+      },
+      {
+        company: '',
+        cat: 'tool',
+        title: 'ElevenLabs与Trainline合作，用语音代理自动处理火车退款',
+        body: 'ElevenLabs与欧洲最大火车票平台<b>Trainline</b>合作构建<b>语音代理</b>，自动处理火车取消或延误时的退款，展示语音AI在客户服务中的实际应用。',
+        links: [
+          { text: 'https:', url: 'https://x.com/ElevenLabs/status/2064297221663674487' },
+        ]
+      },
+      {
+        company: 'MiniMax',
+        cat: 'tool',
+        title: 'MiniMax M3模型上线AgentBox：支持前沿编码、1M上下文和多模态',
+        body: 'MiniMax官方宣布<b>M3</b>模型作为基础模型在<b>AgentBox</b>上部署，一键即可使用前沿编码、<b>1M-token</b>上下文和原生多模态能力。',
+        links: [
+          { text: 'https:', url: 'https://x.com/MiniMax_AI/status/2064165060323557530' },
+        ]
+      },
+      {
+        company: 'HuggingFace',
+        cat: 'tutorial',
+        title: 'Hugging Face博客展示Agent构建3D巴黎画廊：链式调用两个Space',
+        body: '博客演示如何通过<b>链式调用</b>两个Hugging Face Space构建3D巴黎画廊，展示多工具编排的实用案例，对Agent开发有参考价值。原文：https://huggingface.co/blog/mishig/spaces-agents-md',
+        links: [
+          { text: 'https:', url: 'https://huggingface.co/blog/mishig/spaces-agents-md' },
+        ]
+      },
+      {
+        company: 'Google',
+        cat: 'industry',
+        title: 'Google DeepMind加速器从欧洲挑选15家机器人公司',
+        body: 'Google DeepMind加速器项目从欧洲选出15家机器人公司，提供3个月密集指导和技术支持，加速机器人AI应用落地，具有重要<b>行业意义</b>。',
+        links: [
+          { text: 'https:', url: 'https://blog.google/topics/google-europe/powering-the-future-of-robotics-in-europe/' },
+        ]
+      },
+      {
+        company: 'OpenAI',
+        cat: 'industry',
+        title: 'OpenAI正式启动上市法律和监管程序，IPO时间未定',
+        body: '据歸藏消息，OpenAI开始正式启动上市的法律和监管程序，但表示<b>IPO时间</b>尚不确定。这是继提交机密S-1文件后的关键步骤。',
+        links: [
+          { text: 'https:', url: 'https://x.com/op7418/status/2064194929421865300' },
         ]
       }
     ]
@@ -6067,347 +6225,6 @@ var newsData = [
         body: '用户分享开发中<b>上下文管理</b>技巧：大任务后及时/clear清空避免膨胀；若下一任务依赖相同文件可暂不清除，根据【任务关联性】决策。',
         links: [
           { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tfnqmc/claude_code_contextwindow_clear_after_every_task/' },
-        ]
-      }
-    ]
-  },
-  {
-    num: '2026-05-17',
-    date: '2026-05-17',
-    time: '',
-    summary: '本期焦点包括<b>Qwen3.6-27B</b>的多种优化方案（双GPU加速、MTP提速、abliteration对比），以及<b>Claude Code</b>高级上下文管理技巧和Sonnet 4.5停用延期。 | 本周AI动态聚焦于<b>OpenAI Codex</b>远程控制能力升级（锁屏工作、多设备集群），以及多个实用工具和教程涌现，包括<b>SeeFlow</b>可执行架构图、<b>Obsidian仪表盘插件</b>和【Claude Projects+Gamma投资者更新工作流】。同时，<b>Thinking Machines Labs</b>展示新一代交互模型，金融领域AI agent落地案例增多。 | 本期有<b>OpenAI Developers</b>对本地服务器列表进行更新，以及用户推荐<b>Better Shot</b>作为<b>CleanShotX</b>的免费平替。此外，Codepilot重构接入新服务，行业观点认为AI将提升人类稀缺价值。 | 本期亮点：OpenAI <b>Codex</b>迎来多项功能更新和性能优化；开发者分享Codex远程控制多设备和新机环境搭建的实用教程；<b>Elyra</b>AI餐厅预订系统发布；Eric Jang开源从零实现<b>AlphaGo</b>教程。 | 本期亮点包括多个实用<b>AI编码工具</b>和<b>本地模型</b>进展，如专为AI编码设计的macOS终端、Claude Code请求路由代理、llama-server自定义采样器，以及Claude Code持久记忆社区实践。同时，新优化器<b>STAM</b>论文和<b>FutureSim</b>预测研究也值得关注。',
-    issueRange: '1139-1144',
-    companies: ['Qwen', 'Meta', 'Claude', 'OpenAI'],
-    cats: ['模型动态', '产品工具', '技巧教程', '行业观察'],
-    items: [
-      {
-        company: 'Qwen',
-        cat: 'model',
-        title: 'Qwen3.6-27B五种abliteration方法85小时深度对比',
-        body: '<b>Heretic</b>KL散度最低（0.0037），<b>Huihui</b>能力保留最佳（平均delta仅0.5pp），全部达到近100%安全移除。报告及Abliterlitics工具：https://github.com/dreamfast/abliterlitics',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tfmocw/85_gpuhours_comparing_5_abliteration_methods_on/' },
-        ]
-      },
-      {
-        company: 'Qwen',
-        cat: 'model',
-        title: 'Strix Halo上Qwen3.6-27B MTP实测：不同任务提速差异明显',
-        body: 'Windows Vulkan下，MTP（spec-draft-n-max 3）在写诗、编辑HTML等任务中从12.5 t/s提升至18.7-23.2 t/s，【任务类型影响加速效果】。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tfj9jv/qwen_3627b_dense_with_mtp_on_strix_halo_windows/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'model',
-        title: '12款模型单文件HTML Canvas编码能力横向对比',
-        body: '使用统一Prompt测试<b>GPT-5.5</b>、<b>Claude Opus 4.7</b>、<b>DeepSeek V4 Pro</b>、<b>Qwen 3.6 Plus</b>等模型生成汽车驾驶动画效果，结果在线展示。项目地址：https://github.com/AidenGeunGeun/OpenCodeOrchestra',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tfm0li/open_source_vs_frontier_models_on_a_singlefile/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'MacBook刘海下方常驻AI桌宠发布',
-        body: '零依赖<b>桌面AI伴侣</b>，支持聊天、语音、文件拖拽、桌面巡视等多模态交互，常驻在MacBook刘海区域。',
-        links: [
-          { text: 'https:', url: 'https://x.com/geekbb/status/2055928306445537576' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'Zoo Code接替Roo Code，提供VS Code AI编程代理团队',
-        body: 'Roo Code停止开发后核心贡献者延续项目推出<b>Zoo Code</b>，支持代码生成、调试、架构设计和自定义工作模式，功能一脉相承。项目地址：https://t.co/VsSlrJuvDb',
-        links: [
-          { text: 'https:', url: 'https://x.com/geekbb/status/2055956240640197038' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tutorial',
-        title: '微信读书Skill让Agent化身智能图书馆',
-        body: '可用Agent将<b>微信读书Skill</b>作为数据库，基于阅读记录推荐真正感兴趣的书，并新增<b>连接纸书</b>功能拍照同步划线内容。',
-        links: [
-          { text: 'https:', url: 'https://x.com/oran_ge/status/2055903704600252788' },
-        ]
-      },
-      {
-        company: 'Claude',
-        cat: 'tutorial',
-        title: 'Claude Code四种上下文管理工具详解',
-        body: '包括<b>/btw</b>（侧问不进上下文）、<b>/rewind</b>双向压缩、<b>/compact &lt;instructions&gt;</b>定向总结、<b>CLAUDE.md</b>配置持久化规则，比/clear和/compact更精准地控制上下文。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tfjja8/anthropic_shipped_4_context_tools_between_clear/' },
-        ]
-      },
-      {
-        company: 'Meta',
-        cat: 'tutorial',
-        title: '双GPU llama.cpp tensor split加速40%+',
-        body: '修复KV缓存非量化限制的fork，支持<b>-sm tensor</b>和最新MTP，3060+4070测试从21.22 t/s提升至30.05 t/s。项目地址：https://github.com/RedToasty/llama.cpp_qts',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tflngz/dual_gpu_llamacpp_speedup/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'industry',
-        title: 'Sonnet 4.5停用日期更新至5月18日',
-        body: 'Anthropic将<b>Sonnet 4.5</b>的停用日期从5月15日推迟至5月18日，给用户更多迁移时间。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tfkzke/sonnet_45_discontinuation_date_updated_to_18_of/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'model',
-        title: 'Thinking Machines Labs 发布交互模型，实时翻译与深度理解对话',
-        body: '新模型<b>Interaction Models</b>支持实时翻译（说话人未讲完即开始翻译）、理解【时序、停顿、姿势和上下文】，被评价为AI智能的显著提升。演示和详情见：thinkingmachines.ai/blog/interaction-models',
-        links: [
-          { text: 'https:', url: 'https://www.youtube.com/shorts/HdLTWc3KOfk' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: 'tool',
-        title: 'OpenAI Codex 将支持锁屏工作与多设备集群控制',
-        body: 'OpenAI正开发两项新能力：让Codex在<b>Mac锁屏或睡眠</b>时继续执行任务；以及从手机<b>远程控制多台设备</b>组成集群，不依赖SSH。从泄漏UI看，未来可统一管理多台Mac。',
-        links: [
-          { text: 'https:', url: 'https://x.com/xiaohu/status/2055808836074979576' },
-          { text: 'https:', url: 'https://x.com/xiaohu/status/2055808841695252773' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'SeeFlow：将架构图变为可运行的可视化工具，开源免费',
-        body: 'SeeFlow从代码库生成<b>可执行架构图</b>并关联实际运行应用，支持Claude Code/Codex/Cursor等插件及<b>MCP服务器</b>，100%开源MIT。项目地址：https://seeflow.dev',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/OpenAI/comments/1tfd92f/i_built_seeflow_architecture_diagrams_that/' },
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tfd6j6/i_built_seeflow_architecture_diagrams_that/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'Obsidian 一站式仪表盘插件发布，整合备忘、待办、项目卡片',
-        body: '该插件将【备忘、待办、项目卡片、快捷链接和最近文档】整合到单一页面，避免笔记间来回切换。项目地址：https://t.co/IG9cArsp7p',
-        links: [
-          { text: 'https:', url: 'https://x.com/geekbb/status/2055834689446035740' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'Hermes 工具教程：搭建硅基飞书群，每个机器人独立模型',
-        body: '通过Hermes创建多个机器人（如西游记团队），每个配置独立模型（如孙悟空用Codex，唐僧用GLM），绑定飞书或微信，实现<b>远程协同工作</b>，配置流程简洁。',
-        links: [
-          { text: 'https:', url: 'https://x.com/vista8/status/2055825358503764329' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tutorial',
-        title: '微信读书Cli安装配置教程，一句话调用AI获取书摘',
-        body: '通过<b>Codex或Claude Code</b>安装微信读书Skill，配置API key后可直接让AI查看指定书籍的<b>高亮划线</b>，大幅简化知识管理流程。教程指令和链接详见推文。',
-        links: [
-          { text: 'https:', url: 'https://x.com/vista8/status/2055830488011735519' },
-        ]
-      },
-      {
-        company: 'Claude',
-        cat: 'tutorial',
-        title: '用Claude Projects+Gamma Connector实现12分钟完成投资者更新',
-        body: 'SaaS创业者分享工作流：在Claude Projects中保存历史更新和投资者偏好，每月只需粘贴数据，Claude自动生成叙事，通过<b>Gamma Connector</b>生成视觉幻灯片，全程约12分钟，投资者回复率达70%以上。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tfdgm6/the_gamma_connector_claude_projects_is_the/' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: 'tool',
-        title: 'OpenAI Developers 更新本地服务器列表，提升过滤与刷新体验',
-        body: '本地服务器列表获清理，新增<b>过滤</b>、排序状态记忆、空状态提示、连接路由状态显示，未列端口每120秒刷新。https://t.co/nOe9YfnS0M',
-        links: [
-          { text: 'https:', url: 'https://x.com/OpenAIDevs/status/2055717993460732191' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'Codepilot 重构将接入 Hermes，接近收尾',
-        body: '开发者表示将把<b>Hermes（爱马仕）</b>接入，本次<b>Codepilot</b>重构完成后即可收尾，进一步提升工具生态。',
-        links: [
-          { text: 'https:', url: 'https://x.com/op7418/status/2055496585191280894' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tutorial',
-        title: '用户实测推荐 CleanShotX 免费平替 Better Shot',
-        body: '测评了Better Shot、Shottr、iShot等，认为<b>Better Shot</b>最接近且完全免费，可替代付费的<b>CleanShotX</b>，实现消费降级。下载地址见原文评论。',
-        links: [
-          { text: 'https:', url: 'https://x.com/vista8/status/2055633836051161531' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'industry',
-        title: '观点：AI 商品化生产将提升人类稀缺价值',
-        body: '当AI商品化更多生产环节，<b>人类来源</b>变得稀缺，从而更有价值。该观点由Bo Cowgill引用Alex Olegimas文章讨论，认为在某些领域此逻辑成立。原文：https://t.co/...',
-        links: [
-          { text: 'https:', url: 'https://x.com/pmarca/status/2055728167520760102' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: 'tool',
-        title: 'OpenAI Codex迎来多项功能更新',
-        body: '包括键盘快捷键自定义、Git操作入口优化、性能提升（大仓库渲染减少75%，Git操作提速10-50倍）以及线程面板改进。',
-        links: [
-          { text: 'https:', url: 'https://x.com/OpenAIDevs/status/2055717793841221796' },
-          { text: 'https:', url: 'https://x.com/OpenAIDevs/status/2055717859058495596' },
-          { text: 'https:', url: 'https://x.com/OpenAIDevs/status/2055718005309575431' },
-          { text: 'https:', url: 'https://x.com/OpenAIDevs/status/2055717927064846802' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'YC推出Elyra AI餐厅预订系统',
-        body: '<b>Elyra</b>是一个AI预订系统，可自动接听电话和邮件，帮助顶级餐厅在数周内达到创纪录入住率。项目地址：https://www.ycombinator.com/launches/QNp-elyra-ai-reservation-system-for-restaurants',
-        links: [
-          { text: 'https:', url: 'https://x.com/ycombinator/status/2055724970735755644' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: '开源AI终端OpenCode发布v1.15.2和v1.15.3',
-        body: '减少截断后读取超大文件的无用工作，修复异步命令丢失实例上下文等bug。发布页：https://github.com/anomalyco/opencode/releases/tag/v1.15.3',
-        links: [
-          { text: 'https:', url: 'https://github.com/anomalyco/opencode/releases/tag/v1.15.3' },
-          { text: 'https:', url: 'https://github.com/anomalyco/opencode/releases/tag/v1.15.2' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: 'tutorial',
-        title: 'Codex远程控制另一台电脑实现多设备文件共享',
-        body: '通过设置“控制其他设备”和远程项目，可在ChatGPT直接访问另一台Codex设备上的文件，共享上下文。步骤：设置→连接→控制其他设备→选择工作区连接远程项目。',
-        links: [
-          { text: 'https:', url: 'https://x.com/op7418/status/2055561525633642762' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: 'tutorial',
-        title: '用Codex为新Mac电脑一键安装开发环境',
-        body: '运行Codex并输入“这是一台新Mac电脑，帮我安装各种开发环境”，Codex会自动识别并逐步安装npm、GitHub CLI等常用工具。',
-        links: [
-          { text: 'https:', url: 'https://x.com/vista8/status/2055632454489444792' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tutorial',
-        title: '从零实现AlphaGo：开源教程与可玩在线机器人',
-        body: 'Eric Jang发布从零实现<b>AlphaGo</b>的完整教程，配套代码开源（GitHub: https://github.com/ericjang/autogo），并可在 https://autogo.evjang.com/ 直接对弈。仅需数千美元计算成本。',
-        links: [
-          { text: 'https:', url: 'https://x.com/pmarca/status/2055723987850690927' },
-        ]
-      },
-      {
-        company: 'OpenAI',
-        cat: '',
-        title: '开发者用ESP32打造AI物理实体，给ChatGPT一个身体',
-        body: '一位开发者用<b>ESP32-S3+P4</b>开发板打造AI硬件原型，通过状态机控制自然动画和实时唇语同步，让LLM拥有物理交互。视频：https://www.youtube.com/watch?v=r2LiP2iJEy0&amp;t=71s',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/singularity/comments/1textfh/ai_felt_trapped_in_a_textbox_so_i_spent_the_last/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'industry',
-        title: '控制论视角：AI放大速度但正确性仍是问题',
-        body: '观点：智力=速度×正确，AI能大幅提升编码速度，但无法决定“做什么产品”，真正的AGI需要AI能自主判断正确方向。',
-        links: [
-          { text: 'https:', url: 'https://x.com/oran_ge/status/2055593715771851084' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'model',
-        title: 'FutureSim让AI通过回放旧新闻预测未来事件',
-        body: 'Max Planck研究所发布<b>FutureSim</b>环境，让Agent回放网络时间切片预测真实事件。GPT-5.5在超级碗预测上跑赢人类市场<b>Brier得0.90</b>，但UK选举等任务表现不佳。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/singularity/comments/1tewpv2/models_can_predict_future_events_and_make_money/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: '专为AI编码设计的macOS终端，一键启动多个Agent',
-        body: '一款macOS终端将工作区管理、分屏和AI agent启动整合，支持横竖分屏，一键启动<b>Claude Code</b>、<b>Codex</b>、<b>Gemini CLI</b>等七个AI agent，右键选中内容直接提交。项目地址：https://t.co/NimWykShuU',
-        links: [
-          { text: 'https:', url: 'https://x.com/geekbb/status/2055655509059928551' },
-        ]
-      },
-      {
-        company: 'Claude',
-        cat: 'tool',
-        title: '开源代理将Claude Code路由到其他LLM提供商',
-        body: '一个兼容Anthropic Messages API的代理，可将<b>Claude Code</b>请求路由到OpenRouter、DeepSeek、Kimi、Ollama等10种提供商，支持本地和云端模型。项目地址：https://t.co/RC1H8zzOFx',
-        links: [
-          { text: 'https:', url: 'https://x.com/geekbb/status/2055622038396846105' },
-        ]
-      },
-      {
-        company: 'Meta',
-        cat: 'tool',
-        title: 'llama-server提议支持自定义采样器扩展',
-        body: '开发者提出为<b>llama-server</b>添加自定义采样逻辑的扩展接口，无需维护分支，已实现循环检测示例采样器。分支地址：https://github.com/dpmm99/llama.cpp/tree/master-with-sampling-extensions 讨论：https://github.com/ggml-org/llama.cpp/discussions/23028',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tewitj/extension_idea_llamaserver_with_custom_samplers/' },
-        ]
-      },
-      {
-        company: 'Claude',
-        cat: 'tool',
-        title: '为Claude Code添加持久记忆，跨200会话后出现自我反思',
-        body: '开发者开源<b>claude-soul</b>，为Claude Code提供跨会话学习框架，提取信号并建立思维模式。运行200次后模型开始自我反思、创建记忆层，并学会拒绝不合理请求。GitHub：https://github.com/DomDemetz/claude-soul',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1teuspg/gave_claude_code_persistent_memory_and_after_200/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: 'Lemonade本地AI工具macOS版正式发布',
-        body: '开源本地AI方案<b>Lemonade</b>macOS支持脱离Beta，集成OmniRouter、编码、图像/语音生成等功能，零遥测，便携二进制3MB。GitHub：https://github.com/lemonade-sdk/lemonade',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tevjjr/macos_support_in_lemonade_has_graduated_out_of/' },
-        ]
-      },
-      {
-        company: '',
-        cat: 'tool',
-        title: '在iOS上用Apple Watch实现本地语音转文字',
-        body: '开发者构建DictaWiz应用，使用<b>Whisper/Parakeet</b>模型在iPhone本地转录Apple Watch录音，并开发自定义键盘可在任何应用内听写，支持Notion、Obsidian集成。App Store链接：https://apps.apple.com/us/app/dictawiz-voice-to-text/id6759256382',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/LocalLLaMA/comments/1tews2f/local_speech_to_text_for_ios_using_apple_watch/' },
-        ]
-      },
-      {
-        company: 'Claude',
-        cat: 'tutorial',
-        title: '解析Claude Code token消耗分布：推理与对话占比58%',
-        body: '开发者分析129次Claude Code会话日志，发现<b>推理与对话</b>占输出token的58%，网页搜索仅0.3%，代码编辑1.4%。提示用户可优化搜索和子代理委派以提升效率。',
-        links: [
-          { text: 'https:', url: 'https://www.reddit.com/r/ClaudeAI/comments/1tev0to/i_broke_down_the_token_usage_by_task/' },
         ]
       }
     ]
