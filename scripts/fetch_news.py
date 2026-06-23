@@ -8,9 +8,19 @@ fetch_news.py - 从 news.daheiai.com 抓取 AI 新闻，生成日报
   python scripts/fetch_news.py --inc    增量更新（仅抓取新内容）
 """
 
-import urllib.request, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import re, os, sys, json
+import ssl
+import time
+import http.client
+import socket
 from datetime import datetime, timedelta
+
+# 创建 SSL 上下文以解决连接问题
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+ssl_context.options = 0  # 允许所有协议版本
 
 BASE_URL = 'https://news.daheiai.com'
 SCRIPT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,12 +41,28 @@ CATEGORY_NORMALIZE = {'行业资讯': '行业观察'}
 
 # ========== 网络 ==========
 
-def fetch(url):
-    req = urllib.request.Request(url, headers={
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    })
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return r.read().decode('utf-8')
+def fetch(url, retries=5):
+    """使用 urllib.request 抓取 URL，支持 gzip，重试机制"""
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'zh-CN,zh;q=0.9',
+                'Accept-Encoding': 'gzip, deflate',
+                'Connection': 'close',
+            })
+            with urllib.request.urlopen(req, timeout=60, context=ssl_context) as resp:
+                body = resp.read()
+                # urllib 会自动处理 gzip/deflate 解压
+                return body.decode('utf-8', errors='ignore')
+        except Exception as e:
+            if attempt < retries - 1:
+                wait = (attempt + 1) * 5
+                print(f'  [重试 {attempt+1}/{retries}] 连接失败: {e}，等待 {wait} 秒...')
+                time.sleep(wait)
+            else:
+                raise
 
 def is_valid_issue(html):
     return len(html) > 100 and 'ai-summary' in html

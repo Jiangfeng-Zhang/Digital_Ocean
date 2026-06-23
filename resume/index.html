@@ -565,7 +565,7 @@
 
   var DEFAULT_URL = 'https://api.deepseek.com';
   var DEFAULT_MODEL = 'deepseek-v4-flash';
-  var DEFAULT_KEY = 'sk-651cb00d607240b9959b120db6757b9b';
+  var DEFAULT_KEY = '';  // 通过 .env 环境变量配置，运行时由用户输入并保存到 localStorage
 
   try {
     var saved = localStorage.getItem('resume_os_data');
