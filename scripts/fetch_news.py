@@ -14,13 +14,16 @@ import ssl
 import time
 import http.client
 import socket
+import gzip
 from datetime import datetime, timedelta
 
 # 创建 SSL 上下文以解决连接问题
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+try:
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+except AttributeError:
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
-ssl_context.options = 0  # 允许所有协议版本
 
 BASE_URL = 'https://news.daheiai.com'
 SCRIPT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,7 +57,9 @@ def fetch(url, retries=5):
             })
             with urllib.request.urlopen(req, timeout=60, context=ssl_context) as resp:
                 body = resp.read()
-                # urllib 会自动处理 gzip/deflate 解压
+                content_encoding = resp.headers.get('Content-Encoding', '')
+                if content_encoding == 'gzip':
+                    body = gzip.decompress(body)
                 return body.decode('utf-8', errors='ignore')
         except Exception as e:
             if attempt < retries - 1:
