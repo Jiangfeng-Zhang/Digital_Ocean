@@ -649,7 +649,6 @@
         if (entries[0].isIntersecting) {
           displayCount += DISPLAY_INCREMENT;
           renderFeed(filteredData, displayCount);
-          if (loadObserver) loadObserver.disconnect();
         }
       }, { rootMargin: '100px' });
       loadObserver.observe(loader);
