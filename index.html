@@ -7,7 +7,103 @@
 <meta name="description" content="每个数据节点都是一缕微光 · 散落在数字海洋深处的坐标">
 <link rel="stylesheet" href="assets/css/shared.css">
 <style>
-  /* === Hero - Surface Layer === */
+  /* === Intro Overlay — Claude minimal === */
+  .intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s var(--ease-out);
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .intro-overlay.show { pointer-events: auto; }
+  .intro-overlay.fade-out { opacity: 0; }
+
+  .intro-line {
+    width: 0;
+    height: 1px;
+    background: var(--rule);
+    margin-bottom: 2rem;
+    animation: intro-line-draw 1s var(--ease-out) 0.2s forwards;
+  }
+  @keyframes intro-line-draw {
+    0% { width: 0; opacity: 0; }
+    100% { width: 80px; opacity: 1; }
+  }
+
+  .intro-title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--text);
+    opacity: 0;
+    filter: blur(8px);
+    animation: intro-title-in 1s var(--ease-out) 0.5s forwards;
+  }
+  @keyframes intro-title-in {
+    0% { opacity: 0; letter-spacing: 0.3em; filter: blur(8px); }
+    100% { opacity: 1; letter-spacing: 0.15em; filter: blur(0); }
+  }
+
+  .intro-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-4);
+    letter-spacing: 0.3em;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: intro-sub-in 0.8s var(--ease-out) 1.4s forwards;
+  }
+  @keyframes intro-sub-in {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Nav === */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    background: rgba(250, 249, 245, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav .nav-logo {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+  .nav .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+  .nav .nav-links a {
+    color: var(--text-3);
+    transition: color var(--transition-fast);
+  }
+  .nav .nav-links a:hover { color: var(--accent); }
+
+  /* === Hero === */
   .hero {
     position: relative;
     z-index: 1;
@@ -17,734 +113,264 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
+    padding: 8rem 2rem 4rem;
   }
 
-  .hero .hero-badge {
+  .hero .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-4);
+    letter-spacing: 0.2em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.6rem;
-    color: var(--text-faint);
-    letter-spacing: 0.2em;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0, 229, 200, 0.06);
-    padding: 0.4rem 0.8rem;
   }
-
-  .hero .hero-badge .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--cyber-cyan);
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 0.3; box-shadow: 0 0 6px var(--cyber-cyan); }
-    50% { opacity: 1; box-shadow: 0 0 16px var(--cyber-cyan); }
-  }
-
-  .hero .depth-gauge {
-    position: fixed;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    z-index: 100;
-    opacity: 0.5;
-    transition: opacity var(--transition-base);
-  }
-
-  .hero .depth-gauge:hover {
-    opacity: 1;
-  }
-
-  .hero .depth-gauge .dg-track {
-    width: 2px;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(0, 229, 200, 0.2), rgba(124, 58, 237, 0.1));
-    border-radius: 1px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero .depth-gauge .dg-fill {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
-    background: linear-gradient(to top, var(--cyber-purple), var(--cyber-cyan));
-    border-radius: 1px;
-    transition: height 0.3s ease;
-    box-shadow: 0 0 8px var(--cyber-cyan-glow);
-  }
-
-  .hero .depth-gauge .dg-label {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.55rem;
-    color: var(--text-faint);
-    writing-mode: vertical-rl;
-    letter-spacing: 0.2em;
-  }
-
-  .hero .depth-gauge .dg-value {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.65rem;
-    color: var(--cyber-cyan);
-    font-weight: 500;
-    text-shadow: var(--neon-cyan);
+  .hero .hero-label::before,
+  .hero .hero-label::after {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--rule);
   }
 
   .hero h1 {
-    font-size: 4rem;
-    font-weight: 200;
-    letter-spacing: 0.12em;
-    margin-bottom: 1.2rem;
-    font-family: "Noto Serif SC", serif;
-    line-height: 1.2;
+    font-size: 4.5rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    line-height: 1.15;
+    color: var(--text);
   }
-
-  .hero h1 .accent {
-    color: var(--cyber-cyan);
-    text-shadow: var(--neon-cyan);
-  }
+  .hero h1 .accent { color: var(--accent); }
 
   .hero .sub {
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.06em;
+    font-size: 1rem;
+    color: var(--text-3);
+    letter-spacing: 0.02em;
     font-weight: 300;
-    max-width: 480px;
+    max-width: 460px;
     line-height: 2;
-    font-family: "Noto Serif SC", serif;
+    font-family: var(--font-serif);
   }
 
-  .hero .status-bar {
-    margin-top: 2.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.65rem;
-    color: var(--text-faint);
-    letter-spacing: 0.1em;
-  }
-
-  .scroll-hint {
+  .hero .scroll-hint {
     position: absolute;
     bottom: 2.5rem;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--text-faint);
-    font-family: "JetBrains Mono", monospace;
+    color: var(--text-4);
+    font-family: var(--font-mono);
     font-size: 0.6rem;
     letter-spacing: 0.15em;
+    text-transform: uppercase;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     opacity: 0.6;
-    transition: opacity var(--transition-fast);
   }
-
-  .scroll-hint:hover {
-    opacity: 1;
-  }
-
-  .scroll-hint .arrow {
-    font-size: 0.9rem;
+  .hero .scroll-hint .arrow {
+    font-size: 0.85rem;
     animation: float-down 2.5s ease-in-out infinite;
   }
-
   @keyframes float-down {
     0%, 100% { transform: translateY(0); opacity: 0.4; }
-    50% { transform: translateY(6px); opacity: 0.9; }
+    50% { transform: translateY(4px); opacity: 0.9; }
   }
 
-  /* === Algae Blobs — particle clusters === */
-  .algae-swarm {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .algae-blob {
-    position: absolute;
-    pointer-events: auto;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    width: 40px;
-    height: 40px;
-  }
-
-  /* each blob is built from multiple tiny dots */
-  .algae-blob .ad {
-    position: absolute;
-    border-radius: 50%;
-    left: 50%;
-    top: 50%;
-    will-change: transform;
-  }
-
-  .algae-blob .ad-cluster {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .algae-blob .algae-label {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.48rem;
-    color: rgba(255,255,255,0.15);
-    letter-spacing: 0.12em;
-    margin-top: 3px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    transition: all 0.4s var(--ease-out-expo);
-    pointer-events: none;
-    position: relative;
-    top: 20px;
-  }
-
-  .algae-blob:hover .algae-label {
-    color: var(--text-primary);
-    letter-spacing: 0.2em;
-  }
-
-  /* dot orbiting keyframes — wider circular path */
-  @keyframes do1 { 0%,100%{transform:translate(-50%,-50%) translate(0,0)} 25%{transform:translate(-50%,-50%) translate(16px,-14px)} 50%{transform:translate(-50%,-50%) translate(-12px,18px)} 75%{transform:translate(-50%,-50%) translate(18px,-12px)} }
-  @keyframes do2 { 0%,100%{transform:translate(-50%,-50%) translate(0,0)} 33%{transform:translate(-50%,-50%) translate(-16px,14px)} 66%{transform:translate(-50%,-50%) translate(14px,16px)} }
-  @keyframes do3 { 0%,100%{transform:translate(-50%,-50%) translate(0,0)} 25%{transform:translate(-50%,-50%) translate(-18px,-10px)} 50%{transform:translate(-50%,-50%) translate(16px,16px)} 75%{transform:translate(-50%,-50%) translate(-14px,18px)} }
-  @keyframes do4 { 0%,100%{transform:translate(-50%,-50%) translate(0,0)} 50%{transform:translate(-50%,-50%) translate(16px,-16px)} }
-  @keyframes do5 { 0%,100%{transform:translate(-50%,-50%) translate(0,0)} 40%{transform:translate(-50%,-50%) translate(-16px,-16px)} 70%{transform:translate(-50%,-50%) translate(18px,14px)} }
-
-  /* Float: faster, wider, continuous */
-  @keyframes fx1 { 0%,100%{transform:translateX(0)} 25%{transform:translateX(60px)} 50%{transform:translateX(-45px)} 75%{transform:translateX(70px)} }
-  @keyframes fx2 { 0%,100%{transform:translateX(0)} 33%{transform:translateX(-65px)} 66%{transform:translateX(55px)} }
-  @keyframes fx3 { 0%,100%{transform:translateX(0)} 20%{transform:translateX(50px)} 40%{transform:translateX(-60px)} 60%{transform:translateX(45px)} 80%{transform:translateX(-55px)} }
-  @keyframes fx4 { 0%,100%{transform:translateX(0)} 50%{transform:translateX(75px)} }
-  @keyframes fx5 { 0%,100%{transform:translateX(0)} 30%{transform:translateX(-58px)} 60%{transform:translateX(62px)} }
-  @keyframes fx6 { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-40px)} 50%{transform:translateX(65px)} 75%{transform:translateX(-35px)} }
-
-  @keyframes fy1 { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-50px)} 60%{transform:translateY(40px)} }
-  @keyframes fy2 { 0%,100%{transform:translateY(0)} 25%{transform:translateY(45px)} 50%{transform:translateY(-55px)} 75%{transform:translateY(35px)} }
-  @keyframes fy3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-45px)} }
-  @keyframes fy4 { 0%,100%{transform:translateY(0)} 20%{transform:translateY(-40px)} 40%{transform:translateY(50px)} 60%{transform:translateY(-35px)} 80%{transform:translateY(45px)} }
-  @keyframes fy5 { 0%,100%{transform:translateY(0)} 35%{transform:translateY(55px)} 70%{transform:translateY(-45px)} }
-  @keyframes fy6 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-50px)} }
-
-  .algae-blob:nth-child(1) { top:10%; left:8%; animation:fx1 12s ease-in-out infinite, fy1 10s ease-in-out infinite; }
-  .algae-blob:nth-child(2) { top:6%; right:8%; animation:fx2 14s ease-in-out infinite, fy2 11s ease-in-out infinite; }
-  .algae-blob:nth-child(3) { bottom:8%; left:6%; animation:fx3 11s ease-in-out infinite, fy3 13s ease-in-out infinite; }
-  .algae-blob:nth-child(4) { bottom:6%; right:6%; animation:fx4 15s ease-in-out infinite, fy4 12s ease-in-out infinite; }
-  .algae-blob:nth-child(5) { top:50%; left:3%; animation:fx5 13s ease-in-out infinite, fy5 14s ease-in-out infinite; }
-  .algae-blob:nth-child(6) { top:45%; right:3%; animation:fx6 16s ease-in-out infinite, fy6 10s ease-in-out infinite; }
-
-  @media (max-width: 768px) {
-    .algae-blob:nth-child(1) { top:8%; left:4%; }
-    .algae-blob:nth-child(2) { top:4%; right:4%; }
-    .algae-blob:nth-child(3) { bottom:22%; left:3%; }
-    .algae-blob:nth-child(4) { bottom:18%; right:3%; }
-    .algae-blob:nth-child(5) { top:52%; left:2%; }
-    .algae-blob:nth-child(6) { top:48%; right:2%; }
-    .algae-blob .algae-label { font-size:0.4rem; }
-  }
-
-  /* === Intro Overlay — Minimalist Light === */
-  .intro-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    background: var(--ocean-black);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 1.2s var(--ease-out-expo);
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .intro-overlay.show {
-    pointer-events: auto;
-  }
-
-  .intro-overlay.fade-out {
-    opacity: 0;
-  }
-
-  /* Ambient light pool */
-  .intro-ambient {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(0,229,200,0.06) 0%, rgba(0,136,255,0.03) 25%, transparent 60%);
-    animation: intro-ambient-pulse 4s var(--ease-out-expo) infinite;
-    pointer-events: none;
-  }
-
-  @keyframes intro-ambient-pulse {
-    0% { transform: scale(0.85); opacity: 0.3; }
-    50% { transform: scale(1.15); opacity: 0.7; }
-    100% { transform: scale(0.85); opacity: 0.3; }
-  }
-
-  /* Content container */
-  .intro-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  /* Decorative line */
-  .intro-line {
-    width: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,229,200,0.3), transparent);
-    margin-bottom: 2rem;
-    animation: intro-line-draw 1s var(--ease-out-expo) 0.2s forwards;
-  }
-
-  @keyframes intro-line-draw {
-    0% { width: 0; opacity: 0; }
-    100% { width: 120px; opacity: 1; }
-  }
-
-  /* Chinese title — blur-in with rainbow flow (Apple-style) */
-  .intro-title {
-    font-family: "Noto Serif SC", serif;
-    font-size: 4.2rem;
-    font-weight: 200;
-    letter-spacing: 0.4em;
-    opacity: 0;
-    filter: blur(10px);
-    background: linear-gradient(90deg,
-      hsl(230, 50%, 52%),   /* blue */
-      hsl(280, 45%, 55%),   /* purple */
-      hsl(0, 50%, 55%),     /* red */
-      hsl(25, 50%, 50%),    /* orange */
-      hsl(50, 55%, 48%),    /* yellow */
-      hsl(140, 45%, 42%),   /* green */
-      hsl(190, 50%, 48%),   /* cyan */
-      hsl(230, 50%, 52%)    /* blue — back to start */
-    );
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: intro-title-in 1.4s var(--ease-out-expo) 0.6s forwards,
-               intro-color-flow 4s linear 0s infinite;
-    line-height: 1.2;
-  }
-
-  @keyframes intro-title-in {
-    0% { opacity: 0; letter-spacing: 0.4em; filter: blur(10px); }
-    100% { opacity: 1; letter-spacing: 0.15em; filter: blur(0); }
-  }
-
-  @keyframes intro-color-flow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: -100% 50%; }
-  }
-
-  /* English subtitle — fade-up */
-  .intro-sub {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.72rem;
-    color: rgba(0,229,200,0.3);
-    letter-spacing: 0.4em;
-    margin-top: 1.2rem;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(10px);
-    animation: intro-sub-in 0.9s var(--ease-out-expo) 1.8s forwards;
-  }
-
-  @keyframes intro-sub-in {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Floating light motes */
-  .intro-mote {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: var(--cyber-cyan);
-    pointer-events: none;
-    opacity: 0;
-  }
-
-  /* === Sections === */
+  /* === Section === */
   .ocean-section {
     position: relative;
     z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
+    padding: 6rem 2rem;
     text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
   }
 
-  .ocean-section::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(0, 229, 200, 0.02), transparent);
-    pointer-events: none;
-  }
-
-  .ocean-section .section-label {
-    font-family: "JetBrains Mono", monospace;
+  .section-label {
+    font-family: var(--font-mono);
     font-size: 0.6rem;
-    color: var(--text-faint);
+    color: var(--text-4);
     letter-spacing: 0.25em;
     margin-bottom: 1.5rem;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
-
-  .ocean-section .section-label::before,
-  .ocean-section .section-label::after {
+  .section-label::before,
+  .section-label::after {
     content: '';
-    width: 24px;
+    width: 20px;
     height: 1px;
-    background: var(--text-muted);
+    background: var(--rule);
   }
 
   .ocean-section h2 {
     font-size: 2.4rem;
-    font-weight: 200;
-    letter-spacing: 0.06em;
+    font-weight: 300;
+    letter-spacing: 0.02em;
     margin-bottom: 1.2rem;
-    font-family: "Noto Serif SC", serif;
     line-height: 1.4;
   }
+  .ocean-section h2 .accent { color: var(--accent); }
 
   .ocean-section .lead {
-    max-width: 560px;
-    color: var(--text-secondary);
-    font-size: 0.92rem;
+    max-width: 540px;
+    margin: 0 auto;
+    color: var(--text-3);
+    font-size: 0.95rem;
     line-height: 2;
-    letter-spacing: 0.04em;
-    font-family: "Noto Serif SC", serif;
+    font-family: var(--font-serif);
     font-weight: 300;
   }
 
-  /* === Data Nodes Grid (Sub-sites) === */
+  /* === Nodes Grid — hairline borders via gap === */
   .nodes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1px;
-    max-width: 880px;
-    width: 100%;
-    margin-top: 2.5rem;
-    background: rgba(0, 229, 200, 0.03);
+    max-width: 900px;
+    margin: 3rem auto 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
   }
 
   .node-card {
     position: relative;
-    padding: 1.8rem;
-    background: rgba(0, 136, 255, 0.015);
+    padding: 2rem;
     text-align: left;
-    transition: all 0.5s var(--ease-out-expo);
+    background: var(--bg-card);
+    transition: background var(--transition);
     cursor: pointer;
     display: block;
     color: inherit;
     text-decoration: none;
     overflow: hidden;
-    border: 1px solid rgba(0, 229, 200, 0.04);
-    border-right: none;
-    border-bottom: none;
   }
 
   .node-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(0, 229, 200, 0.04), transparent 50%);
-    opacity: 0;
-    transition: opacity 0.5s var(--ease-out-expo);
-  }
-
-  .node-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent);
-    opacity: 0;
-    transition: opacity 0.5s var(--ease-out-expo);
-    transform: scaleX(0.3);
-  }
-
-  .node-card:hover {
-    background: rgba(0, 136, 255, 0.04);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 229, 200, 0.03);
-    border-color: rgba(0, 229, 200, 0.1);
-  }
-
-  .node-card:hover::before {
-    opacity: 1;
-  }
-
-  .node-card:hover::after {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-
-  .node-card .node-id {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.55rem;
-    color: var(--text-faint);
-    letter-spacing: 0.2em;
-    margin-bottom: 0.8rem;
-    transition: color var(--transition-fast);
-  }
-
-  .node-card:hover .node-id {
-    color: var(--cyber-cyan-dim);
-  }
-
-  .node-card .node-name {
-    font-size: 1.15rem;
-    font-weight: 300;
-    letter-spacing: 0.04em;
-    color: var(--text-primary);
-    margin-bottom: 0.4rem;
-    font-family: "Noto Serif SC", serif;
-  }
-
-  .node-card .node-name .tag {
-    font-size: 0.7rem;
-    color: var(--text-faint);
-    letter-spacing: 0.04em;
-    font-weight: 300;
-  }
-
-  .node-card .node-desc {
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    line-height: 1.8;
-    margin-top: 0.5rem;
-    font-weight: 300;
-  }
-
-  .node-card .node-arrow {
-    margin-top: 1rem;
-    font-size: 0.7rem;
-    color: var(--text-faint);
-    font-family: "JetBrains Mono", monospace;
-    transition: all 0.4s var(--ease-out-expo);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .node-card:hover .node-arrow {
-    color: var(--cyber-cyan);
-    gap: 0.7rem;
-  }
-
-  .node-card .node-accent {
-    position: absolute;
     left: 0;
     top: 0;
     width: 2px;
     height: 100%;
-    transition: opacity 0.5s var(--ease-out-expo);
-    opacity: 0.3;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s var(--ease-out);
   }
 
-  .node-card:hover .node-accent {
-    opacity: 0.8;
+  .node-card:hover { background: var(--bg-soft); }
+  .node-card:hover::before { transform: scaleY(1); }
+
+  .node-card .node-id {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-4);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    transition: color var(--transition-fast);
+  }
+  .node-card:hover .node-id { color: var(--accent); }
+
+  .node-card .node-name {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-serif);
+  }
+  .node-card .node-name .tag {
+    font-size: 0.7rem;
+    color: var(--text-4);
+    font-weight: 300;
   }
 
-  .node-card .node-accent.cyan-accent { background: var(--cyber-cyan); box-shadow: 0 0 8px var(--cyber-cyan-glow); }
-  .node-card .node-accent.blue-accent { background: var(--cyber-blue); box-shadow: 0 0 8px var(--neon-blue); }
-  .node-card .node-accent.purple-accent { background: var(--cyber-purple); box-shadow: 0 0 8px var(--neon-purple); }
-  .node-card .node-accent.pink-accent { background: var(--cyber-pink); box-shadow: 0 0 8px var(--neon-pink); }
+  .node-card .node-desc {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    line-height: 1.8;
+    margin-top: 0.6rem;
+    font-weight: 300;
+  }
 
-  /* === The Reveal Section === */
+  .node-card .node-arrow {
+    margin-top: 1.2rem;
+    font-size: 0.7rem;
+    color: var(--text-4);
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .node-card:hover .node-arrow {
+    color: var(--accent);
+    gap: 0.6rem;
+  }
+
+  /* === Reveal Section (editorial quote) === */
   .reveal-section {
     position: relative;
     z-index: 1;
-    min-height: 110vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
+    padding: 6rem 2rem;
     text-align: center;
-  }
-
-  .reveal-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, rgba(0, 229, 200, 0.03), transparent 60%),
-                radial-gradient(ellipse at 50% 70%, rgba(124, 58, 237, 0.02), transparent 60%);
-    pointer-events: none;
-  }
-
-  .reveal-section .section-label {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.6rem;
-    color: var(--text-faint);
-    letter-spacing: 0.25em;
-    margin-bottom: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .reveal-section .section-label::before,
-  .reveal-section .section-label::after {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--text-muted);
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .reveal-section .big-text {
-    font-size: 3.5rem;
-    font-weight: 100;
-    letter-spacing: 0.08em;
-    line-height: 1.4;
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
     margin-bottom: 2rem;
-    font-family: "Noto Serif SC", serif;
+    font-family: var(--font-serif);
+    position: relative;
+    padding-left: 1.5rem;
+    text-align: left;
+    border-left: 2px solid var(--accent);
   }
 
-  .reveal-section .big-text .highlight {
-    color: var(--cyber-cyan);
-    text-shadow: var(--neon-cyan);
-  }
+  .reveal-section .big-text .highlight { color: var(--accent); }
+  .reveal-section .big-text .dim-highlight { color: var(--text-3); }
 
-  .reveal-section .big-text .dim-highlight {
-    color: var(--text-dim);
-  }
-
-  .reveal-section .big-text .tk {
-    display: inline-block;
-    animation: flicker 4s ease-in-out infinite;
-    color: var(--cyber-cyan);
-    text-shadow: var(--neon-cyan);
-  }
-
-  @keyframes flicker {
-    0%, 100% { opacity: 1; }
-    3% { opacity: 0.3; }
-    6% { opacity: 1; }
-    7% { opacity: 0.5; }
-    10% { opacity: 1; }
-    50% { opacity: 1; }
-  }
-
-  /* === Convergence Section === */
+  /* === Convergence === */
   .convergence {
     position: relative;
     z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
+    padding: 6rem 2rem 4rem;
     text-align: center;
-  }
-
-  .convergence::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 229, 200, 0.06), rgba(124, 58, 237, 0.06), transparent);
-  }
-
-  .convergence .section-label {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.6rem;
-    color: var(--text-faint);
-    letter-spacing: 0.25em;
-    margin-bottom: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .convergence .section-label::before,
-  .convergence .section-label::after {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   .convergence .breaker {
     width: 60px;
     height: 1px;
-    background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-purple));
+    background: var(--rule);
     margin: 2rem auto;
-    box-shadow: 0 0 12px var(--cyber-cyan-glow);
   }
 
   .convergence .final-text {
-    font-size: 2rem;
-    font-weight: 200;
-    letter-spacing: 0.1em;
-    line-height: 1.7;
-    max-width: 600px;
-    font-family: "Noto Serif SC", serif;
-  }
-
-  .convergence .final-text .glow {
-    color: var(--cyber-cyan);
-    text-shadow: 0 0 30px var(--cyber-cyan-glow), 0 0 80px rgba(0, 229, 200, 0.08);
-  }
-
-  .convergence .final-text .glow-purple {
-    color: var(--cyber-purple);
-    text-shadow: 0 0 30px rgba(124, 58, 237, 0.2), 0 0 80px rgba(124, 58, 237, 0.06);
-  }
-
-  .convergence .final-sub {
-    margin-top: 1.5rem;
-    max-width: 500px;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    line-height: 2;
+    font-size: 1.8rem;
     font-weight: 300;
-    font-family: "Noto Serif SC", serif;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+    font-family: var(--font-serif);
   }
+  .convergence .final-text .glow { color: var(--accent); }
+  .convergence .final-text .glow-purple { color: #8B6F47; }
 
   .convergence .footer-links {
     margin-top: 3rem;
@@ -752,160 +378,78 @@
     gap: 2rem;
     flex-wrap: wrap;
     justify-content: center;
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.7rem;
   }
-
   .convergence .footer-links a {
-    color: var(--text-faint);
-    letter-spacing: 0.08em;
-    transition: all var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
+    color: var(--text-3);
+    letter-spacing: 0.05em;
+    transition: color var(--transition-fast);
   }
-
-  .convergence .footer-links a:hover {
-    color: var(--cyber-cyan);
-    text-shadow: var(--neon-cyan);
-  }
-
-  /* === Ambient Orbs === */
-  .ambient-orb {
-    position: fixed;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    filter: blur(100px);
-    opacity: 0.15;
-    transition: opacity 1s ease;
-  }
-
-  .ambient-orb.orb-cyan {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(0, 229, 200, 0.3), transparent);
-    top: -100px;
-    right: -100px;
-  }
-
-  .ambient-orb.orb-blue {
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, rgba(0, 136, 255, 0.2), transparent);
-    bottom: -80px;
-    left: -80px;
-  }
-
-  .ambient-orb.orb-purple {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.15), transparent);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  /* === Spacer === */
-  .spacer {
-    height: 1px;
-  }
+  .convergence .footer-links a:hover { color: var(--accent); }
 
   /* === Responsive === */
   @media (max-width: 1024px) {
-    .nodes-grid {
-      grid-template-columns: repeat(2, 1fr);
-      max-width: 600px;
-    }
+    .nodes-grid { grid-template-columns: repeat(2, 1fr); }
   }
-
   @media (max-width: 768px) {
-    .hero h1 { font-size: 2.6rem; }
+    .nav { padding: 1rem 1.25rem; }
+    .hero h1 { font-size: 3rem; }
     .hero .sub { font-size: 0.9rem; }
-    .nodes-grid { grid-template-columns: 1fr; max-width: 100%; }
-    .reveal-section .big-text { font-size: 2rem; }
-    .convergence .final-text { font-size: 1.4rem; }
-    .hero .depth-gauge { right: 0.8rem; }
-    .hero .depth-gauge .dg-track { height: 80px; }
+    .nodes-grid { grid-template-columns: 1fr; }
     .ocean-section h2 { font-size: 1.8rem; }
-    .node-card { padding: 1.4rem; }
-  }
-
-  @media (max-width: 480px) {
-    .hero h1 { font-size: 2rem; }
-    .ocean-section { padding: 3rem 1.2rem; }
     .reveal-section .big-text { font-size: 1.6rem; }
+    .convergence .final-text { font-size: 1.4rem; }
+    .ocean-section { padding: 4rem 1.25rem; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2.4rem; }
+    .reveal-section .big-text { font-size: 1.3rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Intro overlay — Minimalist Light -->
+<!-- Intro overlay -->
 <div class="intro-overlay show" id="introOverlay">
-  <div class="intro-ambient"></div>
-  <div class="intro-content">
-    <div class="intro-line"></div>
-    <h2 class="intro-title">数字海洋</h2>
-    <p class="intro-sub">Digital Ocean</p>
-  </div>
+  <div class="intro-line"></div>
+  <h2 class="intro-title">数字海洋</h2>
+  <p class="intro-sub">Digital Ocean</p>
 </div>
 
-<!-- Ambient Orbs -->
-<div class="ambient-orb orb-cyan"></div>
-<div class="ambient-orb orb-blue"></div>
-<div class="ambient-orb orb-purple"></div>
-
-<!-- Depth gauge -->
-<div class="depth-gauge" id="depthGauge">
-  <div class="dg-label">DEPTH</div>
-  <div class="dg-track">
-    <div class="dg-fill" id="depthFill"></div>
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-logo">数字海洋</div>
+  <div class="nav-links">
+    <a href="#nodes">节点</a>
+    <a href="https://github.com/nimadunzhu/Digital_Ocean" target="_blank" rel="noopener">GitHub</a>
   </div>
-  <div class="dg-value" id="depthValue">0m</div>
-</div>
+</nav>
 
-<!-- === HERO: Surface Layer === -->
+<!-- Hero -->
 <section class="hero" id="hero">
-
-  <!-- Floating algae blobs — particle clusters (generated by JS) -->
-  <div class="algae-swarm" id="algaeSwarm">
-    <a href="dust/" class="algae-blob" data-color="0,229,200"></a>
-    <a href="rimlog/" class="algae-blob" data-color="0,136,255"></a>
-    <a href="mirror/" class="algae-blob" data-color="124,58,237"></a>
-    <a href="news/" class="algae-blob" data-color="0,180,255"></a>
-    <a href="microera/" class="algae-blob" data-color="255,45,120"></a>
-    <a href="resume/" class="algae-blob" data-color="140,70,255"></a>
-  </div>
-
-  <div class="hero-badge">
-    <span class="dot"></span>
-    <span>NODE HUB · 6 CONNECTED</span>
-  </div>
-  <h1 class="reveal">数字<span class="accent">海洋</span></h1>
-  <p class="sub reveal reveal-delay-1">
+  <div class="hero-label reveal">NODE HUB · 6 CONNECTED</div>
+  <h1 class="reveal reveal-delay-1">数字<span class="accent">海洋</span></h1>
+  <p class="sub reveal reveal-delay-2">
     互联网上的每一个信息，都是一缕微光。<br>
     它们散落在海洋深处，等待被点亮。
   </p>
-  <div class="status-bar reveal reveal-delay-2">
-    <span class="mono">SIGNAL ONLINE · 信号强度 98%</span>
-  </div>
   <div class="scroll-hint">
     <span>下潜探索</span>
-    <span class="arrow">↡</span>
+    <span class="arrow">↓</span>
   </div>
 </section>
 
-<!-- === SECTION 1: Data Nodes === -->
+<!-- Section 1: Data Nodes -->
 <section class="ocean-section" id="nodes">
   <div class="section-label reveal">数据节点</div>
-  <h2 class="reveal reveal-delay-1">深海中浮游的<span class="text-cyber">光点</span></h2>
+  <h2 class="reveal reveal-delay-1">深海中浮游的<span class="accent">光点</span></h2>
   <p class="lead reveal reveal-delay-2">
     每个光点都是一片发光的藻华。轻触它，它会苏醒。
   </p>
 
   <div class="nodes-grid">
     <a href="dust/" class="node-card reveal reveal-delay-1">
-      <div class="node-accent cyan-accent"></div>
       <div class="node-id">NODE · 001</div>
       <div class="node-name">DUST · 尘 <span class="tag">/ 技术编年史</span></div>
       <div class="node-desc">穿越两个世纪的技术变革编年史。那些被技术更迭轻轻抹去的人与事。</div>
@@ -913,7 +457,6 @@
     </a>
 
     <a href="rimlog/" class="node-card reveal reveal-delay-1">
-      <div class="node-accent blue-accent"></div>
       <div class="node-id">NODE · 002</div>
       <div class="node-name">RimLog · 边缘日志 <span class="tag">/ 外沿记录层</span></div>
       <div class="node-desc">一个安静的日常观察日志。从轨道高度俯瞰这颗行星上的平凡时刻。</div>
@@ -921,7 +464,6 @@
     </a>
 
     <a href="mirror/" class="node-card reveal reveal-delay-2">
-      <div class="node-accent purple-accent"></div>
       <div class="node-id">NODE · 003</div>
       <div class="node-name">Mirror · 镜 <span class="tag">/ 自省对话</span></div>
       <div class="node-desc">接入LLM的自省空间。在静默里让语言慢下来，重新靠近自己。</div>
@@ -929,7 +471,6 @@
     </a>
 
     <a href="news/" class="node-card reveal reveal-delay-2">
-      <div class="node-accent blue-accent"></div>
       <div class="node-id">NODE · 004</div>
       <div class="node-name">Joural · 日报 <span class="tag">/ AI新闻</span></div>
       <div class="node-desc">每24小时自动更新的AI行业日报聚合站。从全网嗅探AI动态，已持续追踪1000+期。</div>
@@ -937,7 +478,6 @@
     </a>
 
     <a href="microera/" class="node-card reveal reveal-delay-3">
-      <div class="node-accent pink-accent"></div>
       <div class="node-id">NODE · 005</div>
       <div class="node-name">Micro · Era <span class="tag">/ 内容演化</span></div>
       <div class="node-desc">Stop brainstorming. Start evolving. 把一个模糊选题变成可锁定内容方向。</div>
@@ -945,7 +485,6 @@
     </a>
 
     <a href="resume/" class="node-card reveal reveal-delay-3">
-      <div class="node-accent purple-accent"></div>
       <div class="node-id">NODE · 006</div>
       <div class="node-name">Resume · OS <span class="tag">/ 简历系统</span></div>
       <div class="node-desc">基于AI Agent的履历优化框架。将简历结构化建模，动态匹配岗位JD。</div>
@@ -954,14 +493,14 @@
   </div>
 </section>
 
-<!-- === SECTION 2: The Reveal === -->
+<!-- Section 2: The Reveal -->
 <section class="reveal-section" id="reveal">
   <div class="section-label reveal">系统全景</div>
   <div class="big-text reveal reveal-delay-1">
     <span class="dim-highlight">你以为</span><br>
     你是这片<span class="highlight">数字海洋</span>的<span class="dim-highlight">中心</span><br>
-    <span style="font-size:0.5em;color:var(--text-faint);line-height:3;display:block;letter-spacing:0.15em;">—— 直到你看见了 ——</span>
-    <span class="tk" style="font-size:1.2em;">无数个蓝藻</span>
+    <span style="font-size:0.5em;color:var(--text-4);line-height:3;display:block;letter-spacing:0.15em;">—— 直到你看见了 ——</span>
+    <span class="highlight" style="font-size:1.2em;">无数个蓝藻</span>
   </div>
   <p class="lead reveal reveal-delay-2">
     每个节点都在闪烁。每个节点都以为自己是唯一的坐标。<br>
@@ -969,7 +508,7 @@
   </p>
 </section>
 
-<!-- === SECTION 3: Convergence === -->
+<!-- Section 3: Convergence -->
 <section class="convergence" id="convergence">
   <div class="section-label reveal">汇聚</div>
   <div class="breaker reveal reveal-delay-1"></div>
@@ -979,49 +518,33 @@
     <p style="margin-top:1.8rem; font-size:2.4rem; letter-spacing:0.3em;">
       <span class="glow">数</span><span class="glow-purple">字</span><span class="glow">海</span><span class="glow-purple">洋</span>
     </p>
-    <p style="margin-top:2rem; font-size:1.3rem; color:var(--text-secondary); font-weight:300;">
+    <p style="margin-top:2rem; font-size:1.3rem; color:var(--text-2); font-weight:300;">
       已经是无法阻止的浪潮
     </p>
   </div>
 
   <div class="breaker reveal reveal-delay-2"></div>
 
-  <p class="reveal reveal-delay-3" style="margin-top:2rem; max-width:500px; color:var(--text-dim); font-size:0.85rem; line-height:2; font-family:'Noto Serif SC',serif; font-weight:300;">
+  <p class="reveal reveal-delay-3" style="margin-top:2rem; max-width:500px; margin-left:auto; margin-right:auto; color:var(--text-3); font-size:0.85rem; line-height:2; font-family:var(--font-serif); font-weight:300;">
     个体虽小，汇聚后即是智能本身。<br>
     每一缕微光，都在点亮整片海洋。
   </p>
 
   <div class="footer-links">
-    <a href="https://github.com/nimadunzhu/Digital_Ocean" target="_blank" rel="noopener" class="reveal reveal-delay-4">⌨ GitHub · 源码</a>
+    <a href="https://github.com/nimadunzhu/Digital_Ocean" target="_blank" rel="noopener" class="reveal reveal-delay-4">GitHub · 源码</a>
   </div>
 </section>
 
-<!-- Spacer -->
-<div class="spacer" style="height:5vh;"></div>
+<div style="height:5vh;"></div>
 
-<script src="assets/js/shared.js"></script>
 <script>
 (function() {
-  // Intro overlay: wait for animations to complete, then fade out
+  // Intro overlay: fade out after animations
   var intro = document.getElementById('introOverlay');
   setTimeout(function() {
     intro.classList.add('fade-out');
-    setTimeout(function() { intro.classList.remove('show'); }, 1200);
-  }, 3600);
-
-  // Depth gauge meter
-  var depthEl = document.getElementById('depthValue');
-  var fillEl = document.getElementById('depthFill');
-  var maxDepth = 12000;
-
-  function updateGauge() {
-    var d = window.ocean ? window.ocean.getDepth() : 0;
-    var meters = Math.round(d * maxDepth);
-    depthEl.textContent = meters + 'm';
-    fillEl.style.height = (d * 100) + '%';
-    requestAnimationFrame(updateGauge);
-  }
-  updateGauge();
+    setTimeout(function() { intro.classList.remove('show'); }, 800);
+  }, 2400);
 
   // Scroll-triggered reveal animations
   var revealElements = document.querySelectorAll('.reveal');
@@ -1039,43 +562,6 @@
       observer.observe(revealElements[j]);
     }
   }
-
-  // Generate 100 particles per algae blob cluster
-  const doAnims = ['do1', 'do2', 'do3', 'do4', 'do5'];
-  const labels = ['DUST', 'RIMLOG', 'MIRROR', 'JOURAL', 'MICRO ERA', 'RESUME OS'];
-  const blobs = document.querySelectorAll('.algae-blob');
-  const particlesPerBlob = 8;
-
-  for (let bi = 0; bi < blobs.length; bi++) {
-    const blob = blobs[bi];
-    const colorStr = blob.getAttribute('data-color');
-    const [r, g, b] = colorStr.split(',').map(Number);
-
-    // Add label
-    const label = document.createElement('span');
-    label.className = 'algae-label';
-    label.textContent = labels[bi] || '';
-    blob.appendChild(label);
-
-    // Wrapper for particles — squash vertically for flat algae shape
-    const pw = document.createElement('div');
-    pw.className = 'ad-cluster';
-    blob.appendChild(pw);
-
-    // Generate particles
-    for (let pi = 0; pi < particlesPerBlob; pi++) {
-      const dot = document.createElement('span');
-      dot.className = 'ad';
-      const size = 1 + Math.random() * 2;
-      const opacity = 0.15 + Math.random() * 0.4;
-      const hueShift = (Math.random() - 0.5) * 30;
-      const animIdx = Math.floor(Math.random() * doAnims.length);
-      const duration = 5 + Math.random() * 5;
-      const delay = Math.random() * 5;
-      dot.style.cssText = `width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;background:rgba(${r},${g},${b},${opacity.toFixed(2)});animation:${doAnims[animIdx]} ${duration.toFixed(1)}s ease-in-out infinite ${delay.toFixed(2)}s;`;
-       pw.appendChild(dot);
-     }
-   }
 })();
 </script>
 </body>

@@ -1,53 +1,95 @@
-/* === Digital Ocean · Premium Design System === */
-/* Self-contained, no external CDN, China-accessible */
+/* === Digital Ocean · Claude Design System === */
+/* Warm, editorial, publication-grade */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;700&family=Noto+Serif+SC:wght@200;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Ocean depth palette */
-  --ocean-abyss: #01040a;
-  --ocean-black: #020810;
-  --ocean-deep: #060d18;
-  --ocean-mid: #0a1628;
-  --ocean-surface: #0f2840;
-  --ocean-sky: #162a45;
+  /* Claude warm palette */
+  --bg: #FAF9F5;
+  --bg-soft: #F0EEE6;
+  --bg-card: #FFFFFF;
 
-  /* Spectral accents */
-  --cyber-cyan: #00e5c8;
-  --cyber-cyan-dim: rgba(0, 229, 200, 0.4);
-  --cyber-cyan-glow: rgba(0, 229, 200, 0.15);
-  --cyber-blue: #0088ff;
-  --cyber-blue-dim: rgba(0, 136, 255, 0.4);
-  --cyber-purple: #7c3aed;
-  --cyber-purple-dim: rgba(124, 58, 237, 0.4);
-  --cyber-pink: #ff2d78;
-  --cyber-teal: #0ff;
+  --text: #1A1A1A;
+  --text-2: #2C2B29;
+  --text-3: #6B6B6B;
+  --text-4: #B8B5AD;
 
-  /* Neon glow tokens */
-  --neon-cyan: 0 0 20px rgba(0, 229, 200, 0.3), 0 0 40px rgba(0, 229, 200, 0.1);
-  --neon-blue: 0 0 20px rgba(0, 136, 255, 0.25), 0 0 40px rgba(0, 136, 255, 0.08);
-  --neon-purple: 0 0 20px rgba(124, 58, 237, 0.2), 0 0 40px rgba(124, 58, 237, 0.06);
-  --neon-pink: 0 0 20px rgba(255, 45, 120, 0.2), 0 0 40px rgba(255, 45, 120, 0.06);
+  --accent: #D97757;
+  --accent-strong: #C15F3C;
+  --accent-soft: rgba(217, 119, 87, 0.08);
 
-  /* Text hierarchy */
-  --text-primary: #dce8f5;
-  --text-secondary: #90b0c8;
-  --text-dim: #507090;
-  --text-faint: #2a4058;
-  --text-muted: #1a2a3a;
-  --text-cyber: #00e5c8;
+  --border: #E5E2D8;
+  --border-strong: #1A1A1A;
+  --rule: rgba(26, 26, 26, 0.08);
 
-  /* Depth */
-  --depth-surface: 0;
-  --depth-current: 0;
+  /* Spacing scale (8-based) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
 
-  /* Transitions */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
-  --ease-out-quad: cubic-bezier(0.5, 1, 0.25, 1);
-  --transition-fast: 0.2s var(--ease-out-expo);
-  --transition-base: 0.4s var(--ease-out-expo);
-  --transition-slow: 0.6s var(--ease-out-expo);
+  /* Radius */
+  --radius-sm: 2px;
+  --radius: 4px;
+  --radius-lg: 8px;
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.15s var(--ease-out);
+  --transition: 0.3s var(--ease-out);
+  --transition-slow: 0.5s var(--ease-out);
+
+  /* Typography */
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, monospace;
+
+  /* === Backward-compatible aliases (old tokens → Claude palette) === */
+  /* Background */
+  --ocean-abyss: #FAF9F5;
+  --ocean-black: #FAF9F5;
+  --ocean-deep: #F0EEE6;
+  --ocean-mid: #F0EEE6;
+  --ocean-surface: #FFFFFF;
+  --ocean-sky: #F0EEE6;
+
+  /* Accents — mapped to warm Claude palette */
+  --cyber-cyan: #D97757;
+  --cyber-cyan-dim: rgba(217, 119, 87, 0.4);
+  --cyber-cyan-glow: rgba(217, 119, 87, 0.15);
+  --cyber-blue: #C15F3C;
+  --cyber-blue-dim: rgba(193, 95, 60, 0.4);
+  --cyber-purple: #8B6F47;
+  --cyber-purple-dim: rgba(139, 111, 71, 0.4);
+  --cyber-pink: #E5755A;
+  --cyber-teal: #D97757;
+
+  /* Neon glow — neutralized */
+  --neon-cyan: none;
+  --neon-blue: none;
+  --neon-purple: none;
+  --neon-pink: none;
+
+  /* Text */
+  --text-primary: #1A1A1A;
+  --text-secondary: #2C2B29;
+  --text-dim: #6B6B6B;
+  --text-faint: #B8B5AD;
+  --text-muted: #E5E2D8;
+  --text-cyber: #D97757;
+
+  /* Transitions (compat) */
+  --ease-out-expo: var(--ease-out);
+  --ease-in-out-expo: var(--ease-in-out);
+  --ease-out-quad: var(--ease-out);
+  --transition-base: var(--transition);
 }
 
 *, *::before, *::after {
@@ -62,183 +104,122 @@ html {
 }
 
 body {
-  background: var(--ocean-black);
-  color: var(--text-primary);
-  font-family: "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.8;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.7;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(0, 136, 255, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 50%, rgba(0, 229, 200, 0.02) 0%, transparent 50%);
 }
 
-/* Fixed canvas background layer */
-#ocean-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.mono {
-  font-family: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", "Consolas", "Courier New", monospace;
-}
-
-.serif {
-  font-family: "Noto Serif SC", "Georgia", "Times New Roman", serif;
-}
-
-.cyber {
-  font-family: "Orbitron", "JetBrains Mono", monospace;
-}
+.mono { font-family: var(--font-mono); }
+.serif { font-family: var(--font-serif); }
+.cyber { font-family: var(--font-mono); letter-spacing: 0.05em; }
 
 ::selection {
-  background: var(--cyber-cyan);
-  color: var(--ocean-black);
+  background: var(--accent);
+  color: #fff;
 }
 
 a {
-  color: var(--cyber-cyan);
+  color: var(--accent);
   text-decoration: none;
-  transition: color var(--transition-fast), text-shadow var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: #fff;
-  text-shadow: var(--neon-cyan);
+  color: var(--accent-strong);
 }
 
 /* === Typography === */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 300;
-  letter-spacing: 0.04em;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
   line-height: 1.3;
+  color: var(--text);
 }
 
-h1 { font-size: 2.8rem; }
+h1 { font-size: 2.8rem; font-weight: 300; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1.4rem; }
 
-.text-dim { color: var(--text-dim); }
-.text-faint { color: var(--text-faint); }
-.text-cyber { color: var(--cyber-cyan); }
-.text-blue { color: var(--cyber-blue); }
-.text-purple { color: var(--cyber-purple); }
-.text-pink { color: var(--cyber-pink); }
-.text-secondary { color: var(--text-secondary); }
+.text-dim { color: var(--text-3); }
+.text-faint { color: var(--text-4); }
+.text-cyber { color: var(--accent); }
+.text-blue { color: var(--accent-strong); }
+.text-purple { color: #8B6F47; }
+.text-pink { color: var(--accent); }
+.text-secondary { color: var(--text-2); }
 
 /* === Buttons === */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid rgba(0, 229, 200, 0.15);
-  background: rgba(0, 229, 200, 0.03);
-  color: var(--cyber-cyan);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.85rem;
+  padding: 0.625rem 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: all var(--transition-base);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0, 229, 200, 0.1), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-base);
+  transition: all var(--transition);
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-sm);
 }
 
 .btn:hover {
-  border-color: var(--cyber-cyan);
-  background: rgba(0, 229, 200, 0.06);
-  box-shadow: var(--neon-cyan), inset 0 0 30px rgba(0, 229, 200, 0.03);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-.btn:hover::before {
-  opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .btn-primary {
-  border-color: var(--cyber-blue);
-  color: var(--cyber-blue);
-  background: rgba(0, 136, 255, 0.04);
-}
-
-.btn-primary::before {
-  background: linear-gradient(135deg, rgba(0, 136, 255, 0.1), transparent);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .btn-primary:hover {
-  border-color: var(--cyber-blue);
-  background: rgba(0, 136, 255, 0.08);
-  box-shadow: var(--neon-blue), inset 0 0 30px rgba(0, 136, 255, 0.03);
+  background: var(--accent);
   color: #fff;
+  border-color: var(--accent);
 }
 
 /* === Section === */
-.section {
-  position: relative;
-  z-index: 1;
-}
+.section { position: relative; z-index: 1; }
 
-/* === Section Divider === */
+/* === Section Divider — hairline === */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 229, 200, 0.08), rgba(0, 136, 255, 0.08), transparent);
+  background: var(--rule);
   margin: 0 auto;
   max-width: 600px;
-  opacity: 0.5;
 }
 
-/* === Glass Card === */
+/* === Card === */
 .glass-card {
-  background: rgba(0, 136, 255, 0.02);
-  border: 1px solid rgba(0, 229, 200, 0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 2rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base);
+  transition: border-color var(--transition), transform var(--transition);
   position: relative;
   overflow: hidden;
-}
-
-.glass-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(0, 229, 200, 0.03), transparent 50%);
-  pointer-events: none;
+  border-radius: var(--radius);
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 229, 200, 0.12);
-  background: rgba(0, 136, 255, 0.04);
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
-/* === Reveal Animations === */
+/* === Reveal Animations — lightweight === */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+  transform: translateY(16px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 
 .reveal.visible {
@@ -246,53 +227,25 @@ h3 { font-size: 1.4rem; }
   transform: translateY(0);
 }
 
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
 
-/* === Scrollbar === */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--ocean-black); }
-::-webkit-scrollbar-thumb { background: var(--text-faint); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
-
-/* === Scanlines overlay === */
-.scanlines {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 999;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 229, 200, 0.012) 2px,
-    rgba(0, 229, 200, 0.012) 4px
-  );
-}
-
-/* === Ambient Glow === */
-.ambient-glow {
-  position: fixed;
-  pointer-events: none;
-  z-index: 0;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-}
+/* === Scrollbar — minimal === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-4); }
 
 /* === Responsive === */
 @media (max-width: 768px) {
-  html { font-size: 14px; }
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.6rem; }
-  .section { padding: 2.5rem 0; }
+  html { font-size: 15px; }
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.7rem; }
 }
 
 @media (max-width: 480px) {
-  html { font-size: 13px; }
+  html { font-size: 14px; }
+  h1 { font-size: 1.9rem; }
 }
