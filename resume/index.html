@@ -6,6 +6,7 @@
 <title>darkforest · resume · os</title>
 <meta name="description" content="基于LLM Agent的履历优化框架，将简历结构化建模并针对岗位JD动态匹配与多版本生成。">
 <link rel="stylesheet" href="../assets/css/shared.css">
+<script src="../config.local.js"></script>
 <style>
   :root {
     --resume-bg: #0a0d14;
@@ -563,9 +564,10 @@
     lastMatch: null
   };
 
-  var DEFAULT_URL = 'https://api.deepseek.com';
-  var DEFAULT_MODEL = 'deepseek-v4-flash';
-  var DEFAULT_KEY = '';  // 通过 .env 环境变量配置，运行时由用户输入并保存到 localStorage
+  var LOCAL = window.LOCAL_CONFIG || {};
+  var DEFAULT_URL = LOCAL.url || 'https://api.deepseek.com';
+  var DEFAULT_MODEL = LOCAL.model || 'deepseek-v4-flash';
+  var DEFAULT_KEY = LOCAL.apiKey || '';  // 本地 config.local.js 注入；线上由用户输入并存 localStorage
 
   try {
     var saved = localStorage.getItem('resume_os_data');

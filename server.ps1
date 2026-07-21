@@ -1,7 +1,7 @@
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add('http://localhost:8004/')
 $listener.Start()
-$root = 'd:\kookat.icu'
+$root = $PSScriptRoot
 $mime = @{
   '.html' = 'text/html; charset=utf-8'
   '.css'  = 'text/css; charset=utf-8'

@@ -6,6 +6,7 @@
 <title>镜 · 灯下</title>
 <meta name="description" content="在暖光里，靠近自己">
 <link rel="stylesheet" href="../assets/css/shared.css">
+<script src="../config.local.js"></script>
 <style>
   /* === 灯下 · Under the Lamp === */
   /* Warm, intimate space where you talk to someone who truly listens */
@@ -626,9 +627,10 @@
 
 <script>
 (function() {
-  var DEFAULT_URL = 'https://api.deepseek.com';
-  var DEFAULT_MODEL = 'deepseek-v4-flash';
-  var DEFAULT_KEY = '';  // 通过 .env 环境变量配置，运行时由用户输入并保存到 localStorage
+  var LOCAL = window.LOCAL_CONFIG || {};
+  var DEFAULT_URL = LOCAL.url || 'https://api.deepseek.com';
+  var DEFAULT_MODEL = LOCAL.model || 'deepseek-v4-flash';
+  var DEFAULT_KEY = LOCAL.apiKey || '';  // 本地 config.local.js 注入；线上由用户输入并存 localStorage
 
   var config = {
     url: localStorage.getItem('mirror_api_url') || DEFAULT_URL,
@@ -642,8 +644,16 @@
   document.getElementById('apiModel').value = config.model;
   document.getElementById('apiKey').value = config.key;
 
+  // 初始化视图：有 key 直接进聊天，没 key 进配置面板
+  if (config.key) {
+    document.getElementById('chatInterface').classList.add('active');
+  } else {
+    document.getElementById('configPanel').classList.add('active');
+  }
+
   window.showConfig = function() {
     document.getElementById('landing').classList.remove('active');
+    document.getElementById('chatInterface').classList.remove('active');
     document.getElementById('configPanel').classList.add('active');
   };
 
@@ -653,6 +663,7 @@
     config.key = document.getElementById('apiKey').value.trim() || DEFAULT_KEY;
     document.getElementById('configPanel').classList.remove('active');
     document.getElementById('landing').classList.remove('active');
+    document.getElementById('chatInterface').classList.add('active');
   };
 
   window.saveAndEnter = function() {

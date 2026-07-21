@@ -6,6 +6,7 @@
 <title>micro · era</title>
 <meta name="description" content="Stop brainstorming. Start evolving. 把一个模糊选题变成可筛选、可融合、可锁定的内容方向。">
 <link rel="stylesheet" href="../assets/css/shared.css">
+<script src="../config.local.js"></script>
 <style>
   :root {
     --algae-deep: #041a14;
@@ -917,9 +918,10 @@
   var evolutionHistory = [];
   var lastGeneratedArticle = '';
 
-  var DEFAULT_URL = 'https://api.deepseek.com';
-  var DEFAULT_MODEL = 'deepseek-v4-flash';
-  var DEFAULT_KEY = '';  // 通过 .env 环境变量配置，运行时由用户输入并保存到 localStorage
+  var LOCAL = window.LOCAL_CONFIG || {};
+  var DEFAULT_URL = LOCAL.url || 'https://api.deepseek.com';
+  var DEFAULT_MODEL = LOCAL.model || 'deepseek-v4-flash';
+  var DEFAULT_KEY = LOCAL.apiKey || '';  // 本地 config.local.js 注入；线上由用户输入并存 localStorage
 
   document.getElementById('apiUrl').value = localStorage.getItem('microera_url') || DEFAULT_URL;
   document.getElementById('apiModel').value = localStorage.getItem('microera_model') || DEFAULT_MODEL;
